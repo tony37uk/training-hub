@@ -224,117 +224,8 @@
     <a class="nav-feedback" onclick="scrollTo('feedback')">💬 Feedback</a>
   </div>
 
-  <!-- Training Links -->
-  <div id="links" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#ddeeff;">🔗</div>
-      <h2 style="color:#1a5fa8;">Training Links</h2>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag tag-blue">Microsoft</span>
-        <h3>Microsoft Learn</h3>
-        <p>Free official learning paths for Azure, M365, and AI certifications.</p>
-        <a href="https://learn.microsoft.com" target="_blank" rel="noopener">Visit →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">AI</span>
-        <h3>Anthropic Academy</h3>
-        <p>Learn prompt engineering and how to get the best out of Claude.</p>
-        <a href="https://anthropic.com" target="_blank" rel="noopener">Visit →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">Cloud</span>
-        <h3>Azure Fundamentals</h3>
-        <p>AZ-900 learning path — perfect starting point for cloud beginners.</p>
-        <a href="https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/" target="_blank" rel="noopener">Visit →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">Cert Prep</span>
-        <h3>MD-102 Study Guide</h3>
-        <p>Endpoint Administrator cert prep — devices, deployment &amp; management.</p>
-        <a href="https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/" target="_blank" rel="noopener">Visit →</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- How-To Guides -->
-  <div id="guides" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#fff0d4;">📖</div>
-      <h2 style="color:#b36200;">How-To Guides</h2>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag tag-orange">Beginner</span>
-        <h3>Setting Up GitHub Pages</h3>
-        <p>Step-by-step guide to hosting your first static website for free.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Prompt Eng.</span>
-        <h3>Writing Better Prompts</h3>
-        <p>Practical tips for getting great results from AI tools like Claude.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Intune</span>
-        <h3>Enrolling Devices in Intune</h3>
-        <p>How to enrol Windows and iOS devices into Microsoft Intune MDM.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Claude Code</span>
-        <h3>Getting Started with Claude Code</h3>
-        <p>Install, configure and run your first Claude Code session in minutes.</p>
-        <a href="#">Read guide →</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Training Videos -->
-  <div id="videos" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#ffe0ec;">🎬</div>
-      <h2 style="color:#b5235e;">Training Videos</h2>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="video-thumb" style="background:#ffe0ec;">🤖</div>
-        <span class="card-tag tag-pink">AI Basics</span>
-        <h3>Intro to AI for IT Pros</h3>
-        <p>A 20-minute overview of how AI works and where it fits in EUC.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#ddeeff;">☁️</div>
-        <span class="card-tag tag-blue">Azure</span>
-        <h3>Azure 101 Walkthrough</h3>
-        <p>Hands-on tour of the Azure portal — subscriptions, resources &amp; IAM.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#fff0d4;">🖥️</div>
-        <span class="card-tag tag-orange">Intune</span>
-        <h3>Intune Device Management</h3>
-        <p>Live demo: enrolling, configuring and pushing apps to Windows devices.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#d4f5e2;">📊</div>
-        <span class="card-tag tag-green">Power BI</span>
-        <h3>Power BI for Beginners</h3>
-        <p>Build your first dashboard in under 30 minutes — no data background needed.</p>
-        <a href="#">Watch →</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
+  <!-- Sections rendered dynamically from data.json -->
+  <div id="dynamic-sections"></div>
 
   <!-- Feedback -->
   <div id="feedback" class="hub-section">
@@ -365,11 +256,13 @@
 <div id="toast">Thanks! Feedback received 🎉</div>
 
 <script>
+  // ── Smooth scroll ──────────────────────────────────────────────
   function scrollTo(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // ── Feedback form ──────────────────────────────────────────────
   function submitFeedback() {
     const msg = document.getElementById('fb-msg').value.trim();
     if (!msg) { alert('Please add a message before sending!'); return; }
@@ -380,6 +273,65 @@
     t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
   }
+
+  // ── Card renderers ─────────────────────────────────────────────
+  function renderLinkCard(card) {
+    return `
+      <div class="card">
+        <span class="card-tag ${card.tagClass}">${card.tag}</span>
+        <h3>${card.title}</h3>
+        <p>${card.description}</p>
+        <a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>
+      </div>`;
+  }
+
+  function renderVideoCard(card) {
+    return `
+      <div class="card">
+        <div class="video-thumb" style="background:${card.thumbBg};">${card.thumb}</div>
+        <span class="card-tag ${card.tagClass}">${card.tag}</span>
+        <h3>${card.title}</h3>
+        <p>${card.description}</p>
+        <a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>
+      </div>`;
+  }
+
+  // ── Section renderer ───────────────────────────────────────────
+  function renderSection(section, isLast) {
+    const cards = section.cards
+      .map(c => section.type === 'video' ? renderVideoCard(c) : renderLinkCard(c))
+      .join('');
+
+    return `
+      <div id="${section.id}" class="hub-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:${section.iconBg};">${section.icon}</div>
+          <h2 style="color:${section.titleColor};">${section.title}</h2>
+        </div>
+        <div class="cards-grid">${cards}</div>
+      </div>
+      ${isLast ? '' : '<div class="divider"></div>'}`;
+  }
+
+  // ── Bootstrap: fetch data.json and build the page ──────────────
+  fetch('data.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`Failed to load data.json (${res.status})`);
+      return res.json();
+    })
+    .then(data => {
+      const container = document.getElementById('dynamic-sections');
+      container.innerHTML = data.sections
+        .map((section, i) => renderSection(section, i === data.sections.length - 1))
+        .join('');
+    })
+    .catch(err => {
+      document.getElementById('dynamic-sections').innerHTML =
+        `<p style="color:#e74c3c;text-align:center;padding:2rem;">
+          ⚠️ Could not load content: ${err.message}
+        </p>`;
+      console.error(err);
+    });
 </script>
 
 </body>

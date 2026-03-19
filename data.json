@@ -1,0 +1,138 @@
+{
+  "sections": [
+    {
+      "id": "links",
+      "title": "Training Links",
+      "icon": "🔗",
+      "iconBg": "#ddeeff",
+      "titleColor": "#1a5fa8",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "Microsoft",
+          "tagClass": "tag-blue",
+          "title": "Microsoft Learn",
+          "description": "Free official learning paths for Azure, M365, and AI certifications.",
+          "url": "https://learn.microsoft.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "AI",
+          "tagClass": "tag-blue",
+          "title": "Anthropic Academy",
+          "description": "Learn prompt engineering and how to get the best out of Claude.",
+          "url": "https://anthropic.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Cloud",
+          "tagClass": "tag-blue",
+          "title": "Azure Fundamentals",
+          "description": "AZ-900 learning path — perfect starting point for cloud beginners.",
+          "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Cert Prep",
+          "tagClass": "tag-blue",
+          "title": "MD-102 Study Guide",
+          "description": "Endpoint Administrator cert prep — devices, deployment & management.",
+          "url": "https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/",
+          "linkLabel": "Visit →"
+        }
+      ]
+    },
+    {
+      "id": "guides",
+      "title": "How-To Guides",
+      "icon": "📖",
+      "iconBg": "#fff0d4",
+      "titleColor": "#b36200",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "Beginner",
+          "tagClass": "tag-orange",
+          "title": "Setting Up GitHub Pages",
+          "description": "Step-by-step guide to hosting your first static website for free.",
+          "url": "#",
+          "linkLabel": "Read guide →"
+        },
+        {
+          "tag": "Prompt Eng.",
+          "tagClass": "tag-orange",
+          "title": "Writing Better Prompts",
+          "description": "Practical tips for getting great results from AI tools like Claude.",
+          "url": "#",
+          "linkLabel": "Read guide →"
+        },
+        {
+          "tag": "Intune",
+          "tagClass": "tag-orange",
+          "title": "Enrolling Devices in Intune",
+          "description": "How to enrol Windows and iOS devices into Microsoft Intune MDM.",
+          "url": "#",
+          "linkLabel": "Read guide →"
+        },
+        {
+          "tag": "Claude Code",
+          "tagClass": "tag-orange",
+          "title": "Getting Started with Claude Code",
+          "description": "Install, configure and run your first Claude Code session in minutes.",
+          "url": "#",
+          "linkLabel": "Read guide →"
+        }
+      ]
+    },
+    {
+      "id": "videos",
+      "title": "Training Videos",
+      "icon": "🎬",
+      "iconBg": "#ffe0ec",
+      "titleColor": "#b5235e",
+      "type": "video",
+      "cards": [
+        {
+          "thumb": "🤖",
+          "thumbBg": "#ffe0ec",
+          "tag": "AI Basics",
+          "tagClass": "tag-pink",
+          "title": "Intro to AI for IT Pros",
+          "description": "A 20-minute overview of how AI works and where it fits in EUC.",
+          "url": "#",
+          "linkLabel": "Watch →"
+        },
+        {
+          "thumb": "☁️",
+          "thumbBg": "#ddeeff",
+          "tag": "Azure",
+          "tagClass": "tag-blue",
+          "title": "Azure 101 Walkthrough",
+          "description": "Hands-on tour of the Azure portal — subscriptions, resources & IAM.",
+          "url": "#",
+          "linkLabel": "Watch →"
+        },
+        {
+          "thumb": "🖥️",
+          "thumbBg": "#fff0d4",
+          "tag": "Intune",
+          "tagClass": "tag-orange",
+          "title": "Intune Device Management",
+          "description": "Live demo: enrolling, configuring and pushing apps to Windows devices.",
+          "url": "#",
+          "linkLabel": "Watch →"
+        },
+        {
+          "thumb": "📊",
+          "thumbBg": "#d4f5e2",
+          "tag": "Power BI",
+          "tagClass": "tag-green",
+          "title": "Power BI for Beginners",
+          "description": "Build your first dashboard in under 30 minutes — no data background needed.",
+          "url": "#",
+          "linkLabel": "Watch →"
+        }
+      ]
+    }
+  ]
+}
