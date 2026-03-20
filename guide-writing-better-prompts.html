@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How-To Guide: Writing Better Prompts | Tony's AI & Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #a259f7; }
+
+    /* ── HERO ── */
+    .guide-hero {
+      background: linear-gradient(135deg, #a259f7 0%, #4f8ef7 60%, #2ecc71 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .guide-hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+    .guide-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .guide-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .guide-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ── LAYOUT ── */
+    .guide-layout {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ── CONTENT ── */
+    .guide-content { min-width: 0; }
+
+    .guide-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2.25rem 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .guide-content h2:first-child { margin-top: 0; }
+    .h2-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .guide-content p {
+      font-size: 15px;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+
+    /* ── PRINCIPLE CARDS ── */
+    .principle {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .principle-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0.75rem;
+    }
+    .principle-num {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a259f7, #4f8ef7);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .principle h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .principle p {
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 0.75rem;
+      line-height: 1.65;
+    }
+    .principle p:last-child { margin-bottom: 0; }
+
+    /* ── BEFORE / AFTER COMPARISON ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 0.75rem 0;
+    }
+    .compare-box {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+    .compare-bad  { background: #fff1f2; border: 1px solid #fecdd3; }
+    .compare-good { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .compare-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .compare-bad  .compare-label { color: #be123c; }
+    .compare-good .compare-label { color: #15803d; }
+    .compare-box p {
+      font-size: 13px !important;
+      color: #374151 !important;
+      margin: 0 !important;
+      font-style: italic;
+      line-height: 1.55 !important;
+    }
+
+    /* ── PROMPT ANATOMY ── */
+    .anatomy-block {
+      background: #1e1e2e;
+      border-radius: 14px;
+      padding: 1.4rem 1.5rem;
+      margin: 0.75rem 0 1rem;
+      position: relative;
+    }
+    .anatomy-line {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .anatomy-line:last-child { margin-bottom: 0; }
+    .anatomy-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 50px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.03em;
+    }
+    .tag-role    { background: #a259f720; color: #c084fc; border: 1px solid #a259f740; }
+    .tag-context { background: #4f8ef720; color: #7dd3fc; border: 1px solid #4f8ef740; }
+    .tag-task    { background: #2ecc7120; color: #6ee7b7; border: 1px solid #2ecc7140; }
+    .tag-format  { background: #f7a52520; color: #fcd34d; border: 1px solid #f7a52540; }
+    .tag-example { background: #f7599a20; color: #f9a8d4; border: 1px solid #f7599a40; }
+    .anatomy-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    /* ── CALLOUT BOXES ── */
+    .tip, .warning, .success-box, .info-box {
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .tip         { background: #eff6ff; border-left: 4px solid #4f8ef7; color: #1e3a5f; }
+    .warning     { background: #fff7ed; border-left: 4px solid #f7a525; color: #7c3a00; }
+    .success-box { background: #f0fdf4; border-left: 4px solid #2ecc71; color: #14532d; }
+    .info-box    { background: #faf5ff; border-left: 4px solid #a259f7; color: #4a1d96; }
+    .tip p, .warning p, .success-box p, .info-box p { font-size: 14px !important; color: inherit !important; margin: 0 !important; }
+
+    /* ── QUICK REFERENCE TABLE ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 0.75rem 0 1rem;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e8eaf0;
+    }
+    .ref-table th {
+      background: #f8f9ff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e8eaf0;
+    }
+    .ref-table td {
+      padding: 10px 14px;
+      color: #374151;
+      border-bottom: 1px solid #f0f2f7;
+      vertical-align: top;
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { background: #f8f9ff; }
+    .ref-table code {
+      background: #f0f4ff;
+      color: #4f8ef7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; margin: 0.75rem 0 1rem; }
+    .checklist li {
+      font-size: 14px;
+      color: #374151;
+      padding: 7px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      border-bottom: 1px dashed #e8eaf0;
+      line-height: 1.55;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #d4f5e2;
+      color: #1a7a42;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    /* ── SIDEBAR ── */
+    .guide-sidebar { position: sticky; top: 78px; }
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: color 0.15s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: #a259f7; }
+    .toc-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8eaf0; flex-shrink: 0; }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4f8ef7;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .resource-link:last-child { border-bottom: none; }
+    .resource-link:hover { color: #a259f7; }
+
+    .difficulty-bar { display: flex; gap: 5px; margin-top: 6px; }
+    .diff-dot { width: 28px; height: 8px; border-radius: 50px; }
+    .diff-filled { background: #a259f7; }
+    .diff-empty  { background: #e8eaf0; }
+
+    /* ── PROMPT SCORE WIDGET ── */
+    .score-widget {
+      background: linear-gradient(135deg, #faf5ff, #eff6ff);
+      border: 1px solid #e0d7ff;
+      border-radius: 16px;
+      padding: 1.25rem;
+    }
+    .score-widget h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #4a1d96;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .score-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #4b5563;
+    }
+    .score-item:last-child { margin-bottom: 0; }
+    .score-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: #e0d7ff;
+      border: 1px solid #c4b5fd;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #7c3aed;
+      transition: background 0.15s;
+    }
+    .score-check.checked { background: #a259f7; border-color: #a259f7; color: #fff; }
+    .score-result {
+      margin-top: 12px;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #4a1d96;
+      padding: 8px;
+      background: rgba(162,89,247,0.1);
+      border-radius: 8px;
+      display: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #a259f7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .guide-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .guide-sidebar { position: static; }
+      .guide-hero { padding: 2rem 1rem 2.5rem; }
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI & Cloud Hub</a>
+      <a href="index.html#guides" class="nav-back">← Back to guides</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-badge">📖 How-To Guide</div>
+      <h1>Writing Better Prompts</h1>
+      <div class="guide-meta">
+        <span>⏱️ 10–15 minutes</span>
+        <span>🟢 Beginner friendly</span>
+        <span>🤖 Works with any AI tool</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="guide-layout">
+
+    <article class="guide-content">
+
+      <p>The quality of the response you get from an AI tool like Claude, ChatGPT, or Copilot is almost entirely determined by the quality of your prompt. A vague question gets a vague answer. A well-structured prompt gets something genuinely useful. This guide walks you through the key principles with real before-and-after examples.</p>
+
+      <div class="info-box">
+        <span style="font-size:16px;flex-shrink:0;">🎯</span>
+        <p><strong>What you'll learn:</strong> How to structure prompts, give the right context, set the tone, use examples effectively, and avoid the most common mistakes.</p>
+      </div>
+
+      <!-- ANATOMY -->
+      <h2 id="anatomy">
+        <span class="h2-icon" style="background:#f0e8ff;">🔬</span>
+        Anatomy of a great prompt
+      </h2>
+
+      <p>Most great prompts share the same building blocks. You don't need all of them every time, but understanding each one helps you know what to include when.</p>
+
+      <div class="anatomy-block">
+        <div class="anatomy-line">
+          <span class="anatomy-tag tag-role">Role</span>
+          <span class="anatomy-text">You are an experienced IT trainer writing for a non-technical audience.</span>
+        </div>
+        <div class="anatomy-line">
+          <span class="anatomy-tag tag-context">Context</span>
+          <span class="anatomy-text">I'm creating a beginner guide for colleagues who have never used GitHub before.</span>
+        </div>
+        <div class="anatomy-line">
+          <span class="anatomy-tag tag-task">Task</span>
+          <span class="anatomy-text">Write a step-by-step guide for setting up GitHub Pages.</span>
+        </div>
+        <div class="anatomy-line">
+          <span class="anatomy-tag tag-format">Format</span>
+          <span class="anatomy-text">Use numbered steps, keep each step to 2–3 sentences, and include a tip box at the end.</span>
+        </div>
+        <div class="anatomy-line">
+          <span class="anatomy-tag tag-example">Example</span>
+          <span class="anatomy-text">Here's an example of the tone I want: "Click the green button in the top right — it's the one labelled New Repository."</span>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <p>You don't need all five parts every time. For a quick question, just the <strong>task</strong> might be enough. For complex or high-stakes outputs, add as many parts as you can.</p>
+      </div>
+
+      <!-- PRINCIPLE 1 -->
+      <h2 id="be-specific">
+        <span class="h2-icon" style="background:#ddeeff;">🎯</span>
+        Principle 1 — Be specific, not vague
+      </h2>
+
+      <p>The single biggest improvement most people can make is simply being more specific. AI tools are very good at following precise instructions, but they'll make assumptions when you leave things unclear.</p>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">1</div>
+          <h3>Say exactly what you want</h3>
+        </div>
+        <p>Include the topic, the purpose, the audience, and any constraints. The more specific you are, the less guessing the AI has to do.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ Vague</div>
+            <p>"Write something about Azure."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ Specific</div>
+            <p>"Write a 200-word plain-English summary of what Azure is, aimed at someone who has never used cloud computing before."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">2</div>
+          <h3>Specify the length and format</h3>
+        </div>
+        <p>If you don't say how long or what format you want, the AI will guess. Tell it upfront.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ No format</div>
+            <p>"Explain how Intune works."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ With format</div>
+            <p>"Explain how Intune works in 5 bullet points, each one a single sentence, suitable for a team briefing."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRINCIPLE 2 -->
+      <h2 id="give-context">
+        <span class="h2-icon" style="background:#fff0d4;">🗂️</span>
+        Principle 2 — Give context
+      </h2>
+
+      <p>Context helps the AI tailor its response to your actual situation. Think of it like briefing a colleague — the more background you give them, the better their output will be.</p>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">3</div>
+          <h3>Explain who the output is for</h3>
+        </div>
+        <p>The same question gets very different answers depending on the audience. Always mention who will be reading or using the output.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ No audience</div>
+            <p>"Explain what a DNS record is."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ With audience</div>
+            <p>"Explain what a DNS record is to someone who works in HR and has no IT background. Avoid jargon and use a simple analogy."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">4</div>
+          <h3>Share relevant background information</h3>
+        </div>
+        <p>If you're working on something specific — a project, a document, a system — tell the AI about it. You can even paste in existing text for it to work with.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ No background</div>
+            <p>"Write an email about the system outage."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ With background</div>
+            <p>"Write a brief email to end users explaining that our M365 email service was down from 9am–11am today due to a Microsoft outage, and that all services have now been restored. Keep it under 100 words and professional in tone."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRINCIPLE 3 -->
+      <h2 id="assign-role">
+        <span class="h2-icon" style="background:#ffe0ec;">🎭</span>
+        Principle 3 — Assign a role
+      </h2>
+
+      <p>Telling the AI to act as a specific type of expert dramatically improves the quality and relevance of the response. It sets the right tone, vocabulary, and level of depth.</p>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">5</div>
+          <h3>Use "You are a..." to set the persona</h3>
+        </div>
+        <p>Start your prompt by assigning a role. This works especially well for writing tasks, technical explanations, and training content.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ No role</div>
+            <p>"Create a quiz about Azure fundamentals."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ With role</div>
+            <p>"You are an experienced Microsoft certified trainer. Create a 5-question multiple choice quiz testing basic Azure fundamentals. Include the correct answers at the end."</p>
+          </div>
+        </div>
+      </div>
+
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Goal</th>
+            <th>Useful role to assign</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Writing training content</td><td>Experienced IT trainer writing for beginners</td></tr>
+          <tr><td>Simplifying technical docs</td><td>Technical writer specialising in plain English</td></tr>
+          <tr><td>Reviewing a document</td><td>Senior editor with an eye for clarity and structure</td></tr>
+          <tr><td>Solving a technical problem</td><td>Senior cloud engineer with 10 years of Azure experience</td></tr>
+          <tr><td>Writing a professional email</td><td>Senior IT manager communicating with stakeholders</td></tr>
+        </tbody>
+      </table>
+
+      <!-- PRINCIPLE 4 -->
+      <h2 id="use-examples">
+        <span class="h2-icon" style="background:#d4f5e2;">📋</span>
+        Principle 4 — Use examples
+      </h2>
+
+      <p>Showing the AI an example of what you want — even a rough one — is one of the most powerful techniques available. It removes ambiguity instantly.</p>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">6</div>
+          <h3>Show, don't just tell</h3>
+        </div>
+        <p>If you have an existing document, email, or style you want the AI to match, paste it in and say "write something in this style." This works better than trying to describe the style in words.</p>
+        <div class="compare">
+          <div class="compare-box compare-bad">
+            <div class="compare-label">❌ No example</div>
+            <p>"Write a brief, friendly, informal guide step."</p>
+          </div>
+          <div class="compare-box compare-good">
+            <div class="compare-label">✅ With example</div>
+            <p>"Write a guide step in this style: 'Head to Settings — it's the gear icon on the left sidebar. Don't worry if yours looks slightly different; the layout can vary depending on your plan.'"</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRINCIPLE 5 -->
+      <h2 id="iterate">
+        <span class="h2-icon" style="background:#f0e8ff;">🔁</span>
+        Principle 5 — Iterate and refine
+      </h2>
+
+      <p>You don't have to get the perfect prompt first time. The best results often come from a short back-and-forth conversation where you build on the AI's first response.</p>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num">7</div>
+          <h3>Use follow-up prompts to refine</h3>
+        </div>
+        <p>If the first response isn't quite right, don't start over. Tell the AI what to change. Be specific about what you liked and what needs adjusting.</p>
+        <ul class="checklist" style="margin-top:0.5rem;">
+          <li><span class="check-circle">→</span> "That's good but make it shorter — aim for half the length."</li>
+          <li><span class="check-circle">→</span> "Rewrite the second paragraph in a less formal tone."</li>
+          <li><span class="check-circle">→</span> "Add a practical example to point number 3."</li>
+          <li><span class="check-circle">→</span> "Can you turn this into a table instead?"</li>
+          <li><span class="check-circle">→</span> "Great — now adapt this for a technical audience."</li>
+        </ul>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <p>Think of prompting like briefing a very capable assistant. You wouldn't expect a colleague to get a complex piece of work perfect from a one-line instruction — and neither should you expect that from AI.</p>
+      </div>
+
+      <!-- COMMON MISTAKES -->
+      <h2 id="mistakes">
+        <span class="h2-icon" style="background:#fff1f2;">⚠️</span>
+        Common mistakes to avoid
+      </h2>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num" style="background:linear-gradient(135deg,#f7a525,#f7599a);">!</div>
+          <h3>Being too polite or too casual</h3>
+        </div>
+        <p>You don't need to say "please" and "thank you" (it won't make the AI work harder) but equally, don't be so brief that you strip out important detail. Aim for clear and direct.</p>
+      </div>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num" style="background:linear-gradient(135deg,#f7a525,#f7599a);">!</div>
+          <h3>Asking too many things at once</h3>
+        </div>
+        <p>If you need five different things, consider sending five separate prompts. Combining too many tasks in one go often results in the AI doing all of them poorly rather than any of them well.</p>
+      </div>
+
+      <div class="principle">
+        <div class="principle-header">
+          <div class="principle-num" style="background:linear-gradient(135deg,#f7a525,#f7599a);">!</div>
+          <h3>Accepting the first response without reviewing it</h3>
+        </div>
+        <p>AI can produce confident-sounding answers that contain errors or miss the point. Always read the response critically, fact-check anything important, and don't be afraid to push back.</p>
+      </div>
+
+      <div class="warning">
+        <span style="font-size:16px;flex-shrink:0;">⚠️</span>
+        <p><strong>Important:</strong> AI tools can occasionally get facts wrong or make things up. Always verify important information from a trusted source before using it in official documents or communications.</p>
+      </div>
+
+      <!-- QUICK REFERENCE -->
+      <h2 id="quickref">
+        <span class="h2-icon" style="background:#ddeeff;">⚡</span>
+        Quick reference — prompt starters
+      </h2>
+
+      <p>Copy and adapt these prompt templates to get started quickly:</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Task</th><th>Prompt starter template</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Explain a concept</td>
+            <td><code>Explain [topic] in plain English for someone who [audience description]. Keep it under [length].</code></td>
+          </tr>
+          <tr>
+            <td>Write a guide</td>
+            <td><code>You are an IT trainer. Write a step-by-step guide for [task]. Audience: [description]. Format: numbered steps.</code></td>
+          </tr>
+          <tr>
+            <td>Summarise a document</td>
+            <td><code>Summarise the key points from the following text in [X] bullet points. Focus on [specific aspect]: [paste text]</code></td>
+          </tr>
+          <tr>
+            <td>Write an email</td>
+            <td><code>Write a [formal/informal] email to [audience] about [topic]. Keep it under [length]. Key points to include: [list]</code></td>
+          </tr>
+          <tr>
+            <td>Create a quiz</td>
+            <td><code>Create a [X]-question multiple choice quiz on [topic] for [audience]. Include answers at the end.</code></td>
+          </tr>
+          <tr>
+            <td>Review/improve writing</td>
+            <td><code>Review the following text for clarity and tone. Suggest improvements but keep the overall structure: [paste text]</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- NEXT STEPS -->
+      <h2 id="next">
+        <span class="h2-icon" style="background:#d4f5e2;">🚀</span>
+        What next?
+      </h2>
+      <p>The best way to improve at prompting is simply to practise. Try these next steps:</p>
+      <ul class="checklist">
+        <li><span class="check-circle">→</span> Take one task you do regularly at work and try writing a prompt for it</li>
+        <li><span class="check-circle">→</span> Visit the <strong>Anthropic Academy</strong> for free prompt engineering courses</li>
+        <li><span class="check-circle">→</span> Read Anthropic's official prompting documentation at <strong>docs.claude.ai</strong></li>
+        <li><span class="check-circle">→</span> Explore the <strong>Training Links</strong> section of this hub for more AI learning resources</li>
+      </ul>
+
+      <div class="success-box">
+        <span style="font-size:16px;flex-shrink:0;">🎉</span>
+        <p>Remember: prompting is a skill, not a trick. The more you practise, the better your results — and the more useful AI tools become in your day-to-day work.</p>
+      </div>
+
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="guide-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#anatomy"><span class="toc-dot"></span>Anatomy of a prompt</a></li>
+          <li><a href="#be-specific"><span class="toc-dot"></span>1. Be specific</a></li>
+          <li><a href="#give-context"><span class="toc-dot"></span>2. Give context</a></li>
+          <li><a href="#assign-role"><span class="toc-dot"></span>3. Assign a role</a></li>
+          <li><a href="#use-examples"><span class="toc-dot"></span>4. Use examples</a></li>
+          <li><a href="#iterate"><span class="toc-dot"></span>5. Iterate & refine</a></li>
+          <li><a href="#mistakes"><span class="toc-dot"></span>Common mistakes</a></li>
+          <li><a href="#quickref"><span class="toc-dot"></span>Quick reference</a></li>
+          <li><a href="#next"><span class="toc-dot"></span>What next?</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Difficulty</h4>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:6px;">Beginner</p>
+        <div class="difficulty-bar">
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+        </div>
+      </div>
+
+      <div class="score-widget">
+        <h4>✅ Prompt checklist</h4>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Clear task defined</div>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Audience specified</div>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Role assigned</div>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Format requested</div>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Length specified</div>
+        <div class="score-item"><div class="score-check" onclick="toggleCheck(this)"></div> Example provided</div>
+        <div class="score-result" id="score-result"></div>
+      </div>
+
+      <div class="sidebar-card" style="margin-top:1rem;">
+        <h4>Useful Links</h4>
+        <a href="https://anthropic.com" target="_blank" class="resource-link">🤖 Anthropic Academy</a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" class="resource-link">📚 Prompting docs</a>
+        <a href="https://claude.ai" target="_blank" class="resource-link">💬 Try Claude</a>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI & Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+  <script>
+    function toggleCheck(el) {
+      el.classList.toggle('checked');
+      el.textContent = el.classList.contains('checked') ? '✓' : '';
+      updateScore();
+    }
+
+    function updateScore() {
+      const checks = document.querySelectorAll('.score-check');
+      const total = checks.length;
+      const ticked = [...checks].filter(c => c.classList.contains('checked')).length;
+      const result = document.getElementById('score-result');
+      if (ticked === 0) { result.style.display = 'none'; return; }
+      result.style.display = 'block';
+      const pct = Math.round((ticked / total) * 100);
+      const msgs = [
+        [100, '🏆 Perfect prompt! You\'re ready to go.'],
+        [80,  '🚀 Nearly there — strong prompt!'],
+        [60,  '👍 Good start — a couple more details would help.'],
+        [1,   '📝 Keep going — more context = better results.']
+      ];
+      result.textContent = (msgs.find(([t]) => pct >= t) || msgs[3])[1];
+    }
+  </script>
+
+</body>
+</html>
