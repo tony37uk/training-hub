@@ -98,14 +98,6 @@
           "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/",
           "linkLabel": "Visit →"
         },
-        {
-          "tag": "Cert Prep",
-          "tagClass": "tag-blue",
-          "title": "MD-102 Study Guide",
-          "description": "Endpoint Administrator cert prep — devices, deployment & management.",
-          "url": "https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/",
-          "linkLabel": "Visit →"
-        }
       ]
     },
     {
@@ -130,14 +122,6 @@
           "title": "Writing Better Prompts",
           "description": "Practical tips for getting great results from AI tools like Claude.",
           "url": "guide-writing-better-prompts.html",
-          "linkLabel": "Read guide →"
-        },
-        {
-          "tag": "Intune",
-          "tagClass": "tag-orange",
-          "title": "Enrolling Devices in Intune",
-          "description": "How to enrol Windows and iOS devices into Microsoft Intune MDM.",
-          "url": "#",
           "linkLabel": "Read guide →"
         },
         {
