@@ -1,6 +1,72 @@
 {
   "sections": [
     {
+      "id": "ai-resources",
+      "title": "AI Resources",
+      "icon": "🤖",
+      "iconBg": "#ede9fe",
+      "titleColor": "#6d28d9",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "OpenAI",
+          "tagClass": "tag-purple",
+          "title": "ChatGPT",
+          "description": "OpenAI's conversational AI — great for writing, coding, and brainstorming.",
+          "url": "https://chatgpt.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Anthropic",
+          "tagClass": "tag-purple",
+          "title": "Claude",
+          "description": "Anthropic's AI assistant — helpful, harmless, and honest.",
+          "url": "https://claude.ai",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Microsoft",
+          "tagClass": "tag-purple",
+          "title": "Microsoft Copilot",
+          "description": "AI assistant built into Microsoft 365 and Windows — your everyday AI.",
+          "url": "https://copilot.microsoft.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Alibaba",
+          "tagClass": "tag-purple",
+          "title": "Qwen",
+          "description": "Alibaba's powerful open-source large language model family.",
+          "url": "https://qwenlm.github.io",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "DeepSeek",
+          "tagClass": "tag-purple",
+          "title": "DeepSeek",
+          "description": "High-performance AI model from DeepSeek — strong at reasoning and code.",
+          "url": "https://chat.deepseek.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Google",
+          "tagClass": "tag-purple",
+          "title": "Gemini",
+          "description": "Google's multimodal AI — integrated with Search, Docs, and more.",
+          "url": "https://gemini.google.com",
+          "linkLabel": "Visit →"
+        },
+        {
+          "tag": "Perplexity",
+          "tagClass": "tag-purple",
+          "title": "Perplexity AI",
+          "description": "AI-powered search engine — get cited, up-to-date answers instantly.",
+          "url": "https://www.perplexity.ai",
+          "linkLabel": "Visit →"
+        }
+      ]
+    },
+    {
       "id": "links",
       "title": "Training Links",
       "icon": "🔗",
