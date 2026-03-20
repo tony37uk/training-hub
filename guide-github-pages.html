@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How-To Guide: Setting Up GitHub Pages | Tony's AI & Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #4f8ef7; }
+
+    /* ── HERO ── */
+    .guide-hero {
+      background: linear-gradient(135deg, #f7a525 0%, #f7599a 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .guide-hero-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .guide-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .guide-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .guide-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .guide-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── LAYOUT ── */
+    .guide-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ── CONTENT ── */
+    .guide-content { min-width: 0; }
+
+    .guide-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2rem 0 0.75rem;
+    }
+    .guide-content h2:first-child { margin-top: 0; }
+
+    .guide-content p {
+      font-size: 15px;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+
+    /* ── STEP CARDS ── */
+    .step {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f7a525, #f7599a);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-body { flex: 1; min-width: 0; }
+    .step-body h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.4rem;
+    }
+    .step-body p {
+      font-size: 14px;
+      color: #4b5563;
+      margin: 0 0 0.5rem;
+      line-height: 1.6;
+    }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* ── CODE BLOCKS ── */
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+    }
+    .code-block code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #a6e3a1;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .code-block code .comment { color: #6c7086; }
+    .code-block code .keyword { color: #89b4fa; }
+
+    /* ── INLINE CODE ── */
+    code {
+      background: #f0f4ff;
+      color: #4f8ef7;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* ── TIP / WARNING BOXES ── */
+    .tip, .warning, .success-box {
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .tip { background: #eff6ff; border-left: 4px solid #4f8ef7; color: #1e3a5f; }
+    .warning { background: #fff7ed; border-left: 4px solid #f7a525; color: #7c3a00; }
+    .success-box { background: #f0fdf4; border-left: 4px solid #2ecc71; color: #14532d; }
+    .tip-icon, .warn-icon, .ok-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; margin: 0.75rem 0 1rem; }
+    .checklist li {
+      font-size: 14px;
+      color: #374151;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px dashed #e8eaf0;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #d4f5e2;
+      color: #1a7a42;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 800;
+    }
+
+    /* ── SIDEBAR ── */
+    .guide-sidebar { position: sticky; top: 78px; }
+
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: color 0.15s;
+    }
+    .toc-list a:hover { color: #f7a525; }
+    .toc-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e8eaf0;
+      flex-shrink: 0;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4f8ef7;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .resource-link:last-child { border-bottom: none; }
+    .resource-link:hover { color: #f7a525; }
+
+    .difficulty-bar {
+      display: flex;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .diff-dot {
+      width: 28px;
+      height: 8px;
+      border-radius: 50px;
+    }
+    .diff-filled { background: #2ecc71; }
+    .diff-empty  { background: #e8eaf0; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .guide-layout {
+        grid-template-columns: 1fr;
+        padding: 1.5rem 1rem 3rem;
+      }
+      .guide-sidebar { position: static; }
+      .guide-hero { padding: 2rem 1rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI & Cloud Hub</a>
+      <a href="index.html#guides" class="nav-back">← Back to guides</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-badge">📖 How-To Guide</div>
+      <h1>Setting Up GitHub Pages</h1>
+      <div class="guide-meta">
+        <span>⏱️ 15–20 minutes</span>
+        <span>🟢 Beginner friendly</span>
+        <span>💸 100% free</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="guide-layout">
+
+    <!-- CONTENT -->
+    <article class="guide-content">
+
+      <p>GitHub Pages lets you host a website completely free, directly from a GitHub repository. No server, no hosting fees, no complicated setup. This guide walks you through everything from creating an account to having your site live on the internet.</p>
+
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <span><strong>What you'll end up with:</strong> A live public URL like <code>https://your-username.github.io/your-site</code> that anyone can visit.</span>
+      </div>
+
+      <!-- WHAT YOU NEED -->
+      <h2>Before you start</h2>
+      <p>Make sure you have the following ready:</p>
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span> A computer with a web browser</li>
+        <li><span class="check-circle">✓</span> An email address (to create a GitHub account)</li>
+        <li><span class="check-circle">✓</span> Your website files (e.g. an <code>index.html</code> file)</li>
+        <li><span class="check-circle">✓</span> About 15–20 minutes</li>
+      </ul>
+
+      <!-- STEP 1 -->
+      <h2 id="step1">Step 1 — Create a free GitHub account</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Go to github.com</h3>
+          <p>Open your browser and navigate to <strong>github.com</strong>. Click the <strong>Sign up</strong> button in the top right corner.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Fill in your details</h3>
+          <p>Enter your email address, choose a password, and pick a username. Your username will appear in your site's URL, so choose something you're happy with — e.g. <code>tonysmith</code>.</p>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <span>Keep your username lowercase with no spaces. Hyphens are fine: <code>tony-smith</code> works well.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Verify your email</h3>
+          <p>GitHub will send you a verification email. Click the link inside it to activate your account, then sign in.</p>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <h2 id="step2">Step 2 — Create a new repository</h2>
+
+      <p>A repository (or "repo") is where GitHub stores your website files. Think of it like a folder in the cloud.</p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Click "New repository"</h3>
+          <p>Once logged in, click the <strong>+</strong> icon in the top right corner, then select <strong>New repository</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Name your repository</h3>
+          <p>Give your repo a name — this will be part of your URL. For example, naming it <code>training-hub</code> will give you the URL:</p>
+          <div class="code-block"><code>https://your-username.github.io/training-hub</code></div>
+          <div class="warning">
+            <span class="warn-icon">⚠️</span>
+            <span>Make sure to set the repo to <strong>Public</strong>. GitHub Pages only works with public repositories on free accounts.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Initialise the repository</h3>
+          <p>Tick the box that says <strong>Add a README file</strong>. This creates the repo with a starting file, which is needed before you can upload anything.</p>
+          <p>Then click <strong>Create repository</strong>.</p>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <h2 id="step3">Step 3 — Upload your website files</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Open the upload screen</h3>
+          <p>Inside your new repository, click <strong>Add file</strong> → <strong>Upload files</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Drag and drop your files</h3>
+          <p>Drag your <code>index.html</code> (and any other files like images or CSS) into the upload area. GitHub will show them queued for upload.</p>
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <span>Your main page <strong>must</strong> be named <code>index.html</code>. GitHub Pages looks for this file automatically when someone visits your URL.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Commit the files</h3>
+          <p>Scroll down to the <strong>Commit changes</strong> section. You can leave the default message or type something like <code>Add website files</code>. Click <strong>Commit changes</strong>.</p>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <h2 id="step4">Step 4 — Enable GitHub Pages</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Go to Settings</h3>
+          <p>In your repository, click the <strong>Settings</strong> tab (the gear icon near the top of the page).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Find the Pages section</h3>
+          <p>In the left-hand sidebar, scroll down and click <strong>Pages</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Set the source branch</h3>
+          <p>Under <strong>Source</strong>, click the dropdown and select <strong>Deploy from a branch</strong>. Then set the branch to <strong>main</strong> and the folder to <strong>/ (root)</strong>.</p>
+          <p>Click <strong>Save</strong>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Wait a moment</h3>
+          <p>GitHub takes 1–3 minutes to build and publish your site. Refresh the Settings → Pages page after a minute and you'll see a green banner with your live URL.</p>
+          <div class="success-box">
+            <span class="ok-icon">🎉</span>
+            <span><strong>Your site is live!</strong> The URL will look like: <code>https://your-username.github.io/your-repo-name</code></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <h2 id="step5">Step 5 — Updating your site in future</h2>
+
+      <p>Whenever you want to make changes to your site, just upload the updated files the same way — go to your repo, click <strong>Add file → Upload files</strong>, and commit again. GitHub Pages will automatically redeploy within a couple of minutes.</p>
+
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <span><strong>Pro tip:</strong> If you install <strong>GitHub Desktop</strong> (free app), you can drag files from your computer and sync changes without using the website every time. Great next step once you're comfortable with the basics!</span>
+      </div>
+
+      <!-- TROUBLESHOOTING -->
+      <h2 id="troubleshoot">Troubleshooting</h2>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>My URL shows a 404 error</h3>
+          <p>Check that your main file is named exactly <code>index.html</code> (all lowercase). Also make sure Pages is pointing to the correct branch in Settings.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>My changes aren't showing up</h3>
+          <p>GitHub Pages can take a few minutes to update. Try a hard refresh in your browser (<code>Ctrl + Shift + R</code> on Windows, <code>Cmd + Shift + R</code> on Mac) to clear the cache.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>Images or styles aren't loading</h3>
+          <p>Make sure all file paths in your HTML are <strong>relative</strong> (e.g. <code>images/photo.jpg</code>) not absolute. Also check that all filenames match exactly — GitHub is case-sensitive.</p>
+        </div>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <h2 id="next">What next?</h2>
+      <p>Now that your site is live, here are some things to explore:</p>
+      <ul class="checklist">
+        <li><span class="check-circle">→</span> Install <strong>GitHub Desktop</strong> for easier file management</li>
+        <li><span class="check-circle">→</span> Try <strong>Claude Code</strong> to build and improve your site with AI</li>
+        <li><span class="check-circle">→</span> Add a custom domain (e.g. <code>mysite.co.uk</code>) via Settings → Pages</li>
+        <li><span class="check-circle">→</span> Learn basic Git commands to manage your site from the terminal</li>
+      </ul>
+
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="guide-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#step1"><span class="toc-dot"></span>1. Create a GitHub account</a></li>
+          <li><a href="#step2"><span class="toc-dot"></span>2. Create a repository</a></li>
+          <li><a href="#step3"><span class="toc-dot"></span>3. Upload your files</a></li>
+          <li><a href="#step4"><span class="toc-dot"></span>4. Enable GitHub Pages</a></li>
+          <li><a href="#step5"><span class="toc-dot"></span>5. Updating your site</a></li>
+          <li><a href="#troubleshoot"><span class="toc-dot"></span>Troubleshooting</a></li>
+          <li><a href="#next"><span class="toc-dot"></span>What next?</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Difficulty</h4>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:6px;">Beginner</p>
+        <div class="difficulty-bar">
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Useful Links</h4>
+        <a href="https://github.com" target="_blank" class="resource-link">🐙 GitHub.com</a>
+        <a href="https://pages.github.com" target="_blank" class="resource-link">📄 GitHub Pages docs</a>
+        <a href="https://desktop.github.com" target="_blank" class="resource-link">🖥️ GitHub Desktop app</a>
+        <a href="https://docs.github.com/en/pages" target="_blank" class="resource-link">📚 Full Pages guide</a>
+      </div>
+
+      <div class="sidebar-card" style="background:linear-gradient(135deg,#fff7ed,#fff0f6);border-color:#f7d6a0;">
+        <h4 style="color:#b36200;">⏱️ Time estimate</h4>
+        <p style="font-size:13px;color:#7c3a00;line-height:1.6;">Account setup: <strong>5 min</strong><br>Upload & configure: <strong>5 min</strong><br>Go live: <strong>1–3 min</strong></p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI & Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+</body>
+</html>
