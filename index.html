@@ -220,11 +220,11 @@
   </div>
 
   <div class="hub-nav">
-    <a class="nav-ai"       onclick="scrollTo('ai-resources')">🤖 AI Resources</a>
-    <a class="nav-links"    onclick="scrollTo('links')">🔗 Training Links</a>
-    <a class="nav-guides"   onclick="scrollTo('guides')">📖 How-To Guides</a>
-    <a class="nav-videos"   onclick="scrollTo('videos')">🎬 Videos</a>
-    <a class="nav-feedback" onclick="scrollTo('feedback')">💬 Feedback</a>
+    <a class="nav-ai"       onclick="scrollToSection('ai-resources')">🤖 AI Resources</a>
+    <a class="nav-links"    onclick="scrollToSection('links')">🔗 Training Links</a>
+    <a class="nav-guides"   onclick="scrollToSection('guides')">📖 How-To Guides</a>
+    <a class="nav-videos"   onclick="scrollToSection('videos')">🎬 Videos</a>
+    <a class="nav-feedback" onclick="scrollToSection('feedback')">💬 Feedback</a>
   </div>
 
   <!-- Sections rendered dynamically from data.json -->
@@ -260,7 +260,7 @@
 
 <script>
   // ── Smooth scroll ──────────────────────────────────────────────
-  function scrollTo(id) {
+  function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
