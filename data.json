@@ -129,7 +129,7 @@
           "tagClass": "tag-orange",
           "title": "Getting Started with Claude Code",
           "description": "Install, configure and run your first Claude Code session in minutes.",
-          "url": "#",
+          "url": "guide-claude-code.html",
           "linkLabel": "Read guide →"
         }
       ]

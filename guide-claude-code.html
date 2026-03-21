@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How-To Guide: Getting Started with Claude Code | Tony's AI & Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #f7a525; }
+
+    /* ── HERO ── */
+    .guide-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d2060 50%, #4f3fa0 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(79,142,247,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(162,89,247,0.15) 0%, transparent 50%),
+        radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: auto, auto, 32px 32px;
+    }
+    .guide-hero-inner { max-width: 900px; margin: 0 auto; position: relative; }
+    .guide-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .guide-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .guide-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ── LAYOUT ── */
+    .guide-layout {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ── CONTENT ── */
+    .guide-content { min-width: 0; }
+
+    .guide-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2.25rem 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .guide-content h2:first-child { margin-top: 0; }
+
+    .h2-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .guide-content p {
+      font-size: 15px;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+
+    /* ── STEP CARDS ── */
+    .step {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2d2060, #4f8ef7);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-body { flex: 1; min-width: 0; }
+    .step-body h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.4rem;
+    }
+    .step-body p {
+      font-size: 14px;
+      color: #4b5563;
+      margin: 0 0 0.6rem;
+      line-height: 1.65;
+    }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* ── CODE BLOCKS ── */
+    .code-block {
+      background: #0f1117;
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+      border: 1px solid #2a2d3a;
+    }
+    .code-block pre {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.75;
+      white-space: pre;
+      margin: 0;
+    }
+    .code-block .comment { color: #6c7086; }
+    .code-block .prompt-char { color: #a259f7; font-weight: 700; }
+    .code-block .cmd { color: #7dd3fc; }
+    .code-block .flag { color: #fcd34d; }
+    .code-block .output { color: #6ee7b7; }
+    .code-block .label {
+      font-size: 11px;
+      color: #6c7086;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: 'Nunito', sans-serif;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ── INLINE CODE ── */
+    code {
+      background: #f0f4ff;
+      color: #4f3fa0;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* ── CALLOUT BOXES ── */
+    .tip, .warning, .success-box, .info-box {
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .tip         { background: #eff6ff; border-left: 4px solid #4f8ef7; color: #1e3a5f; }
+    .warning     { background: #fff7ed; border-left: 4px solid #f7a525; color: #7c3a00; }
+    .success-box { background: #f0fdf4; border-left: 4px solid #2ecc71; color: #14532d; }
+    .info-box    { background: #f5f3ff; border-left: 4px solid #4f3fa0; color: #2e1065; }
+    .tip p, .warning p, .success-box p, .info-box p { font-size: 14px !important; color: inherit !important; margin: 0 !important; }
+
+    /* ── COMMAND REFERENCE TABLE ── */
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 0.75rem 0 1rem;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e8eaf0;
+    }
+    .cmd-table th {
+      background: #0f1117;
+      color: #a0aec0;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .cmd-table td {
+      padding: 10px 14px;
+      color: #374151;
+      border-bottom: 1px solid #f0f2f7;
+      vertical-align: top;
+    }
+    .cmd-table tr:last-child td { border-bottom: none; }
+    .cmd-table tr:hover td { background: #fafbff; }
+    .cmd-table code {
+      background: #f0f4ff;
+      color: #4f3fa0;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; margin: 0.75rem 0 1rem; }
+    .checklist li {
+      font-size: 14px;
+      color: #374151;
+      padding: 7px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      border-bottom: 1px dashed #e8eaf0;
+      line-height: 1.55;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ede9fe;
+      color: #4f3fa0;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    /* ── WHAT IT CAN DO GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 0.75rem 0 1rem;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .feature-card .fc-icon { font-size: 22px; }
+    .feature-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .feature-card p {
+      font-size: 12px !important;
+      color: #6b7280 !important;
+      line-height: 1.5 !important;
+      margin: 0 !important;
+    }
+
+    /* ── SIDEBAR ── */
+    .guide-sidebar { position: sticky; top: 78px; }
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: color 0.15s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: #4f3fa0; }
+    .toc-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8eaf0; flex-shrink: 0; }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4f8ef7;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .resource-link:last-child { border-bottom: none; }
+    .resource-link:hover { color: #4f3fa0; }
+
+    .difficulty-bar { display: flex; gap: 5px; margin-top: 6px; }
+    .diff-dot { width: 28px; height: 8px; border-radius: 50px; }
+    .diff-filled { background: #4f3fa0; }
+    .diff-empty  { background: #e8eaf0; }
+
+    .os-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .os-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #374151;
+      background: #f8f9ff;
+      border: 1px solid #e8eaf0;
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+    .os-pill span { font-size: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f3fa0; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .guide-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .guide-sidebar { position: static; }
+      .guide-hero { padding: 2rem 1rem 2.5rem; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI & Cloud Hub</a>
+      <a href="index.html#guides" class="nav-back">← Back to guides</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-badge">📖 How-To Guide</div>
+      <h1>Getting Started with Claude Code</h1>
+      <div class="guide-meta">
+        <span>⏱️ 20–30 minutes</span>
+        <span>🟡 Some terminal knowledge helpful</span>
+        <span>🤖 Built by Anthropic</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="guide-layout">
+
+    <article class="guide-content">
+
+      <p>Claude Code is Anthropic's AI coding assistant that runs directly inside your terminal. Unlike browser-based AI tools, it connects to your actual project files and can read your code, write new code, fix bugs, and even handle Git workflows — all through plain English conversation. Think of it as having a highly capable developer sitting alongside you as you work.</p>
+
+      <div class="info-box">
+        <span style="font-size:16px;flex-shrink:0;">🎯</span>
+        <p><strong>What you'll achieve:</strong> Install Claude Code, authenticate your account, run your first session, and learn the key commands to get productive quickly.</p>
+      </div>
+
+      <!-- WHAT IT CAN DO -->
+      <h2 id="whatitcando">
+        <span class="h2-icon" style="background:#ede9fe;">✨</span>
+        What Claude Code can do
+      </h2>
+
+      <p>Before you install, here's a taste of what Claude Code can help you with once it's running:</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-icon">🏗️</div>
+          <h4>Build features</h4>
+          <p>Describe what you want in plain English and it writes the code across multiple files.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🐛</div>
+          <h4>Debug problems</h4>
+          <p>Paste an error message or describe what's broken — it finds and fixes the issue.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🗺️</div>
+          <h4>Understand code</h4>
+          <p>Ask "what does this file do?" or "explain the database schema" and get clear answers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔀</div>
+          <h4>Handle Git</h4>
+          <p>Create branches, write commit messages, and manage pull requests through conversation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📝</div>
+          <h4>Write tests</h4>
+          <p>Ask it to write unit tests for your code or check coverage gaps.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">♻️</div>
+          <h4>Refactor safely</h4>
+          <p>Restructure and improve existing code while preserving how it works.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">🛡️</span>
+        <p><strong>Safety first:</strong> Claude Code always asks for your permission before modifying any files. You can approve changes one at a time, or enable "Accept all" mode for a session when you're confident. Nothing changes on your machine without your say-so.</p>
+      </div>
+
+      <!-- REQUIREMENTS -->
+      <h2 id="requirements">
+        <span class="h2-icon" style="background:#fff0d4;">📋</span>
+        Before you start
+      </h2>
+
+      <p>Make sure you have the following in place before installing:</p>
+
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span> A <strong>Claude.ai account</strong> — Pro or Max subscription recommended (gives you the best usage limits). You can also use an Anthropic Console API account with pre-paid credits.</li>
+        <li><span class="check-circle">✓</span> A supported <strong>operating system</strong>: macOS 10.15+, Ubuntu 20.04+ / Debian 10+, or Windows 10+ (with Git for Windows or WSL)</li>
+        <li><span class="check-circle">✓</span> A <strong>terminal</strong> — Terminal on Mac, PowerShell or CMD on Windows, or any Linux terminal</li>
+        <li><span class="check-circle">✓</span> An <strong>internet connection</strong> (Claude Code calls the Anthropic API to work)</li>
+        <li><span class="check-circle">✓</span> <strong>Windows users only:</strong> Install <a href="https://git-scm.com/download/win" target="_blank" style="color:#4f3fa0;font-weight:700;">Git for Windows</a> before proceeding</li>
+      </ul>
+
+      <div class="warning">
+        <span style="font-size:16px;flex-shrink:0;">⚠️</span>
+        <p><strong>Heads up on cost:</strong> If you use a Claude.ai Pro or Max subscription, Claude Code usage is included. If you use an API account instead, usage is billed by token consumption and can add up quickly in long sessions. Start with a subscription if you're unsure.</p>
+      </div>
+
+      <!-- INSTALL -->
+      <h2 id="install">
+        <span class="h2-icon" style="background:#ddeeff;">💾</span>
+        Step 1 — Install Claude Code
+      </h2>
+
+      <p>Claude Code uses a native installer — one command and you're done. Choose the tab for your operating system:</p>
+
+      <div class="step">
+        <div class="step-num">🍎</div>
+        <div class="step-body">
+          <h3>macOS or Linux</h3>
+          <p>Open Terminal and run this single command:</p>
+          <div class="code-block">
+            <pre><span class="comment"># Install Claude Code (stable version)</span>
+<span class="prompt-char">$</span> <span class="cmd">curl -fsSL https://claude.ai/install.sh | bash</span></pre>
+          </div>
+          <p>The installer will download and set everything up automatically. It should take under a minute.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">🪟</div>
+        <div class="step-body">
+          <h3>Windows (PowerShell)</h3>
+          <p>Open PowerShell and run:</p>
+          <div class="code-block">
+            <pre><span class="comment"># Install Claude Code on Windows</span>
+<span class="prompt-char">PS></span> <span class="cmd">irm https://claude.ai/install.ps1 | iex</span></pre>
+          </div>
+          <p>Make sure Git for Windows is already installed before running this. Claude Code uses Git Bash internally on Windows.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <p>Claude Code auto-updates in the background when installed this way, so you'll always have the latest version without doing anything extra.</p>
+      </div>
+
+      <!-- LOGIN -->
+      <h2 id="login">
+        <span class="h2-icon" style="background:#ffe0ec;">🔐</span>
+        Step 2 — Log in to your account
+      </h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Open your project folder in the terminal</h3>
+          <p>Navigate to a folder you'd like to work in. If you're just exploring, create a new test folder:</p>
+          <div class="code-block">
+            <pre><span class="comment"># Create and enter a test folder</span>
+<span class="prompt-char">$</span> <span class="cmd">mkdir my-test-project</span>
+<span class="prompt-char">$</span> <span class="cmd">cd my-test-project</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Launch Claude Code</h3>
+          <p>Type <code>claude</code> and press Enter:</p>
+          <div class="code-block">
+            <pre><span class="prompt-char">$</span> <span class="cmd">claude</span></pre>
+          </div>
+          <p>The first time you run this, Claude Code will open a browser window and prompt you to log in with your Anthropic account. Follow the on-screen instructions to complete authentication.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Choose your login method</h3>
+          <p>You'll be asked to choose between:</p>
+          <ul class="checklist" style="margin:0.4rem 0 0;">
+            <li><span class="check-circle">→</span><span><strong>Claude.ai subscription</strong> — best for most people. Uses your existing Pro or Max plan.</span></li>
+            <li><span class="check-circle">→</span><span><strong>Anthropic Console</strong> — for API access with pre-paid credits. Gives you a dedicated "Claude Code" workspace for cost tracking.</span></li>
+          </ul>
+          <p style="margin-top:0.6rem;">Once logged in, your credentials are saved and you won't need to log in again.</p>
+        </div>
+      </div>
+
+      <div class="success-box">
+        <span style="font-size:16px;flex-shrink:0;">🎉</span>
+        <p><strong>You're in!</strong> You'll see the Claude Code welcome screen with your session info and recent conversations. You're now ready to start your first session.</p>
+      </div>
+
+      <!-- FIRST SESSION -->
+      <h2 id="firstsession">
+        <span class="h2-icon" style="background:#d4f5e2;">🚀</span>
+        Step 3 — Your first session
+      </h2>
+
+      <p>Claude Code is conversational — just type what you want in plain English. Here are some great things to try in your first session:</p>
+
+      <div class="step">
+        <div class="step-num">💬</div>
+        <div class="step-body">
+          <h3>Ask Claude to understand your project</h3>
+          <p>Before asking Claude to make changes, it's good practice to let it read and summarise your project first. This gives it the context it needs to work accurately.</p>
+          <div class="code-block">
+            <pre><span class="output">claude></span> What does this project do? Give me a summary of the main files.</pre>
+          </div>
+          <div class="code-block">
+            <pre><span class="output">claude></span> Explain the folder structure of this project.</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">🏗️</div>
+        <div class="step-body">
+          <h3>Ask it to build something</h3>
+          <p>Describe what you want clearly — the more context you give, the better the output. Claude will show you its plan and ask for permission before writing anything.</p>
+          <div class="code-block">
+            <pre><span class="output">claude></span> Create a simple HTML page with a contact form.
+<span class="comment">           Include fields for name, email, and message.</span>
+<span class="comment">           Add basic CSS styling to make it look clean.</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">🐛</div>
+        <div class="step-body">
+          <h3>Ask it to debug something</h3>
+          <p>Paste an error message or describe a problem and Claude will investigate and suggest a fix:</p>
+          <div class="code-block">
+            <pre><span class="output">claude></span> I'm getting this error when I run the app:
+<span class="comment">           TypeError: Cannot read properties of undefined (reading 'map')</span>
+<span class="comment">           It happens in the ProductList component. Can you find and fix it?</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <p><strong>Be specific:</strong> Instead of "fix the bug", try "fix the login bug where users see a blank screen after entering the wrong password." The more detail you give, the more accurate Claude's response will be.</p>
+      </div>
+
+      <!-- KEY COMMANDS -->
+      <h2 id="commands">
+        <span class="h2-icon" style="background:#fff0d4;">⌨️</span>
+        Step 4 — Key commands to know
+      </h2>
+
+      <p>Inside a Claude Code session, you can use slash commands to control the session. Here are the most important ones for beginners:</p>
+
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/help</code></td><td>Shows all available commands</td></tr>
+          <tr><td><code>/clear</code></td><td>Clears the conversation history — use this when starting a new task to keep Claude focused</td></tr>
+          <tr><td><code>/plan</code></td><td>Switches to Plan Mode — Claude thinks through the problem and shows you a plan before doing anything</td></tr>
+          <tr><td><code>/review</code></td><td>Asks Claude to review your recent changes for bugs, performance issues, and best practices</td></tr>
+          <tr><td><code>/cost</code></td><td>Shows your token usage and estimated cost for the current session</td></tr>
+          <tr><td><code>/compact</code></td><td>Compresses a long conversation to free up context space</td></tr>
+          <tr><td><code>/model</code></td><td>Switches between Claude models — Sonnet 4.6 for most tasks, Opus 4.6 for complex work</td></tr>
+          <tr><td><code>/login</code></td><td>Switch accounts or log in again if needed</td></tr>
+          <tr><td><code>Shift + Tab</code></td><td>Enter Plan Mode (same as <code>/plan</code>) — Claude reads files but won't edit anything until you approve</td></tr>
+          <tr><td><code>?</code></td><td>Shows keyboard shortcuts and quick help inside a session</td></tr>
+        </tbody>
+      </table>
+
+      <!-- CLAUDE.MD -->
+      <h2 id="claudemd">
+        <span class="h2-icon" style="background:#ede9fe;">📄</span>
+        Step 5 — Set up your CLAUDE.md file
+      </h2>
+
+      <p>One of the most powerful things you can do early on is create a <code>CLAUDE.md</code> file in your project's root folder. Claude reads this automatically at the start of every session, so it immediately understands your project without you needing to explain it each time.</p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Auto-generate a starting CLAUDE.md</h3>
+          <p>Run the <code>/init</code> command in your session. Claude will scan your project and create a <code>CLAUDE.md</code> file automatically:</p>
+          <div class="code-block">
+            <pre><span class="output">claude></span> <span class="cmd">/init</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Customise it for your needs</h3>
+          <p>Open the generated file and add your own notes — coding conventions, preferred libraries, things Claude should always or never do. Here's an example:</p>
+          <div class="code-block">
+            <span class="label">CLAUDE.md</span>
+            <pre><span class="comment"># My Project</span>
+
+<span class="comment">## What this project does</span>
+A training hub website built with plain HTML, CSS and JS.
+Hosted on GitHub Pages.
+
+<span class="comment">## Conventions</span>
+- Always use Nunito and Poppins fonts
+- Keep all styles in a single &lt;style&gt; block
+- Prefer CSS variables for colours
+- Never use frameworks like React or Vue</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <p>Commit your <code>CLAUDE.md</code> to your Git repository so your whole team benefits from the shared context — everyone gets the same consistent Claude behaviour on that project.</p>
+      </div>
+
+      <!-- TIPS -->
+      <h2 id="tips">
+        <span class="h2-icon" style="background:#ddeeff;">🧠</span>
+        Tips for getting the best results
+      </h2>
+
+      <ul class="checklist">
+        <li><span class="check-circle">1</span><span><strong>Start each new task with <code>/clear</code>.</strong> Context pollution (leftover context from earlier in a session) is the most common reason Claude starts giving worse answers. Clearing regularly keeps things sharp.</span></li>
+        <li><span class="check-circle">2</span><span><strong>Use Plan Mode for big changes.</strong> Before asking Claude to refactor something large or touch multiple files, press Shift+Tab to enter Plan Mode. Review Claude's plan before it makes a single edit.</span></li>
+        <li><span class="check-circle">3</span><span><strong>Commit before risky changes.</strong> Claude won't push to Git without asking, but having a clean Git state before a big task means you can always roll back easily.</span></li>
+        <li><span class="check-circle">4</span><span><strong>Use Sonnet 4.6 for most tasks</strong>, and switch to Opus 4.6 (via <code>/model</code>) only for the hardest problems — large-scale refactoring, complex architecture decisions, or very large codebases. Sonnet is faster and cheaper for everyday work.</span></li>
+        <li><span class="check-circle">5</span><span><strong>Ask follow-up questions.</strong> If the first response isn't quite right, don't start over — tell Claude what to adjust. "Make it shorter", "Add error handling", or "Use a different approach" all work well.</span></li>
+      </ul>
+
+      <!-- TROUBLESHOOTING -->
+      <h2 id="troubleshoot">
+        <span class="h2-icon" style="background:#fff1f2;">⚠️</span>
+        Troubleshooting
+      </h2>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>The <code>claude</code> command isn't found after install</h3>
+          <p>Close and reopen your terminal window after installation — this refreshes your PATH so the system can find the new command. On Mac you may also need to run <code>source ~/.zshrc</code> or <code>source ~/.bashrc</code>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>Windows: Git Bash not found</h3>
+          <p>Claude Code needs Git for Windows to run on Windows. Download and install it from <strong>git-scm.com</strong>, then restart your terminal. If it still can't find Git Bash, you can set the path manually in your <code>settings.json</code> file — see the official docs for details.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>Claude isn't following my CLAUDE.md instructions</h3>
+          <p>The most common cause is that Claude cached the file before you edited it. Run <code>/clear</code> to reset the conversation, or start a fresh session. Claude will re-read the updated file at the start of the new session.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">❓</div>
+        <div class="step-body">
+          <h3>I've hit my usage limit</h3>
+          <p>Claude.ai subscription plans have usage windows — typically a 5-hour rolling window and a weekly cap. If you hit the limit, you'll need to wait for the window to reset. Using <code>/clear</code> between unrelated tasks and <code>/compact</code> for long sessions helps you stay within limits longer.</p>
+        </div>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <h2 id="next">
+        <span class="h2-icon" style="background:#d4f5e2;">🚀</span>
+        What next?
+      </h2>
+
+      <p>Once you're comfortable with the basics, explore these next steps:</p>
+
+      <ul class="checklist">
+        <li><span class="check-circle">→</span> Read the official <strong>Claude Code documentation</strong> at docs.anthropic.com for the full command reference</li>
+        <li><span class="check-circle">→</span> Try Claude Code on a small <strong>personal project</strong> — a script, a webpage, or an automation task</li>
+        <li><span class="check-circle">→</span> Explore <strong>MCP servers</strong> — powerful integrations that let Claude Code connect to external tools and services</li>
+        <li><span class="check-circle">→</span> Learn about <strong>sub-agents</strong> — specialised AI assistants you can configure for specific roles within a project</li>
+        <li><span class="check-circle">→</span> Check out the <strong>Writing Better Prompts</strong> guide in this hub to get even more out of your Claude sessions</li>
+      </ul>
+
+      <div class="success-box">
+        <span style="font-size:16px;flex-shrink:0;">🎓</span>
+        <p>The best way to get good at Claude Code is simply to use it on real work. Start small, build confidence, and you'll quickly find it becoming a natural part of how you work.</p>
+      </div>
+
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="guide-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#whatitcando"><span class="toc-dot"></span>What it can do</a></li>
+          <li><a href="#requirements"><span class="toc-dot"></span>Before you start</a></li>
+          <li><a href="#install"><span class="toc-dot"></span>1. Install Claude Code</a></li>
+          <li><a href="#login"><span class="toc-dot"></span>2. Log in</a></li>
+          <li><a href="#firstsession"><span class="toc-dot"></span>3. First session</a></li>
+          <li><a href="#commands"><span class="toc-dot"></span>4. Key commands</a></li>
+          <li><a href="#claudemd"><span class="toc-dot"></span>5. CLAUDE.md file</a></li>
+          <li><a href="#tips"><span class="toc-dot"></span>Tips for best results</a></li>
+          <li><a href="#troubleshoot"><span class="toc-dot"></span>Troubleshooting</a></li>
+          <li><a href="#next"><span class="toc-dot"></span>What next?</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Difficulty</h4>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:6px;">Beginner — intermediate</p>
+        <div class="difficulty-bar">
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Works on</h4>
+        <div class="os-pills">
+          <div class="os-pill"><span>🍎</span> macOS 10.15+</div>
+          <div class="os-pill"><span>🐧</span> Ubuntu / Debian</div>
+          <div class="os-pill"><span>🪟</span> Windows 10+</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Account needed</h4>
+        <p style="font-size:13px;color:#4b5563;line-height:1.55;">
+          <strong>Claude.ai Pro or Max</strong> subscription is recommended.<br><br>
+          Or use an <strong>Anthropic Console</strong> account with API credits.
+        </p>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Useful Links</h4>
+        <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" class="resource-link">📚 Official docs</a>
+        <a href="https://claude.ai" target="_blank" class="resource-link">🤖 Claude.ai</a>
+        <a href="https://console.anthropic.com" target="_blank" class="resource-link">⚙️ Anthropic Console</a>
+        <a href="https://git-scm.com/download/win" target="_blank" class="resource-link">🔧 Git for Windows</a>
+        <a href="guide-writing-better-prompts.html" class="resource-link">✍️ Writing Better Prompts</a>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI & Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+</body>
+</html>
