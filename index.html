@@ -207,6 +207,85 @@
       .hub-hero h1 { font-size: 1.5rem; }
       .cards-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Power BI Modal ── */
+    #pbi-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      animation: fadeOverlay 0.3s ease;
+    }
+    #pbi-modal.open {
+      display: flex;
+    }
+    @keyframes fadeOverlay {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #pbi-modal-inner {
+      position: relative;
+      width: 90vw;
+      max-width: 960px;
+      height: 85vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    #pbi-modal-inner iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    #pbi-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    #pbi-modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── Power BI launch button ── */
+    .video-card-btn {
+      background: #FFD23F;
+      color: #0A0A0A;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+      font-family: inherit;
+      margin-top: 1rem;
+    }
+    .video-card-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 210, 63, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -305,6 +384,12 @@
       .map(c => section.type === 'video' ? renderVideoCard(c) : renderLinkCard(c))
       .join('');
 
+    const pbiBtn = section.id === 'videos' ? `
+      <button onclick="openPbiModal()" class="video-card-btn">
+        ▶ Power BI for Beginners
+        <span style="font-size:11px;opacity:0.7;display:block;margin-top:4px">6 scenes · ~5 min · Interactive</span>
+      </button>` : '';
+
     return `
       <div id="${section.id}" class="hub-section">
         <div class="section-header">
@@ -312,6 +397,7 @@
           <h2 style="color:${section.titleColor};">${section.title}</h2>
         </div>
         <div class="cards-grid">${cards}</div>
+        ${pbiBtn}
       </div>
       ${isLast ? '' : '<div class="divider"></div>'}`;
   }
@@ -335,6 +421,38 @@
         </p>`;
       console.error(err);
     });
+</script>
+
+<!-- Power BI Modal -->
+<div id="pbi-modal" role="dialog" aria-modal="true" aria-label="Power BI for Beginners">
+  <div id="pbi-modal-inner">
+    <button id="pbi-modal-close" onclick="closePbiModal()" aria-label="Close">✕</button>
+    <iframe src="powerbi-beginner.html" title="Power BI for Beginners Animation"></iframe>
+  </div>
+</div>
+
+<script>
+  function openPbiModal() {
+    const modal = document.getElementById('pbi-modal');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePbiModal() {
+    const modal = document.getElementById('pbi-modal');
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    // Reload iframe to reset animation state
+    const iframe = modal.querySelector('iframe');
+    iframe.src = iframe.src;
+  }
+  // Close on backdrop click
+  document.getElementById('pbi-modal').addEventListener('click', function(e) {
+    if (e.target === this) closePbiModal();
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePbiModal();
+  });
 </script>
 
 </body>
