@@ -1,212 +1,212 @@
 {
-    "sections": [
-          {
-                  "id": "ai-resources",
-                  "title": "AI Resources",
-                  "icon": "ð¤",
-                  "iconBg": "#ede9fe",
-                  "titleColor": "#6d28d9",
-                  "type": "link",
-                  "cards": [
-                            {
-                                        "tag": "OpenAI",
-                                        "tagClass": "tag-purple",
-                                        "title": "ChatGPT",
-                                        "description": "OpenAI's conversational AI â great for writing, coding, and brainstorming.",
-                                        "url": "https://chatgpt.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Anthropic",
-                                        "tagClass": "tag-purple",
-                                        "title": "Claude",
-                                        "description": "Anthropic's AI assistant â helpful, harmless, and honest.",
-                                        "url": "https://claude.ai",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Microsoft",
-                                        "tagClass": "tag-purple",
-                                        "title": "Microsoft Copilot",
-                                        "description": "AI assistant built into Microsoft 365 and Windows â your everyday AI.",
-                                        "url": "https://copilot.microsoft.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Alibaba",
-                                        "tagClass": "tag-purple",
-                                        "title": "Qwen",
-                                        "description": "Alibaba's powerful open-source large language model family.",
-                                        "url": "https://qwenlm.github.io",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "DeepSeek",
-                                        "tagClass": "tag-purple",
-                                        "title": "DeepSeek",
-                                        "description": "High-performance AI model from DeepSeek â strong at reasoning and code.",
-                                        "url": "https://chat.deepseek.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Google",
-                                        "tagClass": "tag-purple",
-                                        "title": "Gemini",
-                                        "description": "Google's multimodal AI â integrated with Search, Docs, and more.",
-                                        "url": "https://gemini.google.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Perplexity",
-                                        "tagClass": "tag-purple",
-                                        "title": "Perplexity AI",
-                                        "description": "AI-powered search engine â get cited, up-to-date answers instantly.",
-                                        "url": "https://www.perplexity.ai",
-                                        "linkLabel": "Visit â"
-                            }
-                  ]
-          },
-          {
-                  "id": "links",
-                  "title": "Training Links",
-                  "icon": "ð",
-                  "iconBg": "#ddeeff",
-                  "titleColor": "#1a5fa8",
-                  "type": "link",
-                  "cards": [
-                            {
-                                        "tag": "Microsoft",
-                                        "tagClass": "tag-blue",
-                                        "title": "Microsoft Learn",
-                                        "description": "Free official learning paths for Azure, M365, and AI certifications.",
-                                        "url": "https://learn.microsoft.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "AI",
-                                        "tagClass": "tag-blue",
-                                        "title": "Anthropic Academy",
-                                        "description": "Learn prompt engineering and how to get the best out of Claude.",
-                                        "url": "https://anthropic.com",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Cloud",
-                                        "tagClass": "tag-blue",
-                                        "title": "Azure Fundamentals",
-                                        "description": "AZ-900 learning path â perfect starting point for cloud beginners.",
-                                        "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "AWS",
-                                        "tagClass": "tag-blue",
-                                        "title": "AWS Training",
-                                        "description": "Official Amazon Web Services training â courses, labs, and certifications for every level.",
-                                        "url": "https://aws.amazon.com/training/",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "GCP",
-                                        "tagClass": "tag-blue",
-                                        "title": "Google Cloud Training",
-                                        "description": "Official Google Cloud learning paths â from fundamentals to professional certifications.",
-                                        "url": "https://cloud.google.com/training",
-                                        "linkLabel": "Visit â"
-                            },
-                            {
-                                        "tag": "Dev",
-                                        "tagClass": "tag-blue",
-                                        "title": "Vibe Coding Roadmap",
-                                        "description": "A community-driven roadmap for vibe coding â learn the skills, tools, and mindset to build with AI.",
-                                        "url": "https://roadmap.sh/vibe-coding",
-                                        "linkLabel": "Visit â"
-                            }
-                  ]
-          },
-          {
-                  "id": "guides",
-                  "title": "How-To Guides",
-                  "icon": "ð",
-                  "iconBg": "#fff0d4",
-                  "titleColor": "#b36200",
-                  "type": "link",
-                  "cards": [
-                            {
-                                        "tag": "Beginner",
-                                        "tagClass": "tag-orange",
-                                        "title": "Setting Up GitHub Pages",
-                                        "description": "Step-by-step guide to hosting your first static website for free.",
-                                        "url": "guide-github-pages.html",
-                                        "linkLabel": "Read guide â"
-                            },
-                            {
-                                        "tag": "Prompt Eng.",
-                                        "tagClass": "tag-orange",
-                                        "title": "Writing Better Prompts",
-                                        "description": "Practical tips for getting great results from AI tools like Claude.",
-                                        "url": "guide-writing-better-prompts.html",
-                                        "linkLabel": "Read guide â"
-                            },
-                            {
-                                        "tag": "Claude Code",
-                                        "tagClass": "tag-orange",
-                                        "title": "Getting Started with Claude Code",
-                                        "description": "Install, configure and run your first Claude Code session in minutes.",
-                                        "url": "guide-claude-code.html",
-                                        "linkLabel": "Read guide â"
-                            }
-                  ]
-          },
-          {
-                  "id": "videos",
-                  "title": "Training Videos",
-                  "icon": "ð¬",
-                  "iconBg": "#ffe0ec",
-                  "titleColor": "#b5235e",
-                  "type": "video",
-                  "cards": [
-                            {
-                                        "thumb": "ð¤",
-                                        "thumbBg": "#ffe0ec",
-                                        "tag": "AI Basics",
-                                        "tagClass": "tag-pink",
-                                        "title": "Intro to AI for IT Pros",
-                                        "description": "A 35-minute beginner's guide to generative AI — covering neural networks, tokens, prompting, RAG, hallucinations and more.",
-                                        "url": "https://www.youtube.com/watch?v=O3F0AVd0nSc",
-                                        "linkLabel": "Watch â"
-                            },
-                            {
-                                        "thumb": "âï¸",
-                                        "thumbBg": "#ddeeff",
-                                        "tag": "Azure",
-                                        "tagClass": "tag-blue",
-                                        "title": "Azure 101 Walkthrough",
-                                        "description": "Hands-on tour of the Azure portal â subscriptions, resources & IAM.",
-                                        "url": "#",
-                                        "linkLabel": "Watch â"
-                            },
-                            {
-                                        "thumb": "ð¥ï¸",
-                                        "thumbBg": "#fff0d4",
-                                        "tag": "Intune",
-                                        "tagClass": "tag-orange",
-                                        "title": "Intune Device Management",
-                                        "description": "Live demo: enrolling, configuring and pushing apps to Windows devices.",
-                                        "url": "#",
-                                        "linkLabel": "Watch â"
-                            },
-                            {
-                                        "thumb": "ð",
-                                        "thumbBg": "#d4f5e2",
-                                        "tag": "Power BI",
-                                        "tagClass": "tag-green",
-                                        "title": "Power BI for Beginners",
-                                        "description": "Build your first dashboard in under 30 minutes â no data background needed.",
-                                        "url": "#",
-                                        "linkLabel": "Watch â"
-                            }
-                  ]
-          }
-    ]
+  "sections": [
+    {
+      "id": "ai-resources",
+      "title": "AI Resources",
+      "icon": "\ud83e\udd16",
+      "iconBg": "#ede9fe",
+      "titleColor": "#6d28d9",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "OpenAI",
+          "tagClass": "tag-purple",
+          "title": "ChatGPT",
+          "description": "OpenAI's conversational AI \u2014 great for writing, coding, and brainstorming.",
+          "url": "https://chatgpt.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Anthropic",
+          "tagClass": "tag-purple",
+          "title": "Claude",
+          "description": "Anthropic's AI assistant \u2014 helpful, harmless, and honest.",
+          "url": "https://claude.ai",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Microsoft",
+          "tagClass": "tag-purple",
+          "title": "Microsoft Copilot",
+          "description": "AI assistant built into Microsoft 365 and Windows \u2014 your everyday AI.",
+          "url": "https://copilot.microsoft.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Alibaba",
+          "tagClass": "tag-purple",
+          "title": "Qwen",
+          "description": "Alibaba's powerful open-source large language model family.",
+          "url": "https://qwenlm.github.io",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "DeepSeek",
+          "tagClass": "tag-purple",
+          "title": "DeepSeek",
+          "description": "High-performance AI model from DeepSeek \u2014 strong at reasoning and code.",
+          "url": "https://chat.deepseek.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Google",
+          "tagClass": "tag-purple",
+          "title": "Gemini",
+          "description": "Google's multimodal AI \u2014 integrated with Search, Docs, and more.",
+          "url": "https://gemini.google.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Perplexity",
+          "tagClass": "tag-purple",
+          "title": "Perplexity AI",
+          "description": "AI-powered search engine \u2014 get cited, up-to-date answers instantly.",
+          "url": "https://www.perplexity.ai",
+          "linkLabel": "Visit \u2192"
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Training Links",
+      "icon": "\ud83d\udd17",
+      "iconBg": "#ddeeff",
+      "titleColor": "#1a5fa8",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "Microsoft",
+          "tagClass": "tag-blue",
+          "title": "Microsoft Learn",
+          "description": "Free official learning paths for Azure, M365, and AI certifications.",
+          "url": "https://learn.microsoft.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "AI",
+          "tagClass": "tag-blue",
+          "title": "Anthropic Academy",
+          "description": "Learn prompt engineering and how to get the best out of Claude.",
+          "url": "https://anthropic.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Cloud",
+          "tagClass": "tag-blue",
+          "title": "Azure Fundamentals",
+          "description": "AZ-900 learning path \u2014 perfect starting point for cloud beginners.",
+          "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "AWS",
+          "tagClass": "tag-blue",
+          "title": "AWS Training",
+          "description": "Official Amazon Web Services training \u2014 courses, labs, and certifications for every level.",
+          "url": "https://aws.amazon.com/training/",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "GCP",
+          "tagClass": "tag-blue",
+          "title": "Google Cloud Training",
+          "description": "Official Google Cloud learning paths \u2014 from fundamentals to professional certifications.",
+          "url": "https://cloud.google.com/training",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Dev",
+          "tagClass": "tag-blue",
+          "title": "Vibe Coding Roadmap",
+          "description": "A community-driven roadmap for vibe coding \u2014 learn the skills, tools, and mindset to build with AI.",
+          "url": "https://roadmap.sh/vibe-coding",
+          "linkLabel": "Visit \u2192"
+        }
+      ]
+    },
+    {
+      "id": "guides",
+      "title": "How-To Guides",
+      "icon": "\ud83d\udcd6",
+      "iconBg": "#fff0d4",
+      "titleColor": "#b36200",
+      "type": "link",
+      "cards": [
+        {
+          "tag": "Beginner",
+          "tagClass": "tag-orange",
+          "title": "Setting Up GitHub Pages",
+          "description": "Step-by-step guide to hosting your first static website for free.",
+          "url": "guide-github-pages.html",
+          "linkLabel": "Read guide \u2192"
+        },
+        {
+          "tag": "Prompt Eng.",
+          "tagClass": "tag-orange",
+          "title": "Writing Better Prompts",
+          "description": "Practical tips for getting great results from AI tools like Claude.",
+          "url": "guide-writing-better-prompts.html",
+          "linkLabel": "Read guide \u2192"
+        },
+        {
+          "tag": "Claude Code",
+          "tagClass": "tag-orange",
+          "title": "Getting Started with Claude Code",
+          "description": "Install, configure and run your first Claude Code session in minutes.",
+          "url": "guide-claude-code.html",
+          "linkLabel": "Read guide \u2192"
+        }
+      ]
+    },
+    {
+      "id": "videos",
+      "title": "Training Videos",
+      "icon": "\ud83c\udfac",
+      "iconBg": "#ffe0ec",
+      "titleColor": "#b5235e",
+      "type": "video",
+      "cards": [
+        {
+          "thumb": "\ud83e\udd16",
+          "thumbBg": "#ffe0ec",
+          "tag": "AI Basics",
+          "tagClass": "tag-pink",
+          "title": "Intro to AI for IT Pros",
+          "description": "A 35-minute beginner's guide to generative AI \u2014 covering neural networks, tokens, prompting, RAG, hallucinations and more.",
+          "url": "https://www.youtube.com/watch?v=O3F0AVd0nSc",
+          "linkLabel": "Watch \u2192"
+        },
+        {
+          "thumb": "\u2601\ufe0f",
+          "thumbBg": "#ddeeff",
+          "tag": "Azure",
+          "tagClass": "tag-blue",
+          "title": "Azure 101 Walkthrough",
+          "description": "Hands-on tour of the Azure portal \u2014 subscriptions, resources & IAM.",
+          "url": "#",
+          "linkLabel": "Watch \u2192"
+        },
+        {
+          "thumb": "\ud83d\udda5\ufe0f",
+          "thumbBg": "#fff0d4",
+          "tag": "Intune",
+          "tagClass": "tag-orange",
+          "title": "Intune Device Management",
+          "description": "Live demo: enrolling, configuring and pushing apps to Windows devices.",
+          "url": "#",
+          "linkLabel": "Watch \u2192"
+        },
+        {
+          "thumb": "\ud83d\udcca",
+          "thumbBg": "#d4f5e2",
+          "tag": "Power BI",
+          "tagClass": "tag-green",
+          "title": "Power BI for Beginners",
+          "description": "Build your first dashboard in under 30 minutes \u2014 no data background needed.",
+          "url": "#",
+          "linkLabel": "Watch \u2192"
+        }
+      ]
+    }
+  ]
 }
