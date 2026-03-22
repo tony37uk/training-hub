@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI for Beginners</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --yellow: #FFD23F;
+    --black: #0A0A0A;
+    --white: #F5F3EE;
+    --grey: #1A1A1A;
+    --mid: #2C2C2C;
+    --accent: #FF6B35;
+    --blue: #4ECDC4;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .scene.active { opacity: 1; pointer-events: all; }
+
+  /* SCENE 0: TITLE */
+  .title-badge {
+    background: var(--yellow);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    transform: translateY(30px);
+    opacity: 0;
+    animation: riseIn 0.7s 0.3s forwards;
+  }
+  .main-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    text-align: center;
+    transform: translateY(40px);
+    opacity: 0;
+    animation: riseIn 0.7s 0.6s forwards;
+  }
+  .main-title span { color: var(--yellow); }
+  .subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: #888;
+    margin-top: 20px;
+    text-align: center;
+    transform: translateY(30px);
+    opacity: 0;
+    animation: riseIn 0.7s 0.9s forwards;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .clock-pill {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--grey);
+    border: 1px solid #333;
+    border-radius: 100px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    transform: translateY(30px);
+    opacity: 0;
+    animation: riseIn 0.7s 1.2s forwards;
+  }
+  .clock-icon { color: var(--yellow); font-size: 18px; }
+
+  @keyframes riseIn { to { opacity: 1; transform: translateY(0); } }
+
+  /* SCENE 1 */
+  .scene-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+  }
+  .scene-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 48px);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .cards-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .card {
+    background: var(--grey);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 24px 20px;
+    width: 160px;
+    text-align: center;
+    transform: translateY(40px);
+    opacity: 0;
+    transition: border-color 0.3s;
+  }
+  .card.animate { animation: riseIn 0.5s forwards; }
+  .card:hover { border-color: var(--yellow); }
+  .card-icon { font-size: 32px; margin-bottom: 12px; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { font-size: 11px; color: #888; line-height: 1.5; }
+
+  /* SCENE 2 */
+  .interface-mockup {
+    width: 100%;
+    max-width: 640px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .mockup-titlebar {
+    background: var(--mid);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #333;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FFBD2E; }
+  .dot-g { background: #28C840; }
+  .mockup-bar-title { font-size: 11px; color: #666; margin-left: 8px; }
+  .mockup-body { display: flex; height: 260px; }
+  .mockup-sidebar {
+    width: 52px;
+    background: #0f0f0f;
+    border-right: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+    gap: 18px;
+  }
+  .sidebar-icon {
+    width: 30px; height: 30px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sidebar-icon.active { background: var(--yellow); color: var(--black); }
+  .mockup-canvas {
+    flex: 1;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+  }
+  .tile {
+    background: var(--grey);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.4s ease;
+  }
+  .tile.show { opacity: 1; transform: scale(1); }
+  .tile-label { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+  .tile-value { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--yellow); }
+  .bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 50px; margin-top: 8px; }
+  .bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    background: var(--accent);
+    transform-origin: bottom;
+    transform: scaleY(0);
+    transition: transform 0.6s ease;
+  }
+  .bar.grow { transform: scaleY(1); }
+  .donut-ring {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: conic-gradient(var(--blue) 0% 62%, var(--accent) 62% 80%, var(--yellow) 80% 100%);
+    margin: auto;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .donut-hole { width: 30px; height: 30px; background: var(--grey); border-radius: 50%; }
+  .sparkline { stroke: var(--blue); stroke-width: 2; fill: none; }
+  .fields-panel {
+    width: 110px;
+    background: #0f0f0f;
+    border-left: 1px solid #222;
+    padding: 12px 10px;
+    font-size: 10px;
+    color: #555;
+    overflow: hidden;
+  }
+  .field-group { margin-bottom: 10px; }
+  .field-group-title { color: var(--yellow); font-weight: 700; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .field-item {
+    padding: 3px 6px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    color: #aaa;
+    font-size: 9px;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+  }
+  .field-item.show { opacity: 1; transform: translateX(0); }
+
+  /* SCENE 3 */
+  .steps-grid { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 560px; margin-top: 20px; }
+  .step-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--grey);
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.5s ease;
+  }
+  .step-row.show { opacity: 1; transform: translateX(0); }
+  .step-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--yellow); min-width: 36px; }
+  .step-info { flex: 1; }
+  .step-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .step-sub { font-size: 12px; color: #888; line-height: 1.4; }
+  .step-time { font-size: 11px; color: var(--accent); font-weight: 500; white-space: nowrap; }
+  .progress-bar-wrap {
+    width: 100%; max-width: 560px;
+    background: #1a1a1a;
+    border-radius: 100px;
+    height: 6px;
+    margin-top: 24px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s 1.5s;
+  }
+  .progress-bar-wrap.show { opacity: 1; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--yellow), var(--accent));
+    border-radius: 100px;
+    width: 0%;
+    transition: width 2s 1.6s ease;
+  }
+  .progress-fill.show { width: 100%; }
+
+  /* SCENE 4 */
+  .tip-box {
+    background: var(--yellow);
+    color: var(--black);
+    border-radius: 20px;
+    padding: 36px 40px;
+    max-width: 520px;
+    text-align: center;
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  .tip-box.animate { animation: popIn 0.6s 0.3s forwards; }
+  @keyframes popIn { to { opacity: 1; transform: scale(1); } }
+  .tip-emoji { font-size: 48px; margin-bottom: 16px; }
+  .tip-heading { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+  .tip-body { font-size: 14px; line-height: 1.7; font-weight: 300; }
+  .tip-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .tip-tag {
+    background: rgba(0,0,0,0.15);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    opacity: 0;
+  }
+  .tip-tag.animate { animation: riseIn 0.4s forwards; }
+
+  /* SCENE 5 */
+  .end-wrap { text-align: center; }
+  .end-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    line-height: 90px;
+    margin-bottom: 28px;
+    transform: rotate(-15deg) scale(0);
+    opacity: 0;
+  }
+  .end-badge.animate { animation: badgePop 0.7s 0.2s forwards; }
+  @keyframes badgePop {
+    60% { transform: rotate(5deg) scale(1.15); opacity: 1; }
+    to { transform: rotate(0deg) scale(1); opacity: 1; }
+  }
+  .end-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  .end-title.animate { animation: riseIn 0.6s 0.6s forwards; }
+  .end-sub {
+    font-size: 15px;
+    color: #888;
+    margin-top: 14px;
+    line-height: 1.6;
+    max-width: 400px;
+    margin-inline: auto;
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  .end-sub.animate { animation: riseIn 0.6s 0.9s forwards; }
+  .end-cta { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0; }
+  .end-cta.animate { animation: riseIn 0.5s 1.2s forwards; }
+  .cta-btn {
+    padding: 12px 28px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s;
+  }
+  .cta-btn:hover { transform: scale(1.05); }
+  .cta-primary { background: var(--yellow); color: var(--black); }
+  .cta-secondary { background: transparent; color: var(--white); border: 1px solid #333; }
+
+  /* NAV */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 100px;
+    padding: 10px 20px;
+    z-index: 100;
+  }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--mid);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-btn:hover { background: var(--yellow); color: var(--black); transform: scale(1.1); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-dots { display: flex; gap: 6px; }
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #333;
+    transition: background 0.3s, width 0.3s;
+    cursor: pointer;
+  }
+  .nav-dot.active { background: var(--yellow); width: 20px; border-radius: 100px; }
+  .scene-counter { font-size: 11px; color: #555; font-weight: 500; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- SCENE 0: TITLE -->
+<div class="scene active" id="s0">
+  <div class="title-badge">📊 Beginner Series</div>
+  <h1 class="main-title">Power BI<br><span>for Beginners</span></h1>
+  <p class="subtitle">Build your first dashboard in under 30 minutes — no data background needed.</p>
+  <div class="clock-pill">
+    <span class="clock-icon">⏱</span>
+    <span>~30 minute build · Free to start · Microsoft tool</span>
+  </div>
+</div>
+
+<!-- SCENE 1: WHAT IS POWER BI -->
+<div class="scene" id="s1">
+  <div class="scene-label">What is it?</div>
+  <h2 class="scene-heading">Power BI turns data<br>into visual stories</h2>
+  <div class="cards-row">
+    <div class="card" id="c1"><div class="card-icon">📁</div><div class="card-title">Connect Data</div><div class="card-desc">Excel, SQL, CSV, SharePoint and more</div></div>
+    <div class="card" id="c2"><div class="card-icon">🔄</div><div class="card-title">Transform It</div><div class="card-desc">Clean & shape with Power Query</div></div>
+    <div class="card" id="c3"><div class="card-icon">📈</div><div class="card-title">Visualise</div><div class="card-desc">Drag & drop charts, maps, tables</div></div>
+    <div class="card" id="c4"><div class="card-icon">🔗</div><div class="card-title">Share</div><div class="card-desc">Publish to web or Teams instantly</div></div>
+  </div>
+</div>
+
+<!-- SCENE 2: INTERFACE TOUR -->
+<div class="scene" id="s2">
+  <div class="scene-label">The Interface</div>
+  <h2 class="scene-heading" style="font-size:clamp(20px,3vw,36px)">Three panels. That's all you need.</h2>
+  <div class="interface-mockup">
+    <div class="mockup-titlebar">
+      <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+      <span class="mockup-bar-title">Power BI Desktop — Sales Dashboard.pbix</span>
+    </div>
+    <div class="mockup-body">
+      <div class="mockup-sidebar">
+        <div class="sidebar-icon active">📊</div>
+        <div class="sidebar-icon">🗃️</div>
+        <div class="sidebar-icon">🔗</div>
+      </div>
+      <div class="mockup-canvas">
+        <div class="tile" id="t1">
+          <div class="tile-label">Total Revenue</div>
+          <div class="tile-value" id="kpi-val">£0</div>
+        </div>
+        <div class="tile" id="t2">
+          <div class="tile-label">Sales by Month</div>
+          <div class="bar-chart">
+            <div class="bar" style="height:55%" id="b1"></div>
+            <div class="bar" style="height:75%" id="b2"></div>
+            <div class="bar" style="height:40%" id="b3"></div>
+            <div class="bar" style="height:90%" id="b4"></div>
+            <div class="bar" style="height:65%" id="b5"></div>
+            <div class="bar" style="height:80%" id="b6"></div>
+          </div>
+        </div>
+        <div class="tile" id="t3">
+          <div class="tile-label">Region Split</div>
+          <div class="donut-ring"><div class="donut-hole"></div></div>
+        </div>
+        <div class="tile" id="t4">
+          <div class="tile-label">Trend</div>
+          <svg viewBox="0 0 100 40" style="width:100%;margin-top:8px">
+            <polyline class="sparkline" points="0,35 15,28 30,32 45,18 60,22 75,8 90,12 100,4" id="spark" style="stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 1.5s ease"/>
+          </svg>
+        </div>
+      </div>
+      <div class="fields-panel">
+        <div class="field-group">
+          <div class="field-group-title">📋 Sales Table</div>
+          <div class="field-item" id="f1">Revenue</div>
+          <div class="field-item" id="f2">Date</div>
+          <div class="field-item" id="f3">Region</div>
+        </div>
+        <div class="field-group">
+          <div class="field-group-title">👤 Customers</div>
+          <div class="field-item" id="f4">Name</div>
+          <div class="field-item" id="f5">Segment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 3: STEPS -->
+<div class="scene" id="s3">
+  <div class="scene-label">Your 30-minute build</div>
+  <h2 class="scene-heading" style="font-size:clamp(20px,3vw,36px)">Step by step — no skipping needed</h2>
+  <div class="steps-grid">
+    <div class="step-row" id="sr1"><div class="step-num">01</div><div class="step-info"><div class="step-title">Download Power BI Desktop</div><div class="step-sub">Free from Microsoft. Windows only for Desktop app.</div></div><div class="step-time">⏱ 2 min</div></div>
+    <div class="step-row" id="sr2"><div class="step-num">02</div><div class="step-info"><div class="step-title">Get Your Data</div><div class="step-sub">Use a sample Excel file or connect your own CSV.</div></div><div class="step-time">⏱ 3 min</div></div>
+    <div class="step-row" id="sr3"><div class="step-num">03</div><div class="step-info"><div class="step-title">Load & Transform</div><div class="step-sub">Power Query cleans your data. Remove blanks, fix types.</div></div><div class="step-time">⏱ 8 min</div></div>
+    <div class="step-row" id="sr4"><div class="step-num">04</div><div class="step-info"><div class="step-title">Build Your Visuals</div><div class="step-sub">Drag fields onto the canvas. Bar, line, donut — your pick.</div></div><div class="step-time">⏱ 12 min</div></div>
+    <div class="step-row" id="sr5"><div class="step-num">05</div><div class="step-info"><div class="step-title">Publish & Share</div><div class="step-sub">Publish to Power BI Service. Share link or embed in Teams.</div></div><div class="step-time">⏱ 5 min</div></div>
+  </div>
+  <div class="progress-bar-wrap" id="prog-wrap">
+    <div class="progress-fill" id="prog-fill"></div>
+  </div>
+</div>
+
+<!-- SCENE 4: PRO TIP -->
+<div class="scene" id="s4">
+  <div class="tip-box" id="tipbox">
+    <div class="tip-emoji">💡</div>
+    <div class="tip-heading">Beginner's Secret Weapon</div>
+    <div class="tip-body">Use Microsoft's <strong>Adventure Works</strong> sample dataset. It's free, pre-built, and used in every official Power BI tutorial. You'll learn 3× faster building on real data than a blank sheet.</div>
+    <div class="tip-tags">
+      <div class="tip-tag" id="tag1">Free Dataset</div>
+      <div class="tip-tag" id="tag2">Adventure Works</div>
+      <div class="tip-tag" id="tag3">Microsoft Docs</div>
+      <div class="tip-tag" id="tag4">No Setup</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 5: END -->
+<div class="scene" id="s5">
+  <div class="end-wrap">
+    <div class="end-badge" id="end-badge">🏆</div>
+    <h2 class="end-title" id="end-title">Dashboard Ready.<br>You did it.</h2>
+    <p class="end-sub" id="end-sub">Power BI is one of the most in-demand data skills in the UK. You've just taken the first step — keep building, keep exploring.</p>
+    <div class="end-cta" id="end-cta">
+      <button class="cta-btn cta-primary" onclick="goTo(0)">▶ Watch Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" id="prev-btn" onclick="prev()" disabled>←</button>
+  <div class="nav-dots" id="dots"></div>
+  <button class="nav-btn" id="next-btn" onclick="next()">→</button>
+  <span class="scene-counter" id="counter">1 / 6</span>
+</div>
+
+<script>
+const TOTAL = 6;
+let current = 0;
+let timers = [];
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d = document.createElement('div');
+  d.className = 'nav-dot'+(i===0?' active':'');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+function t(fn, ms){ timers.push(setTimeout(fn,ms)); }
+
+function goTo(n){
+  clearTimers();
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  current = n;
+  updateNav();
+  runScene(n);
+}
+function next(){ if(current<TOTAL-1) goTo(current+1); }
+function prev(){ if(current>0) goTo(current-1); }
+
+function updateNav(){
+  document.getElementById('prev-btn').disabled = current===0;
+  document.getElementById('next-btn').disabled = current===TOTAL-1;
+  document.getElementById('counter').textContent = (current+1)+' / '+TOTAL;
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>{
+    d.className='nav-dot'+(i===current?' active':'');
+  });
+}
+
+function runScene(n){
+  if(n===1){
+    ['c1','c2','c3','c4'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      el.style.cssText='opacity:0;transform:translateY(40px);animation:none';
+      t(()=>{ el.style.animation='riseIn 0.5s forwards'; },300+i*150);
+    });
+  }
+  if(n===2){
+    ['t1','t2','t3','t4'].forEach((id,i)=>{
+      const el=document.getElementById(id); el.classList.remove('show');
+      t(()=>el.classList.add('show'),400+i*200);
+    });
+    t(()=>{
+      let v=0; const target=128450;
+      const iv=setInterval(()=>{
+        v+=Math.floor(target/40);
+        if(v>=target){v=target;clearInterval(iv);}
+        document.getElementById('kpi-val').textContent='£'+v.toLocaleString();
+      },30);
+      timers.push(iv);
+    },500);
+    ['b1','b2','b3','b4','b5','b6'].forEach((id,i)=>{
+      t(()=>document.getElementById(id).classList.add('grow'),700+i*80);
+    });
+    t(()=>{ document.getElementById('spark').style.strokeDashoffset='0'; },900);
+    ['f1','f2','f3','f4','f5'].forEach((id,i)=>{
+      const el=document.getElementById(id); el.classList.remove('show');
+      t(()=>el.classList.add('show'),600+i*120);
+    });
+  }
+  if(n===3){
+    ['sr1','sr2','sr3','sr4','sr5'].forEach((id,i)=>{
+      const el=document.getElementById(id); el.classList.remove('show');
+      t(()=>el.classList.add('show'),200+i*200);
+    });
+    const pw=document.getElementById('prog-wrap'), pf=document.getElementById('prog-fill');
+    pw.classList.remove('show'); pf.classList.remove('show');
+    t(()=>{ pw.classList.add('show'); t(()=>pf.classList.add('show'),100); },400);
+  }
+  if(n===4){
+    const tb=document.getElementById('tipbox');
+    tb.classList.remove('animate'); tb.style.animation='none';
+    t(()=>{ tb.style.animation=''; tb.classList.add('animate'); },50);
+    ['tag1','tag2','tag3','tag4'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      el.classList.remove('animate'); el.style.animation='none';
+      t(()=>{ el.style.animation=''; el.classList.add('animate'); el.style.animationDelay=(0.8+i*0.15)+'s'; },50);
+    });
+  }
+  if(n===5){
+    ['end-badge','end-title','end-sub','end-cta'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.classList.remove('animate'); el.style.animation='none';
+    });
+    t(()=>{
+      ['end-badge','end-title','end-sub','end-cta'].forEach(id=>{
+        const el=document.getElementById(id);
+        el.style.animation=''; el.classList.add('animate');
+      });
+    },50);
+  }
+}
+
+t(()=>{ if(current===0) next(); },4000);
+updateNav();
+</script>
+</body>
+</html>
