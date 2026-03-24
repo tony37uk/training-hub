@@ -273,6 +273,80 @@
       font-size: 15px;
     }
 
+    /* ── Progress Banner ── */
+    #progress-banner {
+      background: #fff;
+      border: 1.5px solid #e4e8f0;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #progress-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .reset-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      background: none;
+      border: 1.5px solid #cdd3e0;
+      border-radius: 50px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .reset-btn:hover { color: #e74c3c; border-color: #e74c3c; }
+    .progress-track {
+      height: 8px;
+      background: #e4e8f0;
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    #progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f8ef7, #2ecc71);
+      border-radius: 50px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Complete button & done state ── */
+    .card-complete-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      border: 1.5px solid #cdd3e0;
+      background: #fff;
+      color: #555e75;
+      cursor: pointer;
+      align-self: flex-start;
+      margin-top: 2px;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .card-complete-btn:hover { border-color: #2ecc71; color: #1a7a42; }
+    .card--done { background: #f7fef9; border-color: #a8e6c0; }
+    .card--done h3 { text-decoration: line-through; color: #888; }
+    .card--done .card-complete-btn {
+      background: #d4f5e2;
+      border-color: #2ecc71;
+      color: #1a7a42;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 480px) {
       .hub-hero h1 { font-size: 1.5rem; }
@@ -395,6 +469,17 @@
     </div>
   </div>
 
+  <!-- Progress banner -->
+  <div id="progress-banner">
+    <div class="progress-header">
+      <span id="progress-text">0 of 0 completed</span>
+      <button class="reset-btn" onclick="resetProgress()">Reset progress</button>
+    </div>
+    <div class="progress-track">
+      <div id="progress-fill"></div>
+    </div>
+  </div>
+
   <!-- Sections rendered dynamically from data.json -->
   <div id="dynamic-sections"></div>
   <div id="no-results">😕 No resources found — try a different search or clear the filter.</div>
@@ -494,25 +579,89 @@
     }
   }
 
+  // ── Progress tracking ──────────────────────────────────────────
+  const LS_KEY = 'training_hub_completed';
+
+  function getCompleted() {
+    try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); }
+    catch { return new Set(); }
+  }
+
+  function saveCompleted(set) {
+    localStorage.setItem(LS_KEY, JSON.stringify([...set]));
+  }
+
+  function updateProgress() {
+    const cards = document.querySelectorAll('#dynamic-sections .card');
+    const total = cards.length;
+    const done = document.querySelectorAll('#dynamic-sections .card.card--done').length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('progress-text').textContent = `${done} of ${total} completed`;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function toggleComplete(btn) {
+    const card = btn.closest('.card');
+    const id = card.dataset.cardId;
+    const completed = getCompleted();
+    if (completed.has(id)) {
+      completed.delete(id);
+      card.classList.remove('card--done');
+      btn.textContent = 'Mark complete';
+    } else {
+      completed.add(id);
+      card.classList.add('card--done');
+      btn.textContent = '✓ Done';
+    }
+    saveCompleted(completed);
+    updateProgress();
+  }
+
+  function resetProgress() {
+    localStorage.removeItem(LS_KEY);
+    document.querySelectorAll('#dynamic-sections .card').forEach(card => {
+      card.classList.remove('card--done');
+      const btn = card.querySelector('.card-complete-btn');
+      if (btn) btn.textContent = 'Mark complete';
+    });
+    updateProgress();
+  }
+
+  function initProgress() {
+    const completed = getCompleted();
+    document.querySelectorAll('#dynamic-sections .card').forEach(card => {
+      if (completed.has(card.dataset.cardId)) {
+        card.classList.add('card--done');
+        const btn = card.querySelector('.card-complete-btn');
+        if (btn) btn.textContent = '✓ Done';
+      }
+    });
+    updateProgress();
+  }
+
   // ── Card renderers ─────────────────────────────────────────────
   function renderLinkCard(card) {
+    const safeId = card.title.replace(/"/g, '&quot;');
     return `
-      <div class="card">
+      <div class="card" data-card-id="${safeId}">
         <span class="card-tag ${card.tagClass}">${card.tag}</span>
         <h3>${card.title}</h3>
         <p>${card.description}</p>
         <a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>
+        <button class="card-complete-btn" onclick="toggleComplete(this)">Mark complete</button>
       </div>`;
   }
 
   function renderVideoCard(card) {
+    const safeId = card.title.replace(/"/g, '&quot;');
     return `
-      <div class="card">
+      <div class="card" data-card-id="${safeId}">
         <div class="video-thumb" style="background:${card.thumbBg};">${card.thumb}</div>
         <span class="card-tag ${card.tagClass}">${card.tag}</span>
         <h3>${card.title}</h3>
         <p>${card.description}</p>
         <a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>
+        <button class="card-complete-btn" onclick="toggleComplete(this)">Mark complete</button>
       </div>`;
   }
 
@@ -555,6 +704,7 @@
         .map((section, i) => renderSection(section, i === data.sections.length - 1))
         .join('');
       initFilters();
+      initProgress();
     })
     .catch(err => {
       document.getElementById('dynamic-sections').innerHTML =
