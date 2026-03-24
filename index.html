@@ -202,6 +202,77 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
 
+    /* ── Search & Filter Bar ── */
+    .filter-bar {
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-input-wrap {
+      position: relative;
+    }
+    .filter-input-wrap .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
+      display: flex;
+    }
+    #resource-search {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1.5px solid #cdd3e0;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 14px;
+      background: #fff;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #resource-search::placeholder { color: #aab2c2; }
+    #resource-search:focus {
+      border-color: #4f8ef7;
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.15);
+    }
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      padding: 6px 15px;
+      border-radius: 50px;
+      border: 1.5px solid #cdd3e0;
+      background: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: #555e75;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .filter-chip:hover {
+      border-color: #4f8ef7;
+      color: #4f8ef7;
+    }
+    .filter-chip.active {
+      background: #4f8ef7;
+      border-color: #4f8ef7;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(79,142,247,0.3);
+    }
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #555e75;
+      font-size: 15px;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 480px) {
       .hub-hero h1 { font-size: 1.5rem; }
@@ -306,8 +377,27 @@
     <a class="nav-feedback" onclick="scrollToSection('feedback')">💬 Feedback</a>
   </div>
 
+  <!-- Search & category filter -->
+  <div class="filter-bar">
+    <div class="filter-input-wrap">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="resource-search" placeholder="Search resources…" autocomplete="off" aria-label="Search training resources" />
+    </div>
+    <div class="filter-chips" role="group" aria-label="Filter by category">
+      <button class="filter-chip active" data-category="">All</button>
+      <button class="filter-chip" data-category="ai">🤖 AI</button>
+      <button class="filter-chip" data-category="azure">☁️ Azure</button>
+      <button class="filter-chip" data-category="microsoft">🪟 Microsoft</button>
+      <button class="filter-chip" data-category="cloud">🌐 Cloud</button>
+      <button class="filter-chip" data-category="aws">📦 AWS</button>
+    </div>
+  </div>
+
   <!-- Sections rendered dynamically from data.json -->
   <div id="dynamic-sections"></div>
+  <div id="no-results">😕 No resources found — try a different search or clear the filter.</div>
 
   <!-- Feedback -->
   <div id="feedback" class="hub-section">
@@ -354,6 +444,54 @@
     const t = document.getElementById('toast');
     t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
+  }
+
+  // ── Search & category filter ───────────────────────────────────
+  function initFilters() {
+    const searchInput = document.getElementById('resource-search');
+    const chips = document.querySelectorAll('.filter-chip');
+    let activeCategory = '';
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeCategory = chip.dataset.category;
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      const container = document.getElementById('dynamic-sections');
+      const cards = container.querySelectorAll('.card');
+      let anyVisible = false;
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const textMatch = !query || text.includes(query);
+        const categoryMatch = !activeCategory || text.includes(activeCategory);
+        const visible = textMatch && categoryMatch;
+        card.style.display = visible ? '' : 'none';
+        if (visible) anyVisible = true;
+      });
+
+      // Show/hide sections that have no visible cards
+      container.querySelectorAll('.hub-section').forEach(section => {
+        const sectionCards = section.querySelectorAll('.card');
+        const sectionVisible = Array.from(sectionCards).some(c => c.style.display !== 'none');
+        section.style.display = sectionVisible ? '' : 'none';
+        // Also toggle the divider that follows this section
+        const next = section.nextElementSibling;
+        if (next && next.classList.contains('divider')) {
+          next.style.display = sectionVisible ? '' : 'none';
+        }
+      });
+
+      document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+    }
   }
 
   // ── Card renderers ─────────────────────────────────────────────
@@ -416,6 +554,7 @@
       container.innerHTML = data.sections
         .map((section, i) => renderSection(section, i === data.sections.length - 1))
         .join('');
+      initFilters();
     })
     .catch(err => {
       document.getElementById('dynamic-sections').innerHTML =
