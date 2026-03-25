@@ -187,16 +187,6 @@
           "linkLabel": "Watch \u2192"
         },
         {
-          "thumb": "\ud83d\udda5\ufe0f",
-          "thumbBg": "#fff0d4",
-          "tag": "Intune",
-          "tagClass": "tag-orange",
-          "title": "Intune Device Management",
-          "description": "Live demo: enrolling, configuring and pushing apps to Windows devices.",
-          "url": "#",
-          "linkLabel": "Watch \u2192"
-        },
-        {
           "thumb": "\ud83d\udcca",
           "thumbBg": "#d4f5e2",
           "tag": "Power BI",
