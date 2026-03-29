@@ -205,9 +205,9 @@
         {
           "thumb": "\ud83d\udcca",
           "thumbBg": "#d4f5e2",
-          "tag": "Power BI",
+          "tag": "LLM",
           "tagClass": "tag-green",
-          "title": "Power BI for Beginners",
+          "title": "Intro to Large Language Models",
           "description": "Step-by-step YouTube walkthrough \u2014 connect data, build visuals, and publish your first report.",
           "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
           "linkLabel": "Watch on YouTube \u2192"
