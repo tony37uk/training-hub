@@ -66,7 +66,7 @@
         },
         {
           "tag": "xAI",
-          "tagClass": "tag-blue",
+          "tagClass": "tag-purple",
           "title": "Grok",
           "description": "xAI's conversational AI with real-time access to X/Twitter data and web search.",
           "url": "https://grok.com",
@@ -74,7 +74,7 @@
         },
         {
           "tag": "Meta",
-          "tagClass": "tag-blue",
+          "tagClass": "tag-purple",
           "title": "Meta AI",
           "description": "Meta's AI assistant built into Facebook, Instagram, WhatsApp and the web.",
           "url": "https://www.meta.ai",
