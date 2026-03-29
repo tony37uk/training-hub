@@ -347,10 +347,86 @@
       color: #1a7a42;
     }
 
-    /* ── Responsive ── */
+    /* ── Nav toggle (hamburger) ── */
+    #nav-toggle {
+      display: none;
+      width: 100%;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1.5px solid #e4e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      cursor: pointer;
+      margin-bottom: 0.75rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    #nav-toggle:hover { background: #f4f6fb; border-color: #c5cbda; }
+
+    /* ── Responsive: 768px — touch targets ── */
+    @media (max-width: 768px) {
+      .hub-wrap { padding: 1.25rem 1rem 2rem; }
+      .hub-hero { padding: 2rem 1.25rem 2.5rem; border-radius: 12px; }
+      .hub-nav a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .filter-chip {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .card-complete-btn,
+      .reset-btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .fb-submit {
+        align-self: stretch;
+        min-height: 48px;
+        justify-content: center;
+      }
+      .video-card-btn { width: 100%; }
+    }
+
+    /* ── Responsive: 640px — hamburger nav ── */
+    @media (max-width: 640px) {
+      #nav-toggle { display: flex; }
+      .hub-nav {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        border: 1.5px solid #e4e8f0;
+        border-radius: 12px;
+        padding: 8px;
+        gap: 4px;
+        margin-bottom: 1.5rem;
+      }
+      .hub-nav.open { display: flex; }
+      .hub-nav a {
+        width: 100%;
+        border-radius: 8px;
+        justify-content: flex-start;
+        padding: 12px 16px;
+        min-height: 48px;
+      }
+    }
+
+    /* ── Responsive: 480px — small phones ── */
     @media (max-width: 480px) {
-      .hub-hero h1 { font-size: 1.5rem; }
+      .hub-hero h1 { font-size: 1.4rem; }
       .cards-grid { grid-template-columns: 1fr; }
+      /* Prevent iOS Safari auto-zoom on input focus */
+      #resource-search,
+      .fb-row input,
+      .fb-row textarea,
+      .fb-row select { font-size: 16px; }
     }
 
     /* ── Power BI Modal ── */
@@ -443,7 +519,8 @@
     <p>Your go-to resource for links, guides, videos &amp; more</p>
   </div>
 
-  <div class="hub-nav">
+  <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
+  <div class="hub-nav" id="hub-nav">
     <a class="nav-ai"       onclick="scrollToSection('ai-resources')">🤖 AI Resources</a>
     <a class="nav-links"    onclick="scrollToSection('links')">🔗 Training Links</a>
     <a class="nav-guides"   onclick="scrollToSection('guides')">📖 How-To Guides</a>
@@ -518,6 +595,25 @@
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  // ── Hamburger nav ──────────────────────────────────────────────
+  (function() {
+    const toggle = document.getElementById('nav-toggle');
+    const nav    = document.getElementById('hub-nav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      toggle.textContent = open ? '✕ Close' : '☰ Menu';
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = '☰ Menu';
+      });
+    });
+  })();
 
   // ── Feedback form ──────────────────────────────────────────────
   function submitFeedback() {
