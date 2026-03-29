@@ -63,6 +63,22 @@
           "description": "AI-powered search engine \u2014 get cited, up-to-date answers instantly.",
           "url": "https://www.perplexity.ai",
           "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "xAI",
+          "tagClass": "tag-blue",
+          "title": "Grok",
+          "description": "xAI's conversational AI with real-time access to X/Twitter data and web search.",
+          "url": "https://grok.com",
+          "linkLabel": "Visit \u2192"
+        },
+        {
+          "tag": "Meta",
+          "tagClass": "tag-blue",
+          "title": "Meta AI",
+          "description": "Meta's AI assistant built into Facebook, Instagram, WhatsApp and the web.",
+          "url": "https://www.meta.ai",
+          "linkLabel": "Visit \u2192"
         }
       ]
     },
