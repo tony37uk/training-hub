@@ -208,7 +208,7 @@
           "tag": "LLM",
           "tagClass": "tag-green",
           "title": "Intro to Large Language Models",
-          "description": "Step-by-step YouTube walkthrough \u2014 connect data, build visuals, and publish your first report.",
+          "description": "A 1-hour general-audience introduction to Large Language Models \u2014 the core technical component behind systems like ChatGPT, Claude, and Bard.",
           "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
           "linkLabel": "Watch on YouTube \u2192"
         }
