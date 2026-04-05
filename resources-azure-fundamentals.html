@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azure Fundamentals (AZ-900) | Tony's AI &amp; Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #4f8ef7; }
+
+    .page-hero {
+      background: linear-gradient(135deg, #0ea5e9 0%, #4f8ef7 50%, #6366f1 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .page-hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+    .page-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .page-hero p { color: rgba(255,255,255,0.9); font-size: 15px; font-weight: 600; max-width: 560px; }
+
+    .page-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .page-content { min-width: 0; }
+    .page-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e8eaf0;
+    }
+    .page-content h2:first-child { margin-top: 0; }
+    .page-content p { font-size: 15px; color: #374151; margin-bottom: 1rem; }
+
+    .link-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .link-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .link-body { flex: 1; min-width: 0; }
+    .link-body h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
+    .link-body p { font-size: 13px; color: #6b7280; margin: 0; line-height: 1.5; }
+    .link-arrow { font-size: 18px; color: #4f8ef7; align-self: center; flex-shrink: 0; }
+
+    .tip {
+      background: #eff6ff;
+      border-left: 4px solid #4f8ef7;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: #1e3a5f;
+      line-height: 1.6;
+    }
+    .success-box {
+      background: #f0fdf4;
+      border-left: 4px solid #2ecc71;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: #14532d;
+      line-height: 1.6;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .tag-free   { background: #d4f5e2; color: #1a7a42; }
+    .tag-cert   { background: #ddeeff; color: #1a5fa8; }
+    .tag-video  { background: #ffe0ec; color: #b5235e; }
+    .tag-practice { background: #fff0d4; color: #b36200; }
+
+    .page-sidebar { position: sticky; top: 78px; }
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4f8ef7;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .quick-link:last-child { border-bottom: none; }
+    .quick-link:hover { color: #0ea5e9; }
+
+    .exam-topics { list-style: none; }
+    .exam-topics li {
+      font-size: 13px;
+      color: #374151;
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px dashed #e8eaf0;
+    }
+    .exam-topics li:last-child { border-bottom: none; }
+    .topic-pct {
+      font-size: 11px;
+      font-weight: 800;
+      color: #4f8ef7;
+      background: #eff6ff;
+      padding: 2px 7px;
+      border-radius: 50px;
+      margin-left: auto;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 680px) {
+      .page-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .page-sidebar { position: static; }
+      .page-hero { padding: 2rem 1rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI &amp; Cloud Hub</a>
+      <a href="index.html#links" class="nav-back">← Back to training links</a>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-badge">🔗 Training Resource</div>
+      <h1>Azure Fundamentals — AZ-900</h1>
+      <p>Everything you need to prepare for the AZ-900 certification — the perfect starting point for anyone new to cloud computing.</p>
+    </div>
+  </section>
+
+  <div class="page-layout">
+    <article class="page-content">
+
+      <p>AZ-900 is Microsoft's entry-level Azure certification. It validates foundational knowledge of cloud concepts and Azure services — no technical background required. It's the recommended first cert for anyone starting a cloud career or moving into IT roles that involve Azure.</p>
+
+      <div class="success-box">
+        <span>🎓</span>
+        <span><strong>Exam cost:</strong> £115 (discounts often available via Microsoft promotions and exam vouchers through employer schemes — ask your manager!).</span>
+      </div>
+
+      <h2>Official Microsoft Learning Paths</h2>
+
+      <a href="https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">☁️</div>
+        <div class="link-body">
+          <span class="tag tag-cert">Official</span>
+          <h3>AZ-900 Learning Path on Microsoft Learn</h3>
+          <p>The official, free learning path — 6 modules covering cloud concepts, Azure architecture, services, security, and pricing. Includes interactive sandboxes.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">🎓</div>
+        <div class="link-body">
+          <span class="tag tag-cert">Certification</span>
+          <h3>AZ-900 Certification Page</h3>
+          <p>Official cert page with exam skills outline, study guide download, and link to schedule your exam through Pearson VUE or Certiport.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Video Courses</h2>
+
+      <a href="https://www.youtube.com/watch?v=NKEFWyqJ5XA" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ffe0ec;">▶️</div>
+        <div class="link-body">
+          <span class="tag tag-video">YouTube</span>
+          <h3>AZ-900 Full Course — freeCodeCamp</h3>
+          <p>A highly rated free video course on YouTube covering the entire AZ-900 exam syllabus. Great for visual learners who prefer video over text.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=pY0LnKiDwRA" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ffe0ec;">▶️</div>
+        <div class="link-body">
+          <span class="tag tag-video">YouTube</span>
+          <h3>AZ-900 Course — John Savill</h3>
+          <p>John Savill's popular AZ-900 study cram — a thorough, whiteboard-style walkthrough of all exam topics in one sitting. Frequently updated.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Practice &amp; Revision</h2>
+
+      <a href="https://learn.microsoft.com/en-us/credentials/certifications/practice-assessments-for-microsoft-certifications" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">📝</div>
+        <div class="link-body">
+          <span class="tag tag-practice">Practice Exam</span>
+          <h3>Free Official Practice Assessment</h3>
+          <p>Microsoft's own free practice questions for AZ-900 — directly on Microsoft Learn. Includes explanations for each answer.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://www.examtopics.com/exams/microsoft/az-900/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">🧪</div>
+        <div class="link-body">
+          <span class="tag tag-practice">Question Bank</span>
+          <h3>ExamTopics AZ-900 Questions</h3>
+          <p>Large community-sourced question bank for AZ-900 revision. Use alongside the official practice test — great for drilling specific topic areas.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <div class="tip">
+        <span>💡</span>
+        <span><strong>Study tip:</strong> Most people pass AZ-900 in 2–3 weeks of light study. Focus on the official learning path first, then practice with the free assessment until you consistently score above 80%.</span>
+      </div>
+
+    </article>
+
+    <aside class="page-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Quick Links</h4>
+        <a href="https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/" target="_blank" class="quick-link">☁️ AZ-900 Learning Path</a>
+        <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" class="quick-link">🎓 Cert page &amp; exam</a>
+        <a href="https://learn.microsoft.com/en-us/credentials/certifications/practice-assessments-for-microsoft-certifications" target="_blank" class="quick-link">📝 Free practice test</a>
+        <a href="https://portal.azure.com" target="_blank" class="quick-link">🔵 Azure portal</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Exam at a glance</h4>
+        <ul class="exam-topics">
+          <li>Cloud concepts <span class="topic-pct">25–30%</span></li>
+          <li>Azure architecture <span class="topic-pct">35–40%</span></li>
+          <li>Management &amp; governance <span class="topic-pct">30–35%</span></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>About this cert</h4>
+        <p style="font-size:13px;color:#6b7280;line-height:1.6;">
+          <strong>Level:</strong> Beginner<br>
+          <strong>Exam duration:</strong> 60 minutes<br>
+          <strong>Questions:</strong> ~40–60<br>
+          <strong>Pass mark:</strong> 700 / 1000<br>
+          <strong>Validity:</strong> No expiry
+        </p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+</body>
+</html>

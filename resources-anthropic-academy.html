@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anthropic &amp; Claude Resources | Tony's AI &amp; Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #4f8ef7; }
+
+    .page-hero {
+      background: linear-gradient(135deg, #6b21a8 0%, #a259f7 60%, #f7599a 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .page-hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+    .page-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .page-hero p { color: rgba(255,255,255,0.9); font-size: 15px; font-weight: 600; max-width: 560px; }
+
+    .page-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .page-content { min-width: 0; }
+    .page-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e8eaf0;
+    }
+    .page-content h2:first-child { margin-top: 0; }
+    .page-content p { font-size: 15px; color: #374151; margin-bottom: 1rem; }
+
+    .link-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .link-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .link-body { flex: 1; min-width: 0; }
+    .link-body h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
+    .link-body p { font-size: 13px; color: #6b7280; margin: 0; line-height: 1.5; }
+    .link-arrow { font-size: 18px; color: #a259f7; align-self: center; flex-shrink: 0; }
+
+    .tip {
+      background: #faf5ff;
+      border-left: 4px solid #a259f7;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: #3b0764;
+      line-height: 1.6;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .tag-free    { background: #d4f5e2; color: #1a7a42; }
+    .tag-prompts { background: #ede9fe; color: #6b21a8; }
+    .tag-api     { background: #ddeeff; color: #1a5fa8; }
+    .tag-new     { background: #ffe0ec; color: #b5235e; }
+
+    .page-sidebar { position: sticky; top: 78px; }
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #a259f7;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .quick-link:last-child { border-bottom: none; }
+    .quick-link:hover { color: #6b21a8; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 680px) {
+      .page-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .page-sidebar { position: static; }
+      .page-hero { padding: 2rem 1rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI &amp; Cloud Hub</a>
+      <a href="index.html#links" class="nav-back">← Back to training links</a>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-badge">🔗 Training Resource</div>
+      <h1>Anthropic &amp; Claude Resources</h1>
+      <p>Official learning resources for prompt engineering, the Claude API, Claude Code, and getting the most out of AI in your day-to-day work.</p>
+    </div>
+  </section>
+
+  <div class="page-layout">
+    <article class="page-content">
+
+      <p>Anthropic is the company behind Claude. Their official docs, guides and research are some of the best resources available for understanding how to work effectively with large language models — whether you're writing prompts or building applications.</p>
+
+      <div class="tip">
+        <span>💡</span>
+        <span><strong>Where to start:</strong> If you're new to Claude, begin with the Prompt Engineering guide. If you want to use Claude in your own tools or workflows, head straight to the API documentation.</span>
+      </div>
+
+      <h2>Getting Started with Claude</h2>
+
+      <a href="https://claude.ai" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ede9fe;">✨</div>
+        <div class="link-body">
+          <span class="tag tag-free">Free tier</span>
+          <h3>Claude.ai — Chat Interface</h3>
+          <p>The main web interface for chatting with Claude. Free tier available. Great starting point to explore what Claude can do before diving into APIs.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://docs.anthropic.com/en/docs/intro-to-claude" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ede9fe;">📖</div>
+        <div class="link-body">
+          <span class="tag tag-prompts">Docs</span>
+          <h3>Introduction to Claude</h3>
+          <p>Official Anthropic documentation — covers Claude's capabilities, model overview, and how to start building or prompting effectively.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Prompt Engineering</h2>
+
+      <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#faf5ff;">🧠</div>
+        <div class="link-body">
+          <span class="tag tag-prompts">Prompt Eng.</span>
+          <h3>Prompt Engineering Overview</h3>
+          <p>Anthropic's official guide to writing effective prompts — covers structure, roles, chain-of-thought, and getting consistent results.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-library" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#faf5ff;">📋</div>
+        <div class="link-body">
+          <span class="tag tag-prompts">Examples</span>
+          <h3>Prompt Library</h3>
+          <p>A curated library of ready-to-use prompts covering coding, writing, analysis, and more — great for inspiration and learning patterns.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Developer &amp; API Resources</h2>
+
+      <a href="https://docs.anthropic.com/en/api/getting-started" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">⚙️</div>
+        <div class="link-body">
+          <span class="tag tag-api">API</span>
+          <h3>Claude API — Getting Started</h3>
+          <p>Everything you need to integrate Claude into your own applications, scripts, or automations. Includes authentication, request formats and SDKs.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">💻</div>
+        <div class="link-body">
+          <span class="tag tag-new">Claude Code</span>
+          <h3>Claude Code Documentation</h3>
+          <p>Official docs for Claude Code — the agentic coding CLI. Covers installation, usage, hooks, slash commands and MCP server setup.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Research &amp; Safety</h2>
+
+      <a href="https://www.anthropic.com/research" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ffe0ec;">🔬</div>
+        <div class="link-body">
+          <span class="tag tag-new">Research</span>
+          <h3>Anthropic Research Papers</h3>
+          <p>Published papers on AI safety, interpretability, and model behaviour. Excellent reading if you want to understand how modern AI systems are developed responsibly.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+    </article>
+
+    <aside class="page-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Quick Links</h4>
+        <a href="https://claude.ai" target="_blank" class="quick-link">✨ Claude.ai</a>
+        <a href="https://docs.anthropic.com" target="_blank" class="quick-link">📖 Anthropic Docs</a>
+        <a href="https://console.anthropic.com" target="_blank" class="quick-link">⚙️ API Console</a>
+        <a href="https://www.anthropic.com/news" target="_blank" class="quick-link">📰 Anthropic News</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>About this resource</h4>
+        <p style="font-size:13px;color:#6b7280;line-height:1.6;">
+          <strong>Cost:</strong> Free docs &amp; Claude.ai free tier<br>
+          <strong>Account needed:</strong> Optional (Claude.ai)<br>
+          <strong>Best for:</strong> AI users &amp; developers<br>
+          <strong>Updated:</strong> Regularly
+        </p>
+      </div>
+
+      <div class="sidebar-card" style="background:linear-gradient(135deg,#faf5ff,#fff0f6);border-color:#d8b4fe;">
+        <h4 style="color:#6b21a8;">Also see</h4>
+        <p style="font-size:13px;color:#374151;line-height:1.6;">Check out the <strong>Writing Better Prompts</strong> guide in the How-To section of the hub for practical, hands-on prompt tips.</p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+</body>
+</html>
