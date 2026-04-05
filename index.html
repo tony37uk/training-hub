@@ -131,8 +131,11 @@
 
     .card h3 { font-size: 15px; font-weight: 700; margin: 0; color: #1a1a2e; }
     .card p  { font-size: 13px; color: #555e75; margin: 0; line-height: 1.5; flex: 1; }
+    .card-links { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
     .card a  { font-size: 13px; font-weight: 700; color: #4f8ef7; text-decoration: none; margin-top: 4px; }
     .card a:hover { text-decoration: underline; }
+    .card a.visit-link { color: #9ca3af; font-weight: 600; }
+    .card a.visit-link:hover { color: #4f8ef7; }
 
     /* ── Video thumbs ── */
     .video-thumb {
@@ -235,25 +238,37 @@
         <span class="card-tag tag-blue">Microsoft</span>
         <h3>Microsoft Learn</h3>
         <p>Free official learning paths for Azure, M365, and AI certifications.</p>
-        <a href="resources-microsoft-learn.html">Explore →</a>
+        <div class="card-links">
+          <a href="resources-microsoft-learn.html">Explore →</a>
+          <a href="https://learn.microsoft.com" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
+        </div>
       </div>
       <div class="card">
         <span class="card-tag tag-blue">AI</span>
         <h3>Anthropic &amp; Claude</h3>
         <p>Learn prompt engineering and how to get the best out of Claude.</p>
-        <a href="resources-anthropic-academy.html">Explore →</a>
+        <div class="card-links">
+          <a href="resources-anthropic-academy.html">Explore →</a>
+          <a href="https://anthropic.com" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
+        </div>
       </div>
       <div class="card">
         <span class="card-tag tag-blue">Cloud</span>
         <h3>Azure Fundamentals</h3>
         <p>AZ-900 learning path — perfect starting point for cloud beginners.</p>
-        <a href="resources-azure-fundamentals.html">Explore →</a>
+        <div class="card-links">
+          <a href="resources-azure-fundamentals.html">Explore →</a>
+          <a href="https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
+        </div>
       </div>
       <div class="card">
         <span class="card-tag tag-blue">Cert Prep</span>
         <h3>MD-102 Study Guide</h3>
         <p>Endpoint Administrator cert prep — devices, deployment &amp; management.</p>
-        <a href="resources-md102.html">Explore →</a>
+        <div class="card-links">
+          <a href="resources-md102.html">Explore →</a>
+          <a href="https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
+        </div>
       </div>
     </div>
   </div>
