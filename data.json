@@ -96,6 +96,7 @@
           "title": "Microsoft Learn",
           "description": "Free official learning paths for Azure, M365, and AI certifications.",
           "url": "https://learn.microsoft.com",
+          "subPageUrl": "resources-microsoft-learn.html",
           "linkLabel": "Visit \u2192"
         },
         {
@@ -104,6 +105,7 @@
           "title": "Anthropic Academy",
           "description": "Learn prompt engineering and how to get the best out of Claude.",
           "url": "https://www.anthropic.com/learn",
+          "subPageUrl": "resources-anthropic-academy.html",
           "linkLabel": "Visit \u2192"
         },
         {
@@ -112,6 +114,7 @@
           "title": "Azure Fundamentals",
           "description": "AZ-900 learning path \u2014 perfect starting point for cloud beginners.",
           "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/",
+          "subPageUrl": "resources-azure-fundamentals.html",
           "linkLabel": "Visit \u2192"
         },
         {

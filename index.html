@@ -75,6 +75,7 @@
       border: none;
     }
     .hub-nav a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .nav-ai       { background: #7c3aed; color: #fff; }
     .nav-links    { background: #4f8ef7; color: #fff; }
     .nav-guides   { background: #f7a525; color: #fff; }
     .nav-videos   { background: #f7599a; color: #fff; }
@@ -128,10 +129,11 @@
     .tag-orange { background: #fff0d4; color: #b36200; }
     .tag-pink   { background: #ffe0ec; color: #b5235e; }
     .tag-green  { background: #d4f5e2; color: #1a7a42; }
+    .tag-purple { background: #ede9fe; color: #6d28d9; }
 
     .card h3 { font-size: 15px; font-weight: 700; margin: 0; color: #1a1a2e; }
     .card p  { font-size: 13px; color: #555e75; margin: 0; line-height: 1.5; flex: 1; }
-    .card-links { display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+    .card-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
     .card a  { font-size: 13px; font-weight: 700; color: #4f8ef7; text-decoration: none; margin-top: 4px; }
     .card a:hover { text-decoration: underline; }
     .card a.visit-link { color: #9ca3af; font-weight: 600; }
@@ -203,10 +205,310 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
 
-    /* ── Responsive ── */
+    /* ── Search & Filter Bar ── */
+    .filter-bar {
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .filter-input-wrap {
+      position: relative;
+    }
+    .filter-input-wrap .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
+      display: flex;
+    }
+    #resource-search {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1.5px solid #cdd3e0;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 14px;
+      background: #fff;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #resource-search::placeholder { color: #aab2c2; }
+    #resource-search:focus {
+      border-color: #4f8ef7;
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.15);
+    }
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      padding: 6px 15px;
+      border-radius: 50px;
+      border: 1.5px solid #cdd3e0;
+      background: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: #555e75;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .filter-chip:hover {
+      border-color: #4f8ef7;
+      color: #4f8ef7;
+    }
+    .filter-chip.active {
+      background: #4f8ef7;
+      border-color: #4f8ef7;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(79,142,247,0.3);
+    }
+    #no-results {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #555e75;
+      font-size: 15px;
+    }
+
+    /* ── Progress Banner ── */
+    #progress-banner {
+      background: #fff;
+      border: 1.5px solid #e4e8f0;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #progress-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .reset-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      background: none;
+      border: 1.5px solid #cdd3e0;
+      border-radius: 50px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .reset-btn:hover { color: #e74c3c; border-color: #e74c3c; }
+    .progress-track {
+      height: 8px;
+      background: #e4e8f0;
+      border-radius: 50px;
+      overflow: hidden;
+    }
+    #progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4f8ef7, #2ecc71);
+      border-radius: 50px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Complete button & done state ── */
+    .card-complete-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      border: 1.5px solid #cdd3e0;
+      background: #fff;
+      color: #555e75;
+      cursor: pointer;
+      align-self: flex-start;
+      margin-top: 2px;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .card-complete-btn:hover { border-color: #2ecc71; color: #1a7a42; }
+    .card--done { background: #f7fef9; border-color: #a8e6c0; }
+    .card--done h3 { text-decoration: line-through; color: #888; }
+    .card--done .card-complete-btn {
+      background: #d4f5e2;
+      border-color: #2ecc71;
+      color: #1a7a42;
+    }
+
+    /* ── Nav toggle (hamburger) ── */
+    #nav-toggle {
+      display: none;
+      width: 100%;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 1.5px solid #e4e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      cursor: pointer;
+      margin-bottom: 0.75rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    #nav-toggle:hover { background: #f4f6fb; border-color: #c5cbda; }
+
+    /* ── Responsive: 768px — touch targets ── */
+    @media (max-width: 768px) {
+      .hub-wrap { padding: 1.25rem 1rem 2rem; }
+      .hub-hero { padding: 2rem 1.25rem 2.5rem; border-radius: 12px; }
+      .hub-nav a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .filter-chip {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .card-complete-btn,
+      .reset-btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .fb-submit {
+        align-self: stretch;
+        min-height: 48px;
+        justify-content: center;
+      }
+      .video-card-btn { width: 100%; }
+    }
+
+    /* ── Responsive: 640px — hamburger nav ── */
+    @media (max-width: 640px) {
+      #nav-toggle { display: flex; }
+      .hub-nav {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        border: 1.5px solid #e4e8f0;
+        border-radius: 12px;
+        padding: 8px;
+        gap: 4px;
+        margin-bottom: 1.5rem;
+      }
+      .hub-nav.open { display: flex; }
+      .hub-nav a {
+        width: 100%;
+        border-radius: 8px;
+        justify-content: flex-start;
+        padding: 12px 16px;
+        min-height: 48px;
+      }
+    }
+
+    /* ── Responsive: 480px — small phones ── */
     @media (max-width: 480px) {
-      .hub-hero h1 { font-size: 1.5rem; }
+      .hub-hero h1 { font-size: 1.4rem; }
       .cards-grid { grid-template-columns: 1fr; }
+      /* Prevent iOS Safari auto-zoom on input focus */
+      #resource-search,
+      .fb-row input,
+      .fb-row textarea,
+      .fb-row select { font-size: 16px; }
+    }
+
+    /* ── Power BI Modal ── */
+    #pbi-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      animation: fadeOverlay 0.3s ease;
+    }
+    #pbi-modal.open {
+      display: flex;
+    }
+    @keyframes fadeOverlay {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #pbi-modal-inner {
+      position: relative;
+      width: 90vw;
+      max-width: 960px;
+      height: 85vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    #pbi-modal-inner iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    #pbi-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    #pbi-modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── Power BI launch button ── */
+    .video-card-btn {
+      background: #FFD23F;
+      color: #0A0A0A;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+      font-family: inherit;
+      margin-top: 1rem;
+    }
+    .video-card-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 210, 63, 0.3);
     }
   </style>
 </head>
@@ -220,136 +522,47 @@
     <p>Your go-to resource for links, guides, videos &amp; more</p>
   </div>
 
-  <div class="hub-nav">
-    <a class="nav-links"    onclick="scrollTo('links')">🔗 Training Links</a>
-    <a class="nav-guides"   onclick="scrollTo('guides')">📖 How-To Guides</a>
-    <a class="nav-videos"   onclick="scrollTo('videos')">🎬 Videos</a>
-    <a class="nav-feedback" onclick="scrollTo('feedback')">💬 Feedback</a>
+  <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false">☰ Menu</button>
+  <div class="hub-nav" id="hub-nav">
+    <a class="nav-ai"       onclick="scrollToSection('ai-resources')">🤖 AI Resources</a>
+    <a class="nav-links"    onclick="scrollToSection('links')">🔗 Training Links</a>
+    <a class="nav-guides"   onclick="scrollToSection('guides')">📖 How-To Guides</a>
+    <a class="nav-videos"   onclick="scrollToSection('videos')">🎬 Videos</a>
+    <a class="nav-feedback" onclick="scrollToSection('feedback')">💬 Feedback</a>
   </div>
 
-  <!-- Training Links -->
-  <div id="links" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#ddeeff;">🔗</div>
-      <h2 style="color:#1a5fa8;">Training Links</h2>
+  <!-- Search & category filter -->
+  <div class="filter-bar">
+    <div class="filter-input-wrap">
+      <span class="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="resource-search" placeholder="Search resources…" autocomplete="off" aria-label="Search training resources" />
     </div>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag tag-blue">Microsoft</span>
-        <h3>Microsoft Learn</h3>
-        <p>Free official learning paths for Azure, M365, and AI certifications.</p>
-        <div class="card-links">
-          <a href="resources-microsoft-learn.html">Explore →</a>
-          <a href="https://learn.microsoft.com" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">AI</span>
-        <h3>Anthropic &amp; Claude</h3>
-        <p>Learn prompt engineering and how to get the best out of Claude.</p>
-        <div class="card-links">
-          <a href="resources-anthropic-academy.html">Explore →</a>
-          <a href="https://anthropic.com" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">Cloud</span>
-        <h3>Azure Fundamentals</h3>
-        <p>AZ-900 learning path — perfect starting point for cloud beginners.</p>
-        <div class="card-links">
-          <a href="resources-azure-fundamentals.html">Explore →</a>
-          <a href="https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
-        </div>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-blue">Cert Prep</span>
-        <h3>MD-102 Study Guide</h3>
-        <p>Endpoint Administrator cert prep — devices, deployment &amp; management.</p>
-        <div class="card-links">
-          <a href="resources-md102.html">Explore →</a>
-          <a href="https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
-        </div>
-      </div>
+    <div class="filter-chips" role="group" aria-label="Filter by category">
+      <button class="filter-chip active" data-category="">All</button>
+      <button class="filter-chip" data-category="ai">🤖 AI</button>
+      <button class="filter-chip" data-category="azure">☁️ Azure</button>
+      <button class="filter-chip" data-category="microsoft">🪟 Microsoft</button>
+      <button class="filter-chip" data-category="cloud">🌐 Cloud</button>
+      <button class="filter-chip" data-category="aws">📦 AWS</button>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- How-To Guides -->
-  <div id="guides" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#fff0d4;">📖</div>
-      <h2 style="color:#b36200;">How-To Guides</h2>
+  <!-- Progress banner -->
+  <div id="progress-banner">
+    <div class="progress-header">
+      <span id="progress-text">0 of 0 completed</span>
+      <button class="reset-btn" onclick="resetProgress()">Reset progress</button>
     </div>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag tag-orange">Beginner</span>
-        <h3>Setting Up GitHub Pages</h3>
-        <p>Step-by-step guide to hosting your first static website for free.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Prompt Eng.</span>
-        <h3>Writing Better Prompts</h3>
-        <p>Practical tips for getting great results from AI tools like Claude.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Intune</span>
-        <h3>Enrolling Devices in Intune</h3>
-        <p>How to enrol Windows and iOS devices into Microsoft Intune MDM.</p>
-        <a href="#">Read guide →</a>
-      </div>
-      <div class="card">
-        <span class="card-tag tag-orange">Claude Code</span>
-        <h3>Getting Started with Claude Code</h3>
-        <p>Install, configure and run your first Claude Code session in minutes.</p>
-        <a href="#">Read guide →</a>
-      </div>
+    <div class="progress-track">
+      <div id="progress-fill"></div>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- Training Videos -->
-  <div id="videos" class="hub-section">
-    <div class="section-header">
-      <div class="section-icon" style="background:#ffe0ec;">🎬</div>
-      <h2 style="color:#b5235e;">Training Videos</h2>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="video-thumb" style="background:#ffe0ec;">🤖</div>
-        <span class="card-tag tag-pink">AI Basics</span>
-        <h3>Intro to AI for IT Pros</h3>
-        <p>A 20-minute overview of how AI works and where it fits in EUC.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#ddeeff;">☁️</div>
-        <span class="card-tag tag-blue">Azure</span>
-        <h3>Azure 101 Walkthrough</h3>
-        <p>Hands-on tour of the Azure portal — subscriptions, resources &amp; IAM.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#fff0d4;">🖥️</div>
-        <span class="card-tag tag-orange">Intune</span>
-        <h3>Intune Device Management</h3>
-        <p>Live demo: enrolling, configuring and pushing apps to Windows devices.</p>
-        <a href="#">Watch →</a>
-      </div>
-      <div class="card">
-        <div class="video-thumb" style="background:#d4f5e2;">📊</div>
-        <span class="card-tag tag-green">Power BI</span>
-        <h3>Power BI for Beginners</h3>
-        <p>Build your first dashboard in under 30 minutes — no data background needed.</p>
-        <a href="#">Watch →</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
+  <!-- Sections rendered dynamically from data.json -->
+  <div id="dynamic-sections"></div>
+  <div id="no-results">😕 No resources found — try a different search or clear the filter.</div>
 
   <!-- Feedback -->
   <div id="feedback" class="hub-section">
@@ -380,11 +593,32 @@
 <div id="toast">Thanks! Feedback received 🎉</div>
 
 <script>
-  function scrollTo(id) {
+  // ── Smooth scroll ──────────────────────────────────────────────
+  function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // ── Hamburger nav ──────────────────────────────────────────────
+  (function() {
+    const toggle = document.getElementById('nav-toggle');
+    const nav    = document.getElementById('hub-nav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      toggle.textContent = open ? '✕ Close' : '☰ Menu';
+    });
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = '☰ Menu';
+      });
+    });
+  })();
+
+  // ── Feedback form ──────────────────────────────────────────────
   function submitFeedback() {
     const msg = document.getElementById('fb-msg').value.trim();
     if (!msg) { alert('Please add a message before sending!'); return; }
@@ -395,6 +629,227 @@
     t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
   }
+
+  // ── Search & category filter ───────────────────────────────────
+  function initFilters() {
+    const searchInput = document.getElementById('resource-search');
+    const chips = document.querySelectorAll('.filter-chip');
+    let activeCategory = '';
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeCategory = chip.dataset.category;
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      const container = document.getElementById('dynamic-sections');
+      const cards = container.querySelectorAll('.card');
+      let anyVisible = false;
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const textMatch = !query || text.includes(query);
+        const categoryMatch = !activeCategory || text.includes(activeCategory);
+        const visible = textMatch && categoryMatch;
+        card.style.display = visible ? '' : 'none';
+        if (visible) anyVisible = true;
+      });
+
+      // Show/hide sections that have no visible cards
+      container.querySelectorAll('.hub-section').forEach(section => {
+        const sectionCards = section.querySelectorAll('.card');
+        const sectionVisible = Array.from(sectionCards).some(c => c.style.display !== 'none');
+        section.style.display = sectionVisible ? '' : 'none';
+        // Also toggle the divider that follows this section
+        const next = section.nextElementSibling;
+        if (next && next.classList.contains('divider')) {
+          next.style.display = sectionVisible ? '' : 'none';
+        }
+      });
+
+      document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+    }
+  }
+
+  // ── Progress tracking ──────────────────────────────────────────
+  const LS_KEY = 'training_hub_completed';
+
+  function getCompleted() {
+    try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); }
+    catch { return new Set(); }
+  }
+
+  function saveCompleted(set) {
+    localStorage.setItem(LS_KEY, JSON.stringify([...set]));
+  }
+
+  function updateProgress() {
+    const cards = document.querySelectorAll('#dynamic-sections .card');
+    const total = cards.length;
+    const done = document.querySelectorAll('#dynamic-sections .card.card--done').length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('progress-text').textContent = `${done} of ${total} completed`;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function toggleComplete(btn) {
+    const card = btn.closest('.card');
+    const id = card.dataset.cardId;
+    const completed = getCompleted();
+    if (completed.has(id)) {
+      completed.delete(id);
+      card.classList.remove('card--done');
+      btn.textContent = 'Mark complete';
+    } else {
+      completed.add(id);
+      card.classList.add('card--done');
+      btn.textContent = '✓ Done';
+    }
+    saveCompleted(completed);
+    updateProgress();
+  }
+
+  function resetProgress() {
+    localStorage.removeItem(LS_KEY);
+    document.querySelectorAll('#dynamic-sections .card').forEach(card => {
+      card.classList.remove('card--done');
+      const btn = card.querySelector('.card-complete-btn');
+      if (btn) btn.textContent = 'Mark complete';
+    });
+    updateProgress();
+  }
+
+  function initProgress() {
+    const completed = getCompleted();
+    document.querySelectorAll('#dynamic-sections .card').forEach(card => {
+      if (completed.has(card.dataset.cardId)) {
+        card.classList.add('card--done');
+        const btn = card.querySelector('.card-complete-btn');
+        if (btn) btn.textContent = '✓ Done';
+      }
+    });
+    updateProgress();
+  }
+
+  // ── Card renderers ─────────────────────────────────────────────
+  function renderLinkCard(card) {
+    const safeId = card.title.replace(/"/g, '&quot;');
+    const links = card.subPageUrl
+      ? `<div class="card-links">
+          <a href="${card.subPageUrl}">Explore →</a>
+          <a href="${card.url}" target="_blank" rel="noopener" class="visit-link">Visit site ↗</a>
+        </div>`
+      : `<a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>`;
+    return `
+      <div class="card" data-card-id="${safeId}">
+        <span class="card-tag ${card.tagClass}">${card.tag}</span>
+        <h3>${card.title}</h3>
+        <p>${card.description}</p>
+        ${links}
+        <button class="card-complete-btn" onclick="toggleComplete(this)">Mark complete</button>
+      </div>`;
+  }
+
+  function renderVideoCard(card) {
+    const safeId = card.title.replace(/"/g, '&quot;');
+    return `
+      <div class="card" data-card-id="${safeId}">
+        <div class="video-thumb" style="background:${card.thumbBg};">${card.thumb}</div>
+        <span class="card-tag ${card.tagClass}">${card.tag}</span>
+        <h3>${card.title}</h3>
+        <p>${card.description}</p>
+        <a href="${card.url}"${card.url !== '#' ? ' target="_blank" rel="noopener"' : ''}>${card.linkLabel}</a>
+        <button class="card-complete-btn" onclick="toggleComplete(this)">Mark complete</button>
+      </div>`;
+  }
+
+  // ── Section renderer ───────────────────────────────────────────
+  function renderSection(section, isLast) {
+    const cards = section.cards
+      .map(c => section.type === 'video' ? renderVideoCard(c) : renderLinkCard(c))
+      .join('');
+
+    const pbiBtn = section.id === 'videos' ? `
+      <button onclick="openPbiModal()" class="video-card-btn">
+        ▶ Power BI for Beginners
+        <span style="font-size:11px;opacity:0.7;display:block;margin-top:4px">6 scenes · ~5 min · Interactive</span>
+      </button>` : '';
+
+    return `
+      <div id="${section.id}" class="hub-section">
+        <div class="section-header">
+          <div class="section-icon" style="background:${section.iconBg};">${section.icon}</div>
+          <h2 style="color:${section.titleColor};">${section.title}</h2>
+        </div>
+        <div class="cards-grid">${cards}</div>
+        ${pbiBtn}
+      </div>
+      ${isLast ? '' : '<div class="divider"></div>'}`;
+  }
+
+  // ── Bootstrap: fetch data.json and build the page ──────────────
+  // Use arrayBuffer + TextDecoder to guarantee UTF-8 decoding regardless
+  // of the Content-Type charset header sent by the server (GitHub Pages).
+  fetch('data.json')
+    .then(res => {
+      if (!res.ok) throw new Error(`Failed to load data.json (${res.status})`);
+      return res.arrayBuffer();
+    })
+    .then(buffer => JSON.parse(new TextDecoder('utf-8').decode(buffer)))
+    .then(data => {
+      const container = document.getElementById('dynamic-sections');
+      container.innerHTML = data.sections
+        .map((section, i) => renderSection(section, i === data.sections.length - 1))
+        .join('');
+      initFilters();
+      initProgress();
+    })
+    .catch(err => {
+      document.getElementById('dynamic-sections').innerHTML =
+        `<p style="color:#e74c3c;text-align:center;padding:2rem;">
+          ⚠️ Could not load content: ${err.message}
+        </p>`;
+      console.error(err);
+    });
+</script>
+
+<!-- Power BI Modal -->
+<div id="pbi-modal" role="dialog" aria-modal="true" aria-label="Power BI for Beginners">
+  <div id="pbi-modal-inner">
+    <button id="pbi-modal-close" onclick="closePbiModal()" aria-label="Close">✕</button>
+    <iframe src="powerbi-beginner.html" title="Power BI for Beginners Animation"></iframe>
+  </div>
+</div>
+
+<script>
+  function openPbiModal() {
+    const modal = document.getElementById('pbi-modal');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePbiModal() {
+    const modal = document.getElementById('pbi-modal');
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    // Reload iframe to reset animation state
+    const iframe = modal.querySelector('iframe');
+    iframe.src = iframe.src;
+  }
+  // Close on backdrop click
+  document.getElementById('pbi-modal').addEventListener('click', function(e) {
+    if (e.target === this) closePbiModal();
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePbiModal();
+  });
 </script>
 
 </body>
