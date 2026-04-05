@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Submissions | Tony's AI &amp; Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #4f8ef7; }
+
+    /* ── HERO ── */
+    .page-hero {
+      background: linear-gradient(135deg, #1a7a42 0%, #2ecc71 60%, #4f8ef7 100%);
+      padding: 2.5rem 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .page-hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hero-text {}
+    .page-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .page-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .page-hero p { color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600; }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stats-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .stat-pill {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-pill span { color: #2ecc71; font-size: 15px; }
+
+    .action-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-export { background: #4f8ef7; color: #fff; }
+    .btn-clear  { background: #fff; color: #e74c3c; border: 1.5px solid #e74c3c; }
+    .btn-clear:hover { background: #fff5f5; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      max-width: 900px;
+      margin: 0 auto 0;
+      padding: 0 2rem 1.25rem;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 50px;
+      border: 1.5px solid #e4e8f0;
+      background: #fff;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: #2ecc71; color: #1a7a42; }
+    .filter-btn.active { background: #2ecc71; border-color: #2ecc71; color: #fff; }
+
+    /* ── MAIN CONTENT ── */
+    .main-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      display: none;
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.5rem;
+    }
+    .empty-state p { font-size: 14px; color: #9ca3af; }
+    .empty-state a { color: #4f8ef7; text-decoration: none; font-weight: 700; }
+    .empty-state a:hover { text-decoration: underline; }
+
+    /* ── SUBMISSION CARDS ── */
+    #submissions-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .submission-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem 1rem;
+      align-items: start;
+      transition: box-shadow 0.15s;
+    }
+    .submission-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .submission-card.unread { border-left: 4px solid #2ecc71; }
+    .submission-card.actioned { opacity: 0.65; }
+    .submission-card.actioned .card-msg { text-decoration: line-through; color: #9ca3af; }
+
+    .card-main {}
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .card-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .card-type {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .type-suggest-link     { background: #ddeeff; color: #1a5fa8; }
+    .type-suggest-video    { background: #ffe0ec; color: #b5235e; }
+    .type-request-guide    { background: #fff0d4; color: #b36200; }
+    .type-broken-link      { background: #fee2e2; color: #b91c1c; }
+    .type-improvement      { background: #d4f5e2; color: #1a7a42; }
+    .type-general          { background: #f0f0f0; color: #555e75; }
+
+    .card-meta {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 0.6rem;
+    }
+    .card-msg {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.6;
+      background: #f9fafc;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+    }
+    .action-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 50px;
+      border: 1.5px solid #e4e8f0;
+      background: #fff;
+      cursor: pointer;
+      color: #6b7280;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .action-btn:hover { border-color: #4f8ef7; color: #4f8ef7; }
+    .action-btn.done-btn { border-color: #2ecc71; color: #1a7a42; background: #f0fdf4; }
+    .action-btn.done-btn:hover { background: #dcfce7; }
+    .action-btn.delete-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+    .unread-badge {
+      font-size: 10px;
+      font-weight: 800;
+      background: #2ecc71;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .nav-inner { padding: 0 1rem; }
+      .stats-strip { padding: 1rem; }
+      .filter-bar { padding: 0 1rem 1rem; }
+      .main-wrap { padding: 0 1rem 3rem; }
+      .submission-card { grid-template-columns: 1fr; }
+      .card-actions { flex-direction: row; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI &amp; Cloud Hub</a>
+      <a href="index.html#feedback" class="nav-back">← Back to hub</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-text">
+        <div class="page-badge">💬 Admin View</div>
+        <h1>Feedback &amp; Suggestions</h1>
+        <p>All submissions from the hub feedback form, saved in this browser.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS + ACTIONS -->
+  <div class="stats-strip">
+    <div class="stats-group">
+      <div class="stat-pill"><span id="total-count">0</span> total</div>
+      <div class="stat-pill"><span id="unread-count">0</span> unread</div>
+      <div class="stat-pill"><span id="actioned-count">0</span> actioned</div>
+    </div>
+    <div class="action-group">
+      <button class="btn btn-export" onclick="exportCSV()">⬇️ Export CSV</button>
+      <button class="btn btn-clear" onclick="clearAll()">🗑️ Clear all</button>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" data-filter="unread" onclick="setFilter('unread', this)">🟢 Unread</button>
+    <button class="filter-btn" data-filter="actioned" onclick="setFilter('actioned', this)">✓ Actioned</button>
+    <button class="filter-btn" data-filter="Suggest a training link" onclick="setFilter('Suggest a training link', this)">🔗 Training link</button>
+    <button class="filter-btn" data-filter="Suggest a video" onclick="setFilter('Suggest a video', this)">🎬 Video</button>
+    <button class="filter-btn" data-filter="Request a how-to guide" onclick="setFilter('Request a how-to guide', this)">📖 Guide</button>
+    <button class="filter-btn" data-filter="Report a broken link" onclick="setFilter('Report a broken link', this)">🔴 Broken link</button>
+    <button class="filter-btn" data-filter="General improvement idea" onclick="setFilter('General improvement idea', this)">💡 Improvement</button>
+  </div>
+
+  <!-- SUBMISSIONS -->
+  <div class="main-wrap">
+    <div id="submissions-list"></div>
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">📭</div>
+      <h2>No submissions yet</h2>
+      <p>Once someone submits feedback on the hub, it will appear here.<br>
+        <a href="index.html#feedback">Go to the feedback form →</a>
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+  <script>
+    const LS_KEY = 'training_hub_feedback';
+    const READ_KEY = 'training_hub_feedback_read';
+    const ACTIONED_KEY = 'training_hub_feedback_actioned';
+    let currentFilter = 'all';
+
+    function getSubmissions() {
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+      catch { return []; }
+    }
+
+    function getActioned() {
+      try { return new Set(JSON.parse(localStorage.getItem(ACTIONED_KEY) || '[]')); }
+      catch { return new Set(); }
+    }
+
+    function getRead() {
+      try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]')); }
+      catch { return new Set(); }
+    }
+
+    function saveActioned(set) {
+      localStorage.setItem(ACTIONED_KEY, JSON.stringify([...set]));
+    }
+
+    function saveRead(set) {
+      localStorage.setItem(READ_KEY, JSON.stringify([...set]));
+    }
+
+    function typeClass(type) {
+      const map = {
+        'Suggest a training link': 'type-suggest-link',
+        'Suggest a video':         'type-suggest-video',
+        'Request a how-to guide':  'type-request-guide',
+        'Report a broken link':    'type-broken-link',
+        'General improvement idea':'type-improvement',
+      };
+      return map[type] || 'type-general';
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        + ' at '
+        + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    }
+
+    function toggleActioned(id) {
+      const actioned = getActioned();
+      if (actioned.has(id)) { actioned.delete(id); } else { actioned.add(id); }
+      saveActioned(actioned);
+      render();
+    }
+
+    function deleteEntry(id) {
+      const submissions = getSubmissions().filter(s => s.id !== id);
+      localStorage.setItem(LS_KEY, JSON.stringify(submissions));
+      const actioned = getActioned(); actioned.delete(id); saveActioned(actioned);
+      const read = getRead(); read.delete(id); saveRead(read);
+      render();
+    }
+
+    function clearAll() {
+      if (!confirm('Delete all feedback submissions? This cannot be undone.')) return;
+      localStorage.removeItem(LS_KEY);
+      localStorage.removeItem(ACTIONED_KEY);
+      localStorage.removeItem(READ_KEY);
+      render();
+    }
+
+    function exportCSV() {
+      const submissions = getSubmissions();
+      if (!submissions.length) { alert('No submissions to export.'); return; }
+      const headers = ['Date', 'Name', 'Type', 'Message'];
+      const rows = submissions.map(s => [
+        formatDate(s.date),
+        s.name,
+        s.type,
+        s.message.replace(/"/g, '""')
+      ].map(v => `"${v}"`).join(','));
+      const csv = [headers.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'hub-feedback-' + new Date().toISOString().slice(0, 10) + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function render() {
+      const submissions = getSubmissions();
+      const actioned = getActioned();
+      const read = getRead();
+
+      // Mark all as read on load
+      submissions.forEach(s => read.add(s.id));
+      saveRead(read);
+
+      // Count stats
+      const unreadIds = submissions.filter(s => !read.has(s.id));
+      const actionedIds = submissions.filter(s => actioned.has(s.id));
+      document.getElementById('total-count').textContent = submissions.length;
+      document.getElementById('unread-count').textContent = unreadIds.length;
+      document.getElementById('actioned-count').textContent = actionedIds.length;
+
+      // Filter
+      let filtered = submissions;
+      if (currentFilter === 'unread') {
+        filtered = submissions.filter(s => !read.has(s.id));
+      } else if (currentFilter === 'actioned') {
+        filtered = submissions.filter(s => actioned.has(s.id));
+      } else if (currentFilter !== 'all') {
+        filtered = submissions.filter(s => s.type === currentFilter);
+      }
+
+      const list = document.getElementById('submissions-list');
+      const empty = document.getElementById('empty-state');
+
+      if (filtered.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        if (submissions.length > 0 && currentFilter !== 'all') {
+          empty.querySelector('h2').textContent = 'No submissions match this filter';
+          empty.querySelector('p').innerHTML = 'Try a different filter above.';
+        } else {
+          empty.querySelector('h2').textContent = 'No submissions yet';
+          empty.querySelector('p').innerHTML = 'Once someone submits feedback on the hub, it will appear here.<br><a href="index.html#feedback">Go to the feedback form →</a>';
+        }
+      } else {
+        empty.style.display = 'none';
+        list.innerHTML = filtered.map(s => {
+          const isActioned = actioned.has(s.id);
+          const isUnread = !read.has(s.id);
+          return `
+            <div class="submission-card ${isUnread ? 'unread' : ''} ${isActioned ? 'actioned' : ''}">
+              <div class="card-main">
+                <div class="card-header">
+                  <span class="card-name">${escHtml(s.name)}</span>
+                  <span class="card-type ${typeClass(s.type)}">${escHtml(s.type || 'General')}</span>
+                  ${isUnread ? '<span class="unread-badge">New</span>' : ''}
+                </div>
+                <div class="card-meta">📅 ${formatDate(s.date)}</div>
+                <div class="card-msg">${escHtml(s.message)}</div>
+              </div>
+              <div class="card-actions">
+                <button class="action-btn done-btn" onclick="toggleActioned(${s.id})">
+                  ${isActioned ? '↩ Undo' : '✓ Mark actioned'}
+                </button>
+                <button class="action-btn delete-btn" onclick="deleteEntry(${s.id})">🗑 Delete</button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Mark new submissions as unread on first page load (before render marks them read)
+    (function markNewAsUnread() {
+      const submissions = getSubmissions();
+      const read = getRead();
+      const unreadCount = submissions.filter(s => !read.has(s.id)).length;
+      // Update the stat before render reads them
+      document.getElementById('unread-count').textContent = unreadCount;
+    })();
+
+    render();
+  </script>
+
+</body>
+</html>

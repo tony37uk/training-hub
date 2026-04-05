@@ -585,6 +585,10 @@
         <textarea placeholder="Tell me more..." id="fb-msg"></textarea>
         <button class="fb-submit" onclick="submitFeedback()">Send Feedback ✉️</button>
       </div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #e4e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span style="font-size:13px;color:#9ca3af;">Submissions are saved in this browser.</span>
+        <a href="feedback-submissions.html" style="font-size:13px;font-weight:700;color:#4f8ef7;text-decoration:none;">📋 View all submissions →</a>
+      </div>
     </div>
   </div>
 
@@ -622,6 +626,18 @@
   function submitFeedback() {
     const msg = document.getElementById('fb-msg').value.trim();
     if (!msg) { alert('Please add a message before sending!'); return; }
+    const entry = {
+      id: Date.now(),
+      name: document.getElementById('fb-name').value.trim() || 'Anonymous',
+      type: document.getElementById('fb-type').value || 'General',
+      message: msg,
+      date: new Date().toISOString()
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem('training_hub_feedback') || '[]');
+      existing.unshift(entry);
+      localStorage.setItem('training_hub_feedback', JSON.stringify(existing));
+    } catch(e) { console.warn('Could not save feedback:', e); }
     document.getElementById('fb-name').value = '';
     document.getElementById('fb-type').value = '';
     document.getElementById('fb-msg').value = '';
