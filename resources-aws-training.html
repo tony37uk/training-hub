@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Training | Tony's AI &amp; Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(79,142,247,0.07);
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #4f8ef7;
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b7280;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: #4f8ef7; }
+
+    .page-hero {
+      background: linear-gradient(135deg, #c45b00 0%, #f7a525 55%, #f7d425 100%);
+      padding: 3rem 2rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+    .page-hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+    .page-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .page-hero p { color: rgba(255,255,255,0.95); font-size: 15px; font-weight: 600; max-width: 560px; }
+
+    .page-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .page-content { min-width: 0; }
+    .page-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e8eaf0;
+    }
+    .page-content h2:first-child { margin-top: 0; }
+    .page-content p { font-size: 15px; color: #374151; margin-bottom: 1rem; }
+
+    .link-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .link-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .link-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .link-body { flex: 1; min-width: 0; }
+    .link-body h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
+    .link-body p { font-size: 13px; color: #6b7280; margin: 0; line-height: 1.5; }
+    .link-arrow { font-size: 18px; color: #f7a525; align-self: center; flex-shrink: 0; }
+
+    .tip {
+      background: #fff8ee;
+      border-left: 4px solid #f7a525;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: #7c3a00;
+      line-height: 1.6;
+    }
+    .success-box {
+      background: #f0fdf4;
+      border-left: 4px solid #2ecc71;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: #14532d;
+      line-height: 1.6;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .tag-free     { background: #d4f5e2; color: #1a7a42; }
+    .tag-cert     { background: #fff0d4; color: #b36200; }
+    .tag-new      { background: #ffe0ec; color: #b5235e; }
+    .tag-lab      { background: #ddeeff; color: #1a5fa8; }
+    .tag-video    { background: #ede9fe; color: #6d28d9; }
+
+    .page-sidebar { position: sticky; top: 78px; }
+    .sidebar-card {
+      background: #fff;
+      border: 1px solid #e8eaf0;
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f7a525;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.15s;
+    }
+    .quick-link:last-child { border-bottom: none; }
+    .quick-link:hover { color: #c45b00; }
+
+    .cert-list { list-style: none; }
+    .cert-list li {
+      font-size: 13px;
+      color: #374151;
+      padding: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      border-bottom: 1px dashed #e8eaf0;
+      line-height: 1.5;
+    }
+    .cert-list li:last-child { border-bottom: none; }
+    .cert-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f7a525;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+      color: #9ca3af;
+      border-top: 1px solid #e8eaf0;
+      background: #fff;
+    }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 680px) {
+      .page-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .page-sidebar { position: static; }
+      .page-hero { padding: 2rem 1rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI &amp; Cloud Hub</a>
+      <a href="index.html#links" class="nav-back">← Back to training links</a>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-badge">🔗 Training Resource</div>
+      <h1>AWS Training &amp; Certification</h1>
+      <p>Official Amazon Web Services learning — free digital courses, hands-on labs, and industry-recognised cloud certifications for every level.</p>
+    </div>
+  </section>
+
+  <div class="page-layout">
+    <article class="page-content">
+
+      <p>AWS Training and Certification is Amazon's official learning platform for cloud skills. It covers everything from cloud fundamentals to advanced architecture, machine learning, and security — with free digital courses, paid instructor-led training, and globally recognised certifications.</p>
+
+      <div class="tip">
+        <span>💡</span>
+        <span><strong>Create a free AWS account</strong> to access hands-on labs and the AWS Free Tier — giving you real cloud experience without spending money.</span>
+      </div>
+
+      <h2>Start Here — Free Digital Training</h2>
+
+      <a href="https://aws.amazon.com/training/digital/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">📚</div>
+        <div class="link-body">
+          <span class="tag tag-free">Free</span>
+          <h3>AWS Digital Training</h3>
+          <p>Hundreds of free, self-paced online courses covering every AWS service and role — from absolute beginner to advanced practitioner.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://explore.skillbuilder.aws" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">🏗️</div>
+        <div class="link-body">
+          <span class="tag tag-free">Free</span>
+          <h3>AWS Skill Builder</h3>
+          <p>AWS's main learning platform — access free courses, learning plans, and optional paid subscription for labs and official exam prep.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Cloud Fundamentals &amp; Certifications</h2>
+
+      <a href="https://aws.amazon.com/certification/certified-cloud-practitioner/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">☁️</div>
+        <div class="link-body">
+          <span class="tag tag-cert">CLF-C02</span>
+          <h3>AWS Certified Cloud Practitioner</h3>
+          <p>The entry-level AWS certification — covers cloud concepts, core AWS services, security, pricing, and support. The AWS equivalent of AZ-900.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://aws.amazon.com/certification/certified-solutions-architect-associate/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">🏛️</div>
+        <div class="link-body">
+          <span class="tag tag-cert">SAA-C03</span>
+          <h3>AWS Solutions Architect – Associate</h3>
+          <p>One of the most recognised cloud certifications globally — covers designing and deploying scalable, fault-tolerant systems on AWS.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://aws.amazon.com/certification/certified-sysops-administrator-associate/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#fff0d4;">⚙️</div>
+        <div class="link-body">
+          <span class="tag tag-cert">SOA-C02</span>
+          <h3>AWS SysOps Administrator – Associate</h3>
+          <p>Focused on deploying, managing, and operating workloads on AWS. Great for IT pros moving into cloud ops roles.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>Hands-On Labs</h2>
+
+      <a href="https://aws.amazon.com/getting-started/hands-on/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">🧪</div>
+        <div class="link-body">
+          <span class="tag tag-lab">Hands-on</span>
+          <h3>AWS Getting Started Tutorials</h3>
+          <p>Step-by-step tutorials for launching your first EC2 instance, setting up S3, building serverless apps, and more — directly in the AWS console.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://aws.amazon.com/free/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ddeeff;">🆓</div>
+        <div class="link-body">
+          <span class="tag tag-lab">Free Tier</span>
+          <h3>AWS Free Tier</h3>
+          <p>Create a free AWS account and get 12 months of free access to core services including EC2, S3, RDS, and Lambda — perfect for learning and experimenting.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <h2>AI &amp; Machine Learning</h2>
+
+      <a href="https://aws.amazon.com/training/learn-about/machine-learning/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ffe0ec;">🤖</div>
+        <div class="link-body">
+          <span class="tag tag-new">AI / ML</span>
+          <h3>AWS Machine Learning Training</h3>
+          <p>Dedicated learning path for AI and ML on AWS — covering Amazon SageMaker, Bedrock, Rekognition, and more. Free courses included.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <a href="https://aws.amazon.com/certification/certified-ai-practitioner/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-icon" style="background:#ffe0ec;">✨</div>
+        <div class="link-body">
+          <span class="tag tag-new">AIF-C01</span>
+          <h3>AWS Certified AI Practitioner</h3>
+          <p>AWS's newest entry-level certification for AI and generative AI on AWS — covers foundational AI/ML concepts and AWS AI services.</p>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <div class="success-box">
+        <span>🎓</span>
+        <span><strong>AWS re/Start:</strong> If you're new to cloud and looking for a career change, AWS re/Start is a free, full-time training programme for unemployed or underemployed people — worth exploring at <strong>aws.amazon.com/training/restart</strong>.</span>
+      </div>
+
+    </article>
+
+    <aside class="page-sidebar">
+
+      <div class="sidebar-card">
+        <h4>Quick Links</h4>
+        <a href="https://aws.amazon.com/training/" target="_blank" class="quick-link">📦 AWS Training home</a>
+        <a href="https://explore.skillbuilder.aws" target="_blank" class="quick-link">🏗️ AWS Skill Builder</a>
+        <a href="https://aws.amazon.com/certification/" target="_blank" class="quick-link">🎓 All certifications</a>
+        <a href="https://aws.amazon.com/free/" target="_blank" class="quick-link">🆓 AWS Free Tier</a>
+        <a href="https://aws.amazon.com/training/restart/" target="_blank" class="quick-link">🚀 AWS re/Start</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Cert pathways</h4>
+        <ul class="cert-list">
+          <li><span class="cert-dot"></span>Cloud Practitioner (Foundational)</li>
+          <li><span class="cert-dot"></span>Solutions Architect Associate</li>
+          <li><span class="cert-dot"></span>SysOps Administrator Associate</li>
+          <li><span class="cert-dot"></span>Developer Associate</li>
+          <li><span class="cert-dot"></span>Solutions Architect Professional</li>
+          <li><span class="cert-dot"></span>AI Practitioner (Foundational)</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>About this resource</h4>
+        <p style="font-size:13px;color:#6b7280;line-height:1.6;">
+          <strong>Cost:</strong> Free digital courses<br>
+          <strong>Account needed:</strong> AWS (free)<br>
+          <strong>Skill level:</strong> All levels<br>
+          <strong>Certifications:</strong> Yes, globally recognised
+        </p>
+      </div>
+
+      <div class="sidebar-card" style="background:linear-gradient(135deg,#fff8ee,#fffbf0);border-color:#f7d6a0;">
+        <h4 style="color:#c45b00;">Top tip</h4>
+        <p style="font-size:13px;color:#7c3a00;line-height:1.6;">AWS Skill Builder offers <strong>free exam prep</strong> courses with official practice questions — use them before booking your exam to make sure you're ready.</p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+
+</body>
+</html>

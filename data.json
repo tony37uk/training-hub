@@ -123,6 +123,7 @@
           "title": "AWS Training",
           "description": "Official Amazon Web Services training \u2014 courses, labs, and certifications for every level.",
           "url": "https://aws.amazon.com/training/",
+          "subPageUrl": "resources-aws-training.html",
           "linkLabel": "Visit \u2192"
         },
         {
