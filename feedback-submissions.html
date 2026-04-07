@@ -360,6 +360,38 @@
     <button class="filter-btn" data-filter="General improvement idea" onclick="setFilter('General improvement idea', this)">💡 Improvement</button>
   </div>
 
+  <!-- SETUP NOTICE (shown until Supabase is configured) -->
+  <div id="setup-notice" style="display:none;max-width:900px;margin:0 auto 0;padding:0 2rem 1.5rem;">
+    <div style="background:#fffbeb;border:1.5px solid #fbbf24;border-radius:14px;padding:1.25rem 1.5rem;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:1.5rem;flex-shrink:0;">⚙️</span>
+        <div>
+          <p style="font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:#92400e;margin-bottom:0.5rem;">Supabase setup required — submissions aren't being saved to a database yet</p>
+          <p style="font-size:13px;color:#78350f;line-height:1.7;margin-bottom:0.75rem;">Follow these 4 steps to connect a free persistent database. Takes about 5 minutes.</p>
+          <ol style="font-size:13px;color:#78350f;line-height:2;padding-left:1.2rem;">
+            <li>Go to <a href="https://supabase.com" target="_blank" style="color:#d97706;font-weight:700;">supabase.com</a> → sign up free → create a new project (pick any region)</li>
+            <li>Once the project loads, click <strong>SQL Editor</strong> in the left sidebar and run this query:<br>
+              <code style="display:block;margin:6px 0;background:#fef3c7;border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.8;color:#1a1a2e;">
+                create table feedback (<br>
+                &nbsp;&nbsp;id bigint generated always as identity primary key,<br>
+                &nbsp;&nbsp;name text not null default 'Anonymous',<br>
+                &nbsp;&nbsp;type text not null default 'General',<br>
+                &nbsp;&nbsp;message text not null,<br>
+                &nbsp;&nbsp;actioned boolean not null default false,<br>
+                &nbsp;&nbsp;created_at timestamptz not null default now()<br>
+                );<br>
+                alter table feedback enable row level security;<br>
+                create policy "anon_all" on feedback for all to anon using (true) with check (true);
+              </code>
+            </li>
+            <li>Go to <strong>Project Settings → API</strong> — copy your <strong>Project URL</strong> and <strong>anon / public key</strong></li>
+            <li>Open <strong>index.html</strong> and <strong>feedback-submissions.html</strong> in a text editor — replace <code style="background:#fef3c7;padding:2px 6px;border-radius:4px;">YOUR_PROJECT_REF</code> and <code style="background:#fef3c7;padding:2px 6px;border-radius:4px;">YOUR_ANON_KEY_HERE</code> with your copied values, then push to GitHub</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- SUBMISSIONS -->
   <div class="main-wrap">
     <div id="submissions-list"></div>
@@ -377,41 +409,83 @@
   </footer>
 
   <script>
-    const LS_KEY = 'training_hub_feedback';
-    const READ_KEY = 'training_hub_feedback_read';
-    const ACTIONED_KEY = 'training_hub_feedback_actioned';
-    let currentFilter = 'all';
+    // ── Supabase config ──────────────────────────────────────────
+    // Replace these with your project values (see setup notice above)
+    const SUPABASE_URL      = 'https://YOUR_PROJECT_REF.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
+    const SB_CONFIGURED     = !SUPABASE_URL.includes('YOUR_PROJECT_REF');
 
-    function getSubmissions() {
-      try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+    // Read state is kept locally — it's a UI concern, not stored in DB
+    const READ_KEY      = 'training_hub_feedback_read';
+    let currentFilter   = 'all';
+    let allSubmissions  = [];
+
+    // ── Show/hide setup notice ───────────────────────────────────
+    if (!SB_CONFIGURED) {
+      document.getElementById('setup-notice').style.display = 'block';
+    }
+
+    // ── Supabase helpers ─────────────────────────────────────────
+    function sbHeaders() {
+      return {
+        'Content-Type':  'application/json',
+        'apikey':        SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      };
+    }
+
+    async function sbFetch() {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/feedback?order=created_at.desc`,
+        { headers: sbHeaders() }
+      );
+      if (!res.ok) throw new Error(`Could not load submissions (${res.status})`);
+      return res.json();
+    }
+
+    async function sbPatchActioned(id, actioned) {
+      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=eq.${id}`, {
+        method:  'PATCH',
+        headers: sbHeaders(),
+        body:    JSON.stringify({ actioned })
+      });
+    }
+
+    async function sbDeleteOne(id) {
+      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=eq.${id}`, {
+        method: 'DELETE', headers: sbHeaders()
+      });
+    }
+
+    async function sbDeleteAll() {
+      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=gte.0`, {
+        method: 'DELETE', headers: sbHeaders()
+      });
+    }
+
+    // ── localStorage fallback helpers (used when not configured) ─
+    function lsGetSubmissions() {
+      try { return JSON.parse(localStorage.getItem('training_hub_feedback') || '[]'); }
       catch { return []; }
     }
 
-    function getActioned() {
-      try { return new Set(JSON.parse(localStorage.getItem(ACTIONED_KEY) || '[]')); }
-      catch { return new Set(); }
-    }
-
+    // ── Read tracking (localStorage) ────────────────────────────
     function getRead() {
       try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || '[]')); }
       catch { return new Set(); }
     }
-
-    function saveActioned(set) {
-      localStorage.setItem(ACTIONED_KEY, JSON.stringify([...set]));
-    }
-
     function saveRead(set) {
       localStorage.setItem(READ_KEY, JSON.stringify([...set]));
     }
 
+    // ── Utilities ────────────────────────────────────────────────
     function typeClass(type) {
       const map = {
-        'Suggest a training link': 'type-suggest-link',
-        'Suggest a video':         'type-suggest-video',
-        'Request a how-to guide':  'type-request-guide',
-        'Report a broken link':    'type-broken-link',
-        'General improvement idea':'type-improvement',
+        'Suggest a training link':  'type-suggest-link',
+        'Suggest a video':          'type-suggest-video',
+        'Request a how-to guide':   'type-request-guide',
+        'Report a broken link':     'type-broken-link',
+        'General improvement idea': 'type-improvement',
       };
       return map[type] || 'type-general';
     }
@@ -419,118 +493,78 @@
     function formatDate(iso) {
       const d = new Date(iso);
       return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-        + ' at '
-        + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        + ' at ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     }
 
-    function setFilter(filter, btn) {
-      currentFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render();
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function toggleActioned(id) {
-      const actioned = getActioned();
-      if (actioned.has(id)) { actioned.delete(id); } else { actioned.add(id); }
-      saveActioned(actioned);
-      render();
+    function setLoading(on) {
+      const list = document.getElementById('submissions-list');
+      if (on) list.innerHTML = '<p style="text-align:center;padding:3rem;color:#9ca3af;font-size:14px;">⏳ Loading submissions…</p>';
     }
 
-    function deleteEntry(id) {
-      const submissions = getSubmissions().filter(s => s.id !== id);
-      localStorage.setItem(LS_KEY, JSON.stringify(submissions));
-      const actioned = getActioned(); actioned.delete(id); saveActioned(actioned);
-      const read = getRead(); read.delete(id); saveRead(read);
-      render();
-    }
-
-    function clearAll() {
-      if (!confirm('Delete all feedback submissions? This cannot be undone.')) return;
-      localStorage.removeItem(LS_KEY);
-      localStorage.removeItem(ACTIONED_KEY);
-      localStorage.removeItem(READ_KEY);
-      render();
-    }
-
-    function exportCSV() {
-      const submissions = getSubmissions();
-      if (!submissions.length) { alert('No submissions to export.'); return; }
-      const headers = ['Date', 'Name', 'Type', 'Message'];
-      const rows = submissions.map(s => [
-        formatDate(s.date),
-        s.name,
-        s.type,
-        s.message.replace(/"/g, '""')
-      ].map(v => `"${v}"`).join(','));
-      const csv = [headers.join(','), ...rows].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'hub-feedback-' + new Date().toISOString().slice(0, 10) + '.csv';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
+    // ── Render ───────────────────────────────────────────────────
     function render() {
-      const submissions = getSubmissions();
-      const actioned = getActioned();
-      const read = getRead();
+      const read     = getRead();
+      const source   = allSubmissions;
 
-      // Mark all as read on load
-      submissions.forEach(s => read.add(s.id));
+      // Mark all visible as read
+      source.forEach(s => read.add(s.id));
       saveRead(read);
 
-      // Count stats
-      const unreadIds = submissions.filter(s => !read.has(s.id));
-      const actionedIds = submissions.filter(s => actioned.has(s.id));
-      document.getElementById('total-count').textContent = submissions.length;
-      document.getElementById('unread-count').textContent = unreadIds.length;
-      document.getElementById('actioned-count').textContent = actionedIds.length;
+      const total    = source.length;
+      const actioned = source.filter(s => s.actioned).length;
+      // unread = everything not previously seen before this page load
+      document.getElementById('total-count').textContent    = total;
+      document.getElementById('actioned-count').textContent = actioned;
+      // unread count reflects new items since last visit (tracked before render marks them read)
+      // already set in loadSubmissions before calling render
 
-      // Filter
-      let filtered = submissions;
+      // Apply filter
+      let filtered = source;
       if (currentFilter === 'unread') {
-        filtered = submissions.filter(s => !read.has(s.id));
+        filtered = source.filter(s => !read.has(s.id));
       } else if (currentFilter === 'actioned') {
-        filtered = submissions.filter(s => actioned.has(s.id));
+        filtered = source.filter(s => s.actioned);
       } else if (currentFilter !== 'all') {
-        filtered = submissions.filter(s => s.type === currentFilter);
+        filtered = source.filter(s => s.type === currentFilter);
       }
 
-      const list = document.getElementById('submissions-list');
+      const list  = document.getElementById('submissions-list');
       const empty = document.getElementById('empty-state');
 
       if (filtered.length === 0) {
         list.innerHTML = '';
         empty.style.display = 'block';
-        if (submissions.length > 0 && currentFilter !== 'all') {
-          empty.querySelector('h2').textContent = 'No submissions match this filter';
-          empty.querySelector('p').innerHTML = 'Try a different filter above.';
+        if (total > 0 && currentFilter !== 'all') {
+          empty.querySelector('h2').textContent  = 'No submissions match this filter';
+          empty.querySelector('p').innerHTML     = 'Try a different filter above.';
         } else {
-          empty.querySelector('h2').textContent = 'No submissions yet';
-          empty.querySelector('p').innerHTML = 'Once someone submits feedback on the hub, it will appear here.<br><a href="index.html#feedback">Go to the feedback form →</a>';
+          empty.querySelector('h2').textContent  = 'No submissions yet';
+          empty.querySelector('p').innerHTML     = 'Once someone submits feedback on the hub, it will appear here.<br><a href="index.html#feedback">Go to the feedback form →</a>';
         }
       } else {
         empty.style.display = 'none';
         list.innerHTML = filtered.map(s => {
-          const isActioned = actioned.has(s.id);
-          const isUnread = !read.has(s.id);
+          const isNew = !read.has(s.id);
           return `
-            <div class="submission-card ${isUnread ? 'unread' : ''} ${isActioned ? 'actioned' : ''}">
+            <div class="submission-card ${isNew ? 'unread' : ''} ${s.actioned ? 'actioned' : ''}">
               <div class="card-main">
                 <div class="card-header">
                   <span class="card-name">${escHtml(s.name)}</span>
                   <span class="card-type ${typeClass(s.type)}">${escHtml(s.type || 'General')}</span>
-                  ${isUnread ? '<span class="unread-badge">New</span>' : ''}
+                  ${isNew ? '<span class="unread-badge">New</span>' : ''}
                 </div>
-                <div class="card-meta">📅 ${formatDate(s.date)}</div>
+                <div class="card-meta">📅 ${formatDate(s.created_at)}</div>
                 <div class="card-msg">${escHtml(s.message)}</div>
               </div>
               <div class="card-actions">
-                <button class="action-btn done-btn" onclick="toggleActioned(${s.id})">
-                  ${isActioned ? '↩ Undo' : '✓ Mark actioned'}
+                <button class="action-btn done-btn" onclick="toggleActioned(${s.id}, ${s.actioned})">
+                  ${s.actioned ? '↩ Undo' : '✓ Mark actioned'}
                 </button>
                 <button class="action-btn delete-btn" onclick="deleteEntry(${s.id})">🗑 Delete</button>
               </div>
@@ -539,24 +573,111 @@
       }
     }
 
-    function escHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    // ── Load data ────────────────────────────────────────────────
+    async function loadSubmissions() {
+      setLoading(true);
+      try {
+        if (SB_CONFIGURED) {
+          allSubmissions = await sbFetch();
+        } else {
+          // Fallback: show localStorage submissions until Supabase is set up
+          const ls = lsGetSubmissions();
+          // Normalise field names to match Supabase schema
+          allSubmissions = ls.map(s => ({
+            id:         s.id,
+            name:       s.name,
+            type:       s.type,
+            message:    s.message,
+            actioned:   false,
+            created_at: s.date || s.created_at || new Date().toISOString()
+          }));
+        }
+      } catch(err) {
+        document.getElementById('submissions-list').innerHTML =
+          `<div style="text-align:center;padding:3rem;color:#e74c3c;font-size:14px;">
+            ⚠️ Could not load submissions: ${escHtml(err.message)}<br>
+            <button onclick="loadSubmissions()" style="margin-top:1rem;padding:8px 20px;border-radius:50px;border:1.5px solid #e74c3c;background:#fff;color:#e74c3c;font-weight:700;cursor:pointer;font-family:inherit;">
+              Retry
+            </button>
+          </div>`;
+        return;
+      }
+
+      // Count unread BEFORE render marks them read
+      const read = getRead();
+      const unread = allSubmissions.filter(s => !read.has(s.id)).length;
+      document.getElementById('unread-count').textContent = unread;
+
+      render();
     }
 
-    // Mark new submissions as unread on first page load (before render marks them read)
-    (function markNewAsUnread() {
-      const submissions = getSubmissions();
-      const read = getRead();
-      const unreadCount = submissions.filter(s => !read.has(s.id)).length;
-      // Update the stat before render reads them
-      document.getElementById('unread-count').textContent = unreadCount;
-    })();
+    // ── Actions ──────────────────────────────────────────────────
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    }
 
-    render();
+    async function toggleActioned(id, current) {
+      const newVal = !current;
+      if (SB_CONFIGURED) {
+        await sbPatchActioned(id, newVal);
+        await loadSubmissions();
+      } else {
+        // Toggle in local array for localStorage mode
+        allSubmissions = allSubmissions.map(s => s.id === id ? { ...s, actioned: newVal } : s);
+        render();
+      }
+    }
+
+    async function deleteEntry(id) {
+      if (!confirm('Delete this submission?')) return;
+      if (SB_CONFIGURED) {
+        await sbDeleteOne(id);
+        await loadSubmissions();
+      } else {
+        allSubmissions = allSubmissions.filter(s => s.id !== id);
+        const ls = lsGetSubmissions().filter(s => s.id !== id);
+        localStorage.setItem('training_hub_feedback', JSON.stringify(ls));
+        render();
+      }
+    }
+
+    async function clearAll() {
+      if (!confirm('Delete ALL feedback submissions? This cannot be undone.')) return;
+      if (SB_CONFIGURED) {
+        await sbDeleteAll();
+        await loadSubmissions();
+      } else {
+        localStorage.removeItem('training_hub_feedback');
+        allSubmissions = [];
+        render();
+      }
+    }
+
+    function exportCSV() {
+      if (!allSubmissions.length) { alert('No submissions to export.'); return; }
+      const headers = ['Date', 'Name', 'Type', 'Message', 'Actioned'];
+      const rows = allSubmissions.map(s => [
+        formatDate(s.created_at),
+        s.name,
+        s.type,
+        s.message.replace(/"/g, '""'),
+        s.actioned ? 'Yes' : 'No'
+      ].map(v => `"${v}"`).join(','));
+      const csv   = [headers.join(','), ...rows].join('\n');
+      const blob  = new Blob([csv], { type: 'text/csv' });
+      const url   = URL.createObjectURL(blob);
+      const a     = document.createElement('a');
+      a.href      = url;
+      a.download  = 'hub-feedback-' + new Date().toISOString().slice(0, 10) + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ── Boot ─────────────────────────────────────────────────────
+    loadSubmissions();
   </script>
 
 </body>

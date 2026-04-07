@@ -622,25 +622,43 @@
     });
   })();
 
+  // ── Supabase config ────────────────────────────────────────────
+  // Replace these two values with your own — see feedback-submissions.html for setup steps
+  const SUPABASE_URL      = 'https://YOUR_PROJECT_REF.supabase.co';
+  const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
+  const SB_CONFIGURED     = !SUPABASE_URL.includes('YOUR_PROJECT_REF');
+
   // ── Feedback form ──────────────────────────────────────────────
   function submitFeedback() {
     const msg = document.getElementById('fb-msg').value.trim();
     if (!msg) { alert('Please add a message before sending!'); return; }
     const entry = {
-      id: Date.now(),
-      name: document.getElementById('fb-name').value.trim() || 'Anonymous',
-      type: document.getElementById('fb-type').value || 'General',
-      message: msg,
-      date: new Date().toISOString()
+      name:    document.getElementById('fb-name').value.trim() || 'Anonymous',
+      type:    document.getElementById('fb-type').value       || 'General',
+      message: msg
     };
-    try {
-      const existing = JSON.parse(localStorage.getItem('training_hub_feedback') || '[]');
-      existing.unshift(entry);
-      localStorage.setItem('training_hub_feedback', JSON.stringify(existing));
-    } catch(e) { console.warn('Could not save feedback:', e); }
+    if (SB_CONFIGURED) {
+      fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+        method:  'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'apikey':        SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer':        'return=minimal'
+        },
+        body: JSON.stringify(entry)
+      }).catch(err => console.warn('Supabase save failed:', err));
+    } else {
+      // Fallback to localStorage until Supabase is configured
+      try {
+        const stored = JSON.parse(localStorage.getItem('training_hub_feedback') || '[]');
+        stored.unshift({ ...entry, id: Date.now(), created_at: new Date().toISOString(), actioned: false });
+        localStorage.setItem('training_hub_feedback', JSON.stringify(stored));
+      } catch(e) { console.warn('localStorage save failed:', e); }
+    }
     document.getElementById('fb-name').value = '';
     document.getElementById('fb-type').value = '';
-    document.getElementById('fb-msg').value = '';
+    document.getElementById('fb-msg').value  = '';
     const t = document.getElementById('toast');
     t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 3000);
