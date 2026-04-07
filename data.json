@@ -197,14 +197,14 @@
           "linkLabel": "Watch \u2192"
         },
         {
-          "thumb": "\u2601\ufe0f",
-          "thumbBg": "#ddeeff",
-          "tag": "Azure",
-          "tagClass": "tag-blue",
-          "title": "Azure 101 Walkthrough",
-          "description": "Hands-on tour of the Azure portal \u2014 subscriptions, resources & IAM.",
-          "url": "#",
-          "linkLabel": "Watch \u2192"
+          "thumb": "\ud83e\udd16",
+          "thumbBg": "#ede9fe",
+          "tag": "AI Coding",
+          "tagClass": "tag-purple",
+          "title": "AI-Assisted Coding Tutorial",
+          "description": "A hands-on tutorial showing how to build and ship projects faster using AI coding tools.",
+          "url": "https://www.youtube.com/watch?v=wlpBCazAY9Q&t=153s",
+          "linkLabel": "Watch on YouTube \u2192"
         },
         {
           "thumb": "\ud83d\udcca",
