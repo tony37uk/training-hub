@@ -175,6 +175,30 @@
           "description": "Install, configure and run your first Claude Code session in minutes.",
           "url": "guide-claude-code.html",
           "linkLabel": "Read guide \u2192"
+        },
+        {
+          "tag": "AI Agents",
+          "tagClass": "tag-orange",
+          "title": "Getting Started with AI Agents",
+          "description": "What AI agents are, how they work, and how to get started safely as an IT professional.",
+          "url": "guide-ai-agents.html",
+          "linkLabel": "Read guide \u2192"
+        },
+        {
+          "tag": "OpenClaw",
+          "tagClass": "tag-orange",
+          "title": "Getting Started with OpenClaw",
+          "description": "Install and use OpenClaw \u2014 the open-source personal AI assistant that lives on your machine.",
+          "url": "guide-openclaw.html",
+          "linkLabel": "Read guide \u2192"
+        },
+        {
+          "tag": "Vibe Coding",
+          "tagClass": "tag-orange",
+          "title": "Getting Started with Vibe Coding",
+          "description": "Build real software using plain English and AI tools \u2014 no coding experience required.",
+          "url": "guide-vibe-coding.html",
+          "linkLabel": "Read guide \u2192"
         }
       ]
     },

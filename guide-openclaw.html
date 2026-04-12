@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started with OpenClaw | Tony's AI &amp; Cloud Training Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f4f6fb; color: #1a1a2e; min-height: 100vh; line-height: 1.7; }
+
+    header { background: #fff; border-bottom: 1px solid #e8eaf0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(79,142,247,0.07); }
+    .nav-inner { max-width: 860px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 58px; }
+    .nav-brand { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.95rem; color: #4f8ef7; text-decoration: none; }
+    .nav-back { font-size: 13px; font-weight: 700; color: #6b7280; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.15s; }
+    .nav-back:hover { color: #4f8ef7; }
+
+    .guide-hero { background: linear-gradient(135deg, #0f4c3a 0%, #0d9488 50%, #14b8a6 100%); padding: 3rem 2rem 3.5rem; position: relative; overflow: hidden; }
+    .guide-hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 36px 36px; }
+    .guide-hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+    .guide-badge { display: inline-block; background: rgba(255,255,255,0.25); color: #fff; font-size: 12px; font-weight: 800; padding: 4px 14px; border-radius: 50px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; }
+    .guide-hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 700; color: #fff; margin-bottom: 0.75rem; text-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .guide-meta { display: flex; flex-wrap: wrap; gap: 16px; color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600; }
+
+    .guide-layout { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 4rem; display: grid; grid-template-columns: 1fr 240px; gap: 2.5rem; align-items: start; }
+    .guide-content { min-width: 0; }
+    .guide-content h2 { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700; color: #1a1a2e; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 2px solid #e8eaf0; }
+    .guide-content h2:first-child { margin-top: 0; }
+    .guide-content h3 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: #0f766e; margin: 1.5rem 0 0.5rem; }
+    .guide-content p { font-size: 15px; color: #374151; margin-bottom: 1rem; }
+
+    .step { background: #fff; border: 1px solid #e8eaf0; border-radius: 16px; padding: 1.4rem 1.5rem; margin-bottom: 1.25rem; display: flex; gap: 1.1rem; align-items: flex-start; }
+    .step-num { min-width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0d9488, #14b8a6); color: #fff; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-body { flex: 1; min-width: 0; }
+    .step-body h3 { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 0.4rem; }
+    .step-body p { font-size: 14px; color: #4b5563; margin: 0 0 0.5rem; line-height: 1.6; }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    .code-block { background: #1e1e2e; border-radius: 10px; padding: 1rem 1.25rem; margin: 0.75rem 0; overflow-x: auto; }
+    .code-block code { font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #a6e3a1; line-height: 1.7; white-space: pre; }
+    code { background: #f0fdfa; color: #0f766e; padding: 2px 7px; border-radius: 5px; font-size: 13px; font-family: 'Courier New', Courier, monospace; }
+
+    .tip     { background: #f0fdfa; border-left: 4px solid #0d9488; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; display: flex; gap: 10px; font-size: 14px; color: #134e4a; line-height: 1.6; }
+    .warning { background: #fff7ed; border-left: 4px solid #f7a525; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; display: flex; gap: 10px; font-size: 14px; color: #7c3a00; line-height: 1.6; }
+    .fire    { background: #fff1f2; border-left: 4px solid #f43f5e; border-radius: 12px; padding: 1rem 1.1rem; margin: 1rem 0; display: flex; gap: 10px; font-size: 14px; color: #881337; line-height: 1.6; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13px; }
+    .compare-table th { background: #f0fdfa; color: #0f766e; font-weight: 700; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ccfbf1; }
+    .compare-table td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; color: #374151; vertical-align: top; }
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    .checklist { list-style: none; margin: 0.75rem 0 1rem; }
+    .checklist li { font-size: 14px; color: #374151; padding: 6px 0; display: flex; align-items: flex-start; gap: 9px; border-bottom: 1px dashed #e8eaf0; line-height: 1.5; }
+    .checklist li:last-child { border-bottom: none; }
+    .check-circle { width: 20px; height: 20px; border-radius: 50%; background: #ccfbf1; color: #0f766e; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800; margin-top: 2px; }
+
+    .dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0; }
+    .dos, .donts { background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; padding: 1rem 1.2rem; }
+    .dos h4 { color: #1a7a42; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 700; margin-bottom: 0.6rem; }
+    .donts h4 { color: #b91c1c; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 700; margin-bottom: 0.6rem; }
+    .dos li, .donts li { font-size: 13px; color: #374151; margin-bottom: 6px; line-height: 1.5; }
+
+    .guide-sidebar { position: sticky; top: 78px; }
+    .sidebar-card { background: #fff; border: 1px solid #e8eaf0; border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; }
+    .sidebar-card h4 { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a { font-size: 13px; color: #6b7280; text-decoration: none; display: flex; align-items: center; gap: 7px; transition: color 0.15s; }
+    .toc-list a:hover { color: #0d9488; }
+    .toc-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8eaf0; flex-shrink: 0; }
+    .resource-link { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #0d9488; text-decoration: none; padding: 6px 0; border-bottom: 1px solid #f0f0f0; transition: color 0.15s; }
+    .resource-link:last-child { border-bottom: none; }
+    .resource-link:hover { color: #0f4c3a; }
+    .diff-bar { display: flex; gap: 5px; margin-top: 6px; }
+    .diff-dot { width: 28px; height: 8px; border-radius: 50px; }
+    .diff-filled { background: #0d9488; }
+    .diff-empty  { background: #e8eaf0; }
+
+    footer { text-align: center; padding: 2rem; font-size: 13px; color: #9ca3af; border-top: 1px solid #e8eaf0; background: #fff; }
+    footer a { color: #4f8ef7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 680px) {
+      .guide-layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 3rem; }
+      .guide-sidebar { position: static; }
+      .guide-hero { padding: 2rem 1rem 2.5rem; }
+      .dos-donts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">🚀 Tony's AI &amp; Cloud Hub</a>
+      <a href="index.html#guides" class="nav-back">← Back to guides</a>
+    </div>
+  </header>
+
+  <section class="guide-hero">
+    <div class="guide-hero-inner">
+      <div class="guide-badge">🦞 How-To Guide</div>
+      <h1>Getting Started with OpenClaw</h1>
+      <div class="guide-meta">
+        <span>⏱️ 20–30 min read</span>
+        <span>🟡 Intermediate</span>
+        <span>🖥️ Self-hosted on your machine</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="guide-layout">
+    <article class="guide-content">
+
+      <p>OpenClaw is an open-source personal AI assistant that runs on your own machine and connects to the chat apps you already use — WhatsApp, Telegram, Discord, Slack, and more. Your data stays yours. The AI actually does things.</p>
+
+      <div class="tip">
+        <span>💡</span>
+        <span><strong>In one sentence:</strong> OpenClaw is the AI that actually does things — it clears your inbox, sends emails, manages your calendar, browses the web, runs code, and builds its own new skills, all from a chat message.</span>
+      </div>
+
+      <!-- SECTION 1 -->
+      <h2 id="what">What Is OpenClaw?</h2>
+      <p>OpenClaw was created by Peter Steinberger and rapidly grew into one of the most talked-about open-source AI projects of 2026. It's a persistent agent that lives on your machine, has memory of your context and preferences, and can take real actions on your behalf autonomously.</p>
+
+      <table class="compare-table">
+        <thead><tr><th>Traditional AI chatbot</th><th>OpenClaw</th></tr></thead>
+        <tbody>
+          <tr><td>Cloud-hosted, third-party data</td><td>Runs on your machine, data stays local</td></tr>
+          <tr><td>Starts fresh each conversation</td><td>Persistent memory across sessions</td></tr>
+          <tr><td>Answers questions</td><td>Takes real actions — emails, files, code, web</td></tr>
+          <tr><td>Single interface (browser/app)</td><td>Any chat app: WhatsApp, Telegram, Discord…</td></tr>
+          <tr><td>Fixed capabilities</td><td>Extensible with skills, builds its own</td></tr>
+          <tr><td>Subscription SaaS</td><td>Open source, self-hosted, free to run</td></tr>
+        </tbody>
+      </table>
+
+      <!-- SECTION 2 -->
+      <h2 id="capabilities">What OpenClaw Can Do</h2>
+
+      <h3>Communication</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span>Read, write, and send emails via Gmail and other mail providers</li>
+        <li><span class="check-circle">✓</span>Manage your calendar — check availability, create and update events</li>
+        <li><span class="check-circle">✓</span>Send and receive messages across WhatsApp, Telegram, Discord, Slack, Signal, and iMessage</li>
+        <li><span class="check-circle">✓</span>Draft responses, summarise threads, and triage your inbox</li>
+      </ul>
+
+      <h3>Computer &amp; File Access</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span>Read and write files on your machine</li>
+        <li><span class="check-circle">✓</span>Run shell commands and scripts</li>
+        <li><span class="check-circle">✓</span>Control the browser — navigate pages, fill forms, extract data from any website</li>
+        <li><span class="check-circle">✓</span>Execute code in Python, JavaScript, and other runtimes</li>
+      </ul>
+
+      <h3>Skills &amp; Automation</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span>Extend with community skills from ClawHub (clawhub.ai)</li>
+        <li><span class="check-circle">✓</span>Build custom skills by describing what you want — it writes the skill itself</li>
+        <li><span class="check-circle">✓</span>Set up cron jobs, reminders, and background tasks that run proactively</li>
+        <li><span class="check-circle">✓</span>Connect to 50+ integrations including GitHub, Obsidian, Spotify, and VirusTotal</li>
+      </ul>
+
+      <div class="fire">
+        <span>🔥</span>
+        <span><strong>Self-building:</strong> One of OpenClaw's most remarkable features is that it can write and install its own new skills based on your requests — effectively extending its own capabilities through conversation.</span>
+      </div>
+
+      <!-- SECTION 3 -->
+      <h2 id="prereqs">Before You Start — Prerequisites</h2>
+      <table class="compare-table">
+        <thead><tr><th>Requirement</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Operating system</strong></td><td>macOS, Linux, or Windows — all supported</td></tr>
+          <tr><td><strong>Node.js</strong></td><td>Version 22 or newer. Check with: <code>node --version</code></td></tr>
+          <tr><td><strong>AI model API key</strong></td><td>Anthropic Claude (recommended), OpenAI GPT, or a local model. You bring your own key.</td></tr>
+          <tr><td><strong>Chat app</strong></td><td>At least one of: WhatsApp, Telegram, Discord, Slack, Signal, or iMessage</td></tr>
+        </tbody>
+      </table>
+      <div class="warning">
+        <span>💰</span>
+        <span><strong>Model costs:</strong> OpenClaw uses your own AI model subscription or API key — it does not include model access. If you have a Claude Max subscription, you can use that. The Anthropic API, OpenAI API, or local models like MiniMax are all supported.</span>
+      </div>
+
+      <!-- SECTION 4 -->
+      <h2 id="install">Installation</h2>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Option 1 — One-line installer (recommended)</h3>
+          <p>The fastest way to get started. Open a terminal and run:</p>
+          <div class="code-block"><code># macOS and Linux
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# Windows (PowerShell)
+iwr -useb https://openclaw.ai/install.ps1 | iex</code></div>
+          <p>The installer handles Node.js and all other dependencies automatically.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Option 2 — npm install (if you already have Node 22+)</h3>
+          <div class="code-block"><code>npm i -g openclaw</code></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Option 3 — From source (full control)</h3>
+          <div class="code-block"><code>git clone https://github.com/openclaw/openclaw.git
+cd openclaw && pnpm install && pnpm run build</code></div>
+        </div>
+      </div>
+
+      <!-- SECTION 5 -->
+      <h2 id="firstrun">First Run — The Onboarding Wizard</h2>
+      <p>Once installed, run the onboarding wizard:</p>
+      <div class="code-block"><code>openclaw onboard --install-daemon</code></div>
+
+      <p>The wizard will walk you through:</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Authentication</h3>
+          <p>Connect your AI model API key — Anthropic, OpenAI, or a local model.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Channel Setup</h3>
+          <p>Connect your preferred chat app (WhatsApp, Telegram, Discord etc.).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Persona Setup</h3>
+          <p>Name your assistant and give it initial personality and context about you and your work.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Open the Control UI</h3>
+          <p>Run <code>openclaw dashboard</code> to open the browser-based Control UI at <code>http://127.0.0.1:18789/</code> — the fastest way to have your first conversation without needing a chat app first.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 6 -->
+      <h2 id="channels">Connecting Your First Chat Channel</h2>
+      <table class="compare-table">
+        <thead><tr><th>Channel</th><th>Best for</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Telegram</strong></td><td>Most popular choice — fast and reliable</td><td>✅ Recommended starting channel</td></tr>
+          <tr><td><strong>WhatsApp</strong></td><td>Mobile-first access anywhere</td><td>Requires WhatsApp Business API or bridge</td></tr>
+          <tr><td><strong>Discord</strong></td><td>Power users and community setups</td><td>Great for running multiple agent instances</td></tr>
+          <tr><td><strong>Slack</strong></td><td>Work and team environments</td><td>Good for IT team use cases</td></tr>
+          <tr><td><strong>iMessage</strong></td><td>macOS/iPhone users</td><td>macOS only, requires pairing</td></tr>
+          <tr><td><strong>Signal</strong></td><td>Privacy-focused users</td><td>Open source end-to-end encrypted</td></tr>
+        </tbody>
+      </table>
+
+      <!-- SECTION 7 -->
+      <h2 id="first-convo">Your First Conversations</h2>
+
+      <h3>Exploring what it can do</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">→</span>"What can you do?" — overview of current skills</li>
+        <li><span class="check-circle">→</span>"What do you know about me so far?" — review what it has remembered</li>
+        <li><span class="check-circle">→</span>"Show me my schedule for today" — test calendar access</li>
+        <li><span class="check-circle">→</span>"Summarise the last 10 emails in my inbox" — test email access</li>
+      </ul>
+
+      <h3>IT professional use cases</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">→</span>"Check my GitHub repos for any open pull requests and give me a summary"</li>
+        <li><span class="check-circle">→</span>"Write a Python script that exports my Intune device list to CSV" — it will write and run the code</li>
+        <li><span class="check-circle">→</span>"Every morning at 8am, send me a briefing covering my emails, calendar, and any alerts"</li>
+        <li><span class="check-circle">→</span>"Research Azure pricing changes in 2026 and save a summary to a file on my desktop"</li>
+      </ul>
+
+      <div class="tip">
+        <span>💡</span>
+        <span><strong>Tip:</strong> OpenClaw works best when you treat it like a capable colleague rather than a search engine. Give it context, tell it your preferences, and delegate whole tasks rather than single questions.</span>
+      </div>
+
+      <!-- SECTION 8 -->
+      <h2 id="skills">Skills — Extending OpenClaw's Capabilities</h2>
+
+      <h3>Installing community skills</h3>
+      <p>Browse and install skills from <strong>ClawHub (clawhub.ai)</strong>. Simply tell OpenClaw:</p>
+      <div class="code-block"><code>"Install the Todoist skill from ClawHub"</code></div>
+
+      <h3>Building your own skills</h3>
+      <p>Ask OpenClaw to build a custom skill by describing what you want:</p>
+      <ul class="checklist">
+        <li><span class="check-circle">→</span>"Create a skill that checks my Intune device compliance daily and messages me a summary"</li>
+        <li><span class="check-circle">→</span>"Build a skill that monitors my GitHub Actions and notifies me of failed builds"</li>
+        <li><span class="check-circle">→</span>"Make a skill that pulls my calendar for the week and formats it as a plain text briefing"</li>
+      </ul>
+      <p>OpenClaw will write the skill definition, install it, and begin using it — all within the conversation.</p>
+
+      <!-- SECTION 9 -->
+      <h2 id="safety">Privacy, Security, and Safe Use</h2>
+
+      <h3>What stays on your machine</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">✓</span>All memory, context, and conversation history is stored locally by default</li>
+        <li><span class="check-circle">✓</span>Your data does not pass through OpenClaw's servers — only through your chosen AI model's API</li>
+        <li><span class="check-circle">✓</span>Skills and configuration files are stored in your home directory and are fully readable</li>
+      </ul>
+
+      <h3>Important safety practices</h3>
+      <ul class="checklist">
+        <li><span class="check-circle">!</span>Review actions before they are taken — use the approval prompts for emails and file operations</li>
+        <li><span class="check-circle">!</span>Start with read-only tasks before granting write access to sensitive systems</li>
+        <li><span class="check-circle">!</span>Check the VirusTotal integration to scan skills before installing from third parties</li>
+        <li><span class="check-circle">!</span>Keep OpenClaw updated — security patches are released frequently</li>
+      </ul>
+
+      <div class="warning">
+        <span>⚠️</span>
+        <span><strong>Prompt injection awareness:</strong> Like all AI agents, OpenClaw can potentially be manipulated by malicious content it reads — for example, a webpage or email with hidden instructions. Review agent actions in sensitive contexts and never store credentials inside OpenClaw's memory.</span>
+      </div>
+
+      <!-- SECTION 10 -->
+      <h2 id="dosdonts">Quick Reference — Do's and Don'ts</h2>
+      <div class="dos-donts">
+        <div class="dos">
+          <h4>✅ Do this</h4>
+          <ul>
+            <li>Start with the Control UI before connecting chat apps</li>
+            <li>Give it context about yourself during onboarding</li>
+            <li>Begin with read tasks before write/send tasks</li>
+            <li>Use approval prompts for emails and file changes</li>
+            <li>Browse ClawHub for ready-made skills first</li>
+            <li>Keep OpenClaw updated — it ships fast</li>
+          </ul>
+        </div>
+        <div class="donts">
+          <h4>❌ Avoid this</h4>
+          <ul>
+            <li>Storing passwords or API keys in OpenClaw's memory</li>
+            <li>Giving it write access to production systems on day one</li>
+            <li>Skipping the approval step for bulk email actions</li>
+            <li>Installing skills from unknown sources without scanning</li>
+            <li>Ignoring update notifications — security patches matter</li>
+            <li>Running as a root/admin user unnecessarily</li>
+          </ul>
+        </div>
+      </div>
+
+    </article>
+
+    <aside class="guide-sidebar">
+      <div class="sidebar-card">
+        <h4>Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#what"><span class="toc-dot"></span>What is OpenClaw?</a></li>
+          <li><a href="#capabilities"><span class="toc-dot"></span>What it can do</a></li>
+          <li><a href="#prereqs"><span class="toc-dot"></span>Prerequisites</a></li>
+          <li><a href="#install"><span class="toc-dot"></span>Installation</a></li>
+          <li><a href="#firstrun"><span class="toc-dot"></span>First run &amp; onboarding</a></li>
+          <li><a href="#channels"><span class="toc-dot"></span>Connecting chat channels</a></li>
+          <li><a href="#first-convo"><span class="toc-dot"></span>First conversations</a></li>
+          <li><a href="#skills"><span class="toc-dot"></span>Skills &amp; automation</a></li>
+          <li><a href="#safety"><span class="toc-dot"></span>Privacy &amp; safety</a></li>
+          <li><a href="#dosdonts"><span class="toc-dot"></span>Do's and don'ts</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Difficulty</h4>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:6px;">Intermediate</p>
+        <div class="diff-bar">
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-filled"></div>
+          <div class="diff-dot diff-empty"></div>
+          <div class="diff-dot diff-empty"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Quick Commands</h4>
+        <p style="font-size:12px;color:#6b7280;margin-bottom:8px;line-height:1.6;">
+          <code style="background:#f0fdfa;color:#0f766e;padding:2px 6px;border-radius:4px;font-size:11px;">openclaw onboard</code><br>Run setup wizard<br><br>
+          <code style="background:#f0fdfa;color:#0f766e;padding:2px 6px;border-radius:4px;font-size:11px;">openclaw gateway status</code><br>Check gateway is running<br><br>
+          <code style="background:#f0fdfa;color:#0f766e;padding:2px 6px;border-radius:4px;font-size:11px;">openclaw dashboard</code><br>Open Control UI
+        </p>
+      </div>
+
+      <div class="sidebar-card">
+        <h4>Useful Links</h4>
+        <a href="https://roadmap.sh/openclaw" target="_blank" class="resource-link">🗺️ OpenClaw Roadmap</a>
+        <a href="https://openclaw.ai" target="_blank" class="resource-link">🦞 OpenClaw Website</a>
+        <a href="https://docs.openclaw.ai/getting-started" target="_blank" class="resource-link">📖 Official Docs</a>
+        <a href="https://github.com/openclaw/openclaw" target="_blank" class="resource-link">💻 GitHub Repo</a>
+        <a href="https://clawhub.ai" target="_blank" class="resource-link">🛒 ClawHub Skills</a>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
+  </footer>
+</body>
+</html>
