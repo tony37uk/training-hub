@@ -10,7 +10,7 @@
 --     with huge messages.
 --
 -- How to run:
---   1. Replace every YOUR_ADMIN_EMAIL below (Find & Replace, 5 places)
+--   1. Replace every YOUR_ADMIN_EMAIL below (Find & Replace, 4 places)
 --      with the email of the admin user you created in
 --      Supabase → Authentication → Users. Do this in the SQL Editor
 --      only — keep the placeholder in this file so your email isn't
