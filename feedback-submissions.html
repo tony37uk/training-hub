@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>Feedback Submissions | Tony's AI &amp; Cloud Training Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -312,6 +313,33 @@
       .submission-card { grid-template-columns: 1fr; }
       .card-actions { flex-direction: row; align-items: flex-start; }
     }
+
+    /* ── ADMIN LOGIN ── */
+    .login-card {
+      max-width: 420px; margin: 1rem auto 3rem; background: #fff;
+      border: 1px solid #e8eaf0; border-radius: 16px; padding: 2rem;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.08);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .login-card h2 { font-family: 'Poppins', sans-serif; font-size: 20px; }
+    .login-card p { font-size: 14px; color: #6b7280; }
+    .login-card label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; }
+    .login-card input {
+      padding: 10px 12px; border: 1.5px solid #d1d5db; border-radius: 10px;
+      font-family: inherit; font-size: 15px;
+    }
+    .login-card input:focus { outline: 2px solid #4f8ef7; border-color: #4f8ef7; }
+    .login-card button {
+      padding: 11px; border: none; border-radius: 50px; background: #4f8ef7; color: #fff;
+      font-family: inherit; font-weight: 800; font-size: 15px; cursor: pointer;
+    }
+    .login-card button:disabled { opacity: 0.6; cursor: wait; }
+    .login-error { color: #c0392b !important; font-weight: 700; min-height: 1.2em; }
+    .signed-in { font-size: 13px; color: #6b7280; display: flex; align-items: center; gap: 8px; }
+    .signed-in button {
+      padding: 6px 14px; border-radius: 50px; border: 1.5px solid #d1d5db; background: #fff;
+      font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -330,11 +358,28 @@
       <div class="hero-text">
         <div class="page-badge">💬 Admin View</div>
         <h1>Feedback &amp; Suggestions</h1>
-        <p>All submissions from the hub feedback form, saved in this browser.</p>
+        <p>All submissions from the hub feedback form. Admin sign-in required.</p>
       </div>
     </div>
   </section>
 
+  <!-- ADMIN LOGIN (shown when not signed in) -->
+  <div id="login-panel" style="display:none;padding:0 1rem;">
+    <form class="login-card" id="login-form" onsubmit="handleLogin(event)">
+      <h2>🔒 Admin sign-in</h2>
+      <p>Only the hub admin can view and manage feedback.</p>
+      <label>Email
+        <input type="email" id="login-email" autocomplete="username" required maxlength="254" />
+      </label>
+      <label>Password
+        <input type="password" id="login-password" autocomplete="current-password" required />
+      </label>
+      <button type="submit" id="login-btn">Sign in</button>
+      <p class="login-error" id="login-error" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="admin-area">
   <!-- STATS + ACTIONS -->
   <div class="stats-strip">
     <div class="stats-group">
@@ -343,6 +388,10 @@
       <div class="stat-pill"><span id="actioned-count">0</span> actioned</div>
     </div>
     <div class="action-group">
+      <span class="signed-in" id="signed-in" style="display:none;">
+        <span id="signed-in-email"></span>
+        <button type="button" onclick="signOut()">Sign out</button>
+      </span>
       <button class="btn btn-export" onclick="exportCSV()">⬇️ Export CSV</button>
       <button class="btn btn-clear" onclick="clearAll()">🗑️ Clear all</button>
     </div>
@@ -369,7 +418,7 @@
           <p style="font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:#92400e;margin-bottom:0.5rem;">Supabase setup required — submissions aren't being saved to a database yet</p>
           <p style="font-size:13px;color:#78350f;line-height:1.7;margin-bottom:0.75rem;">Follow these 4 steps to connect a free persistent database. Takes about 5 minutes.</p>
           <ol style="font-size:13px;color:#78350f;line-height:2;padding-left:1.2rem;">
-            <li>Go to <a href="https://supabase.com" target="_blank" style="color:#d97706;font-weight:700;">supabase.com</a> → sign up free → create a new project (pick any region)</li>
+            <li>Go to <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" style="color:#d97706;font-weight:700;">supabase.com</a> → sign up free → create a new project (pick any region)</li>
             <li>Once the project loads, click <strong>SQL Editor</strong> in the left sidebar and run this query:<br>
               <code style="display:block;margin:6px 0;background:#fef3c7;border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.8;color:#1a1a2e;">
                 create table feedback (<br>
@@ -380,8 +429,7 @@
                 &nbsp;&nbsp;actioned boolean not null default false,<br>
                 &nbsp;&nbsp;created_at timestamptz not null default now()<br>
                 );<br>
-                alter table feedback enable row level security;<br>
-                create policy "anon_all" on feedback for all to anon using (true) with check (true);
+                -- then run supabase/security.sql from this repo to lock it down
               </code>
             </li>
             <li>Go to <strong>Project Settings → API</strong> — copy your <strong>Project URL</strong> and <strong>anon / public key</strong></li>
@@ -404,6 +452,8 @@
     </div>
   </div>
 
+  </div><!-- /admin-area -->
+
   <footer>
     <p>Part of <a href="index.html">Tony's AI &amp; Cloud Training Hub</a> &mdash; built with ❤️ and Claude</p>
   </footer>
@@ -425,42 +475,151 @@
       document.getElementById('setup-notice').style.display = 'block';
     }
 
-    // ── Supabase helpers ─────────────────────────────────────────
-    function sbHeaders() {
+    // ── Admin session (Supabase Auth) ────────────────────────────
+    // The session lives in sessionStorage, so it ends when the tab closes.
+    const SESSION_KEY = 'training_hub_admin_session';
+
+    class AuthRequiredError extends Error {}
+
+    function getSession() {
+      try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); }
+      catch { return null; }
+    }
+    function saveSession(data) {
+      const session = {
+        access_token:  data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at:    Date.now() + (Number(data.expires_in) || 3600) * 1000,
+        email:         (data.user && data.user.email) || ''
+      };
+      try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch {}
+      return session;
+    }
+    function clearSession() {
+      try { sessionStorage.removeItem(SESSION_KEY); } catch {}
+    }
+
+    async function authRequest(grantType, body) {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=${grantType}`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+        body:    JSON.stringify(body)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error_description || data.msg || 'Sign-in failed');
+      return saveSession(data);
+    }
+
+    // Returns a valid session, refreshing it if it is about to expire
+    async function currentSession() {
+      const s = getSession();
+      if (!s || !s.access_token) return null;
+      if (Date.now() < s.expires_at - 60 * 1000) return s;
+      try { return await authRequest('refresh_token', { refresh_token: s.refresh_token }); }
+      catch { clearSession(); return null; }
+    }
+
+    // ── Supabase helpers (all use the signed-in admin's token) ───
+    async function sbHeaders() {
+      const s = await currentSession();
+      if (!s) throw new AuthRequiredError('Please sign in');
       return {
         'Content-Type':  'application/json',
         'apikey':        SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        'Authorization': `Bearer ${s.access_token}`
       };
     }
 
+    async function sbRequest(path, options = {}) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        ...options, headers: await sbHeaders()
+      });
+      if (res.status === 401 || res.status === 403) {
+        clearSession();
+        throw new AuthRequiredError('Your session has expired — please sign in again');
+      }
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      return res;
+    }
+
     async function sbFetch() {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/feedback?order=created_at.desc`,
-        { headers: sbHeaders() }
-      );
-      if (!res.ok) throw new Error(`Could not load submissions (${res.status})`);
+      const res = await sbRequest('feedback?order=created_at.desc');
       return res.json();
     }
 
     async function sbPatchActioned(id, actioned) {
-      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=eq.${id}`, {
-        method:  'PATCH',
-        headers: sbHeaders(),
-        body:    JSON.stringify({ actioned })
+      await sbRequest(`feedback?id=eq.${Number(id)}`, {
+        method: 'PATCH', body: JSON.stringify({ actioned: !!actioned })
       });
     }
 
     async function sbDeleteOne(id) {
-      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=eq.${id}`, {
-        method: 'DELETE', headers: sbHeaders()
-      });
+      await sbRequest(`feedback?id=eq.${Number(id)}`, { method: 'DELETE' });
     }
 
     async function sbDeleteAll() {
-      await fetch(`${SUPABASE_URL}/rest/v1/feedback?id=gte.0`, {
-        method: 'DELETE', headers: sbHeaders()
-      });
+      await sbRequest('feedback?id=gte.0', { method: 'DELETE' });
+    }
+
+    // ── Login / logout UI ────────────────────────────────────────
+    function showLogin(message) {
+      document.getElementById('admin-area').style.display  = 'none';
+      document.getElementById('login-panel').style.display = 'block';
+      document.getElementById('login-error').textContent   = message || '';
+      document.getElementById('login-email').focus();
+    }
+
+    function showAdmin(session) {
+      document.getElementById('login-panel').style.display = 'none';
+      document.getElementById('admin-area').style.display  = '';
+      if (session) {
+        document.getElementById('signed-in').style.display = 'flex';
+        document.getElementById('signed-in-email').textContent = session.email;
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      const err = document.getElementById('login-error');
+      btn.disabled = true; btn.textContent = 'Signing in…'; err.textContent = '';
+      try {
+        const session = await authRequest('password', {
+          email:    document.getElementById('login-email').value.trim(),
+          password: document.getElementById('login-password').value
+        });
+        document.getElementById('login-password').value = '';
+        showAdmin(session);
+        await loadSubmissions();
+      } catch (ex) {
+        err.textContent = ex.message;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sign in';
+      }
+    }
+
+    async function signOut() {
+      const s = getSession();
+      clearSession();
+      allSubmissions = [];
+      if (s) {
+        fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${s.access_token}` }
+        }).catch(() => {});
+      }
+      document.getElementById('signed-in').style.display = 'none';
+      document.getElementById('submissions-list').innerHTML = '';
+      showLogin('Signed out.');
+    }
+
+    // Wraps admin actions so an expired session sends you back to sign-in
+    async function guarded(fn) {
+      try { await fn(); }
+      catch (ex) {
+        if (ex instanceof AuthRequiredError) showLogin(ex.message);
+        else alert('Something went wrong: ' + ex.message);
+      }
     }
 
     // ── localStorage fallback helpers (used when not configured) ─
@@ -563,10 +722,10 @@
                 <div class="card-msg">${escHtml(s.message)}</div>
               </div>
               <div class="card-actions">
-                <button class="action-btn done-btn" onclick="toggleActioned(${s.id}, ${s.actioned})">
+                <button class="action-btn done-btn" onclick="toggleActioned(${Number(s.id)}, ${!!s.actioned})">
                   ${s.actioned ? '↩ Undo' : '✓ Mark actioned'}
                 </button>
-                <button class="action-btn delete-btn" onclick="deleteEntry(${s.id})">🗑 Delete</button>
+                <button class="action-btn delete-btn" onclick="deleteEntry(${Number(s.id)})">🗑 Delete</button>
               </div>
             </div>`;
         }).join('');
@@ -593,6 +752,7 @@
           }));
         }
       } catch(err) {
+        if (err instanceof AuthRequiredError) { showLogin(err.message); return; }
         document.getElementById('submissions-list').innerHTML =
           `<div style="text-align:center;padding:3rem;color:#e74c3c;font-size:14px;">
             ⚠️ Could not load submissions: ${escHtml(err.message)}<br>
@@ -622,8 +782,7 @@
     async function toggleActioned(id, current) {
       const newVal = !current;
       if (SB_CONFIGURED) {
-        await sbPatchActioned(id, newVal);
-        await loadSubmissions();
+        await guarded(async () => { await sbPatchActioned(id, newVal); await loadSubmissions(); });
       } else {
         // Toggle in local array for localStorage mode
         allSubmissions = allSubmissions.map(s => s.id === id ? { ...s, actioned: newVal } : s);
@@ -634,8 +793,7 @@
     async function deleteEntry(id) {
       if (!confirm('Delete this submission?')) return;
       if (SB_CONFIGURED) {
-        await sbDeleteOne(id);
-        await loadSubmissions();
+        await guarded(async () => { await sbDeleteOne(id); await loadSubmissions(); });
       } else {
         allSubmissions = allSubmissions.filter(s => s.id !== id);
         const ls = lsGetSubmissions().filter(s => s.id !== id);
@@ -647,8 +805,7 @@
     async function clearAll() {
       if (!confirm('Delete ALL feedback submissions? This cannot be undone.')) return;
       if (SB_CONFIGURED) {
-        await sbDeleteAll();
-        await loadSubmissions();
+        await guarded(async () => { await sbDeleteAll(); await loadSubmissions(); });
       } else {
         localStorage.removeItem('training_hub_feedback');
         allSubmissions = [];
@@ -659,13 +816,20 @@
     function exportCSV() {
       if (!allSubmissions.length) { alert('No submissions to export.'); return; }
       const headers = ['Date', 'Name', 'Type', 'Message', 'Actioned'];
+      // Quote every cell, and prefix values starting with = + - @ so
+      // Excel doesn't run them as formulas (CSV injection)
+      const csvCell = v => {
+        let str = String(v ?? '');
+        if (/^[=+\-@\t\r]/.test(str)) str = "'" + str;
+        return `"${str.replace(/"/g, '""')}"`;
+      };
       const rows = allSubmissions.map(s => [
         formatDate(s.created_at),
         s.name,
         s.type,
-        s.message.replace(/"/g, '""'),
+        s.message,
         s.actioned ? 'Yes' : 'No'
-      ].map(v => `"${v}"`).join(','));
+      ].map(csvCell).join(','));
       const csv   = [headers.join(','), ...rows].join('\n');
       const blob  = new Blob([csv], { type: 'text/csv' });
       const url   = URL.createObjectURL(blob);
@@ -677,7 +841,12 @@
     }
 
     // ── Boot ─────────────────────────────────────────────────────
-    loadSubmissions();
+    (async () => {
+      if (!SB_CONFIGURED) { loadSubmissions(); return; }   // local-only mode
+      const session = await currentSession();
+      if (session) { showAdmin(session); loadSubmissions(); }
+      else showLogin();
+    })();
   </script>
 
 </body>
