@@ -1,5 +1,5 @@
 -- ════════════════════════════════════════════════════════════════════
--- Training Hub — feedback table security
+-- Training Hub + AI Training Hub — shared feedback table security
 --
 -- What this does:
 --   • Anyone (the public form) can ADD feedback, but cannot read,

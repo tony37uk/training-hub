@@ -1,6 +1,8 @@
 # Training Hub — rules for Claude Code
 
 Static site on GitHub Pages. The only backend is Supabase, used for the feedback form.
+The `feedback` table is SHARED with tony37uk/ai-training-hub — keep both repos' feedback code
+and `supabase/security.sql` in step.
 
 ## Security rules (always follow)
 
