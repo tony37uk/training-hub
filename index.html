@@ -573,7 +573,7 @@
     <div class="feedback-box">
       <p>Got a resource to suggest, spotted a broken link, or have ideas to improve the hub? Drop a note below!</p>
       <div class="fb-row">
-        <input type="text" placeholder="Your name (optional)" id="fb-name" />
+        <input type="text" placeholder="Your name (optional)" id="fb-name" maxlength="100" />
         <select id="fb-type">
           <option value="">— What kind of feedback? —</option>
           <option>Suggest a training link</option>
@@ -582,7 +582,7 @@
           <option>Report a broken link</option>
           <option>General improvement idea</option>
         </select>
-        <textarea placeholder="Tell me more..." id="fb-msg"></textarea>
+        <textarea placeholder="Tell me more..." id="fb-msg" maxlength="2000"></textarea>
         <button class="fb-submit" onclick="submitFeedback()">Send Feedback ✉️</button>
       </div>
       <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid #e4e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -629,25 +629,33 @@
   const SB_CONFIGURED     = !SUPABASE_URL.includes('YOUR_PROJECT_REF');
 
   // ── Feedback form ──────────────────────────────────────────────
-  function submitFeedback() {
+  async function submitFeedback() {
     const msg = document.getElementById('fb-msg').value.trim();
     if (!msg) { alert('Please add a message before sending!'); return; }
     const entry = {
-      name:    document.getElementById('fb-name').value.trim() || 'Anonymous',
-      type:    document.getElementById('fb-type').value       || 'General',
-      message: msg
+      name:    (document.getElementById('fb-name').value.trim() || 'Anonymous').slice(0, 100),
+      type:    (document.getElementById('fb-type').value       || 'General').slice(0, 60),
+      message: msg.slice(0, 2000)
     };
     if (SB_CONFIGURED) {
-      fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
-        method:  'POST',
-        headers: {
-          'Content-Type':  'application/json',
-          'apikey':        SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Prefer':        'return=minimal'
-        },
-        body: JSON.stringify(entry)
-      }).catch(err => console.warn('Supabase save failed:', err));
+      // The public key can only ADD feedback — it cannot read, edit or delete it
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+          method:  'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'apikey':        SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer':        'return=minimal'
+          },
+          body: JSON.stringify(entry)
+        });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+      } catch (err) {
+        console.warn('Supabase save failed:', err);
+        alert('Sorry, your feedback could not be sent. Please try again later.');
+        return;
+      }
     } else {
       // Fallback to localStorage until Supabase is configured
       try {
